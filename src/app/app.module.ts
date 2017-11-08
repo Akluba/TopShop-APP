@@ -1,7 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { appRoutes } from './routes';
@@ -12,7 +12,7 @@ import { SharedModule } from './shared/shared.module';
 @NgModule({
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     CoreModule,

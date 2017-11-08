@@ -1,51 +1,74 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-import {Http, Headers, Response} from '@angular/http';
-import {User} from '../user';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import 'rxjs/add/operator/toPromise';
 
+import { ICurrentUser } from '../auth/CurrentUser';
 
 @Injectable()
 export class AuthService {
+    currentUser: ICurrentUser;
 
-    constructor(private http: Http) {
-    }
+    constructor(private _http: HttpClient) { }
 
-    private oauthUrl = "http://localhost:8888/oauth/token";
-    private usersUrl = "http://localhost:8888/api/users";
-
-    getAccessToken() {
-        var headers = new Headers({
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        });
-
-        let postData = {
-            grant_type: "password",
-            client_id: 2,
-            client_secret: "hA7WQJVYl65dcoINH0GcwOvNhKe84le8yzF46dmR",
-            username: "ak@gmail.com",
-            password: "password",
-            scope: ""
+        login(credentials): Promise<any>
+        {
+            return this
+                .getAccessToken(credentials)
+                .then(token => this.getCurrentUser(token))
+                .then(user => this.currentUser = <ICurrentUser>user)
+                .catch(this.handleError);
         }
 
-        return this.http.post(this.oauthUrl, JSON.stringify(postData), {
-            headers: headers
-        })
-            .map((res: Response) => res.json())
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
+        private getAccessToken(credentials)
+        {
+            let promise = new Promise((resolve, reject) => {
+                let apiUrl = 'http://localhost:8888/api/login';
+                let body = {
+                    email:      credentials.email,
+                    password:   credentials.password,
+                };
+                this._http.post(apiUrl, body, {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'Accept':       'application/json'
+                    })      
+                })
+                .toPromise()
+                .then(
+                    res => resolve(res),
+                    err => reject(err)
+                );
+            });
+            return promise;
+        }
 
-    getUsers(accessToken: string): Observable<User[]> {
+        private getCurrentUser(token)
+        {
+            let promise = new Promise((resolve, reject) => {
+                let apiUrl = 'http://localhost:8888/api/user';
+                this._http.get(apiUrl,{
+                    headers: new HttpHeaders({
+                        'Accept':       'application/json',
+                        'Authorization': `Bearer ${token['access_token']}`
+                    })
+                })
+                .toPromise()
+                .then(
+                    res => resolve(res),
+                    err => reject(err)
+                );
+            });
+            return promise;
+        }
 
-        var headers = new Headers({
-            "Accept": "application/json",
-            "Authorization": "Bearer " + accessToken,
-        });
-
-        return this.http.get(this.usersUrl, {
-            headers: headers
-        })
-            .map((res: Response) => res.json())
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
+        private handleError(error: any): Promise<any>
+        {
+            if (error.error instanceof Error) {
+                console.log(`An error occurred: ${error.error.message}`);
+            }
+            else {
+                console.log(`Backend returned code ${error.status}, body was: ${error.error.message}`);
+            }
+            return Promise.reject(error.error.message);
+        }
 }
