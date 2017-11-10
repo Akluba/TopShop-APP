@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+//import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../core/auth.service';
 
@@ -12,11 +11,11 @@ export class LoginComponent {
     credentials: any = {};
     authError: String;
 
-    constructor(private router:Router, private authService:AuthService) { }
+    constructor(private auth:AuthService) { }
 
     login(credentials) {
         this.authError = null;
-        this.authService
+        this.auth
             .login(credentials)
             .then(result => console.log(result))
             .catch(error => this.authError = error)

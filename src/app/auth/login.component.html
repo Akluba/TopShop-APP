@@ -1,6 +1,8 @@
 <div>
     <h2>Login</h2>
 
+    <h3>logged In: {{auth.isAuthenticated()}}</h3>
+
     <form #loginForm='ngForm' (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
         <div class='form-group' [ngClass]="{ 'error' : loginForm.controls.email?.invalid && loginForm.controls.email?.dirty }">
             <label for='email'>Email:</label>
