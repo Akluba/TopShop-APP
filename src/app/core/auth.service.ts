@@ -16,6 +16,7 @@ export class AuthService {
     {
         return this
             .getAccessToken(credentials)
+            .then(() => this.getCurrentUser())
             .catch(this.handleError);
     }
 
@@ -76,25 +77,23 @@ export class AuthService {
     private refreshAccessToken()
     {}
 
-    // private getCurrentUser()
-    // {
-    //     let promise = new Promise((resolve, reject) => {
-    //         let apiUrl = 'http://localhost:8888/api/auth/user';
-    //         let access_token = this.retrieveAccessToken();
-    //         this._http.get(apiUrl,{
-    //             headers: new HttpHeaders({
-    //                 'Accept':       'application/json',
-    //                 'Authorization': `Bearer ${access_token}`
-    //             })
-    //         })
-    //         .toPromise()
-    //         .then(
-    //             res => resolve(res),
-    //             err => reject(err)
-    //         );
-    //     });
-    //     return promise;
-    // }
+    private getCurrentUser()
+    {
+        let promise = new Promise((resolve, reject) => {
+            let apiUrl = 'http://localhost:8888/api/auth/user';
+            this._http.get(apiUrl,{
+                headers: new HttpHeaders({
+                    'Accept': 'application/json'
+                })
+            })
+            .toPromise()
+            .then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
+        return promise;
+    }
 
     private handleError(error: any): Promise<any>
     {
