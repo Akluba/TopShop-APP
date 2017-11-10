@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AuthService {
+    public currentUser;
 
     constructor(private _http: HttpClient) { }
 
@@ -23,8 +24,15 @@ export class AuthService {
     public refresh()
     {}
 
-    public logout()
-    {}
+    /**
+     * Function to logout a user.
+     */
+    public logout(): Promise<any>
+    {
+        return this
+            .revokeAccessToken()
+            .catch(this.handleError);
+    }
 
     /**
      * Retrieve the access token from LocalStorage.
@@ -46,6 +54,7 @@ export class AuthService {
 
     /**
      * Get initial access token from the Passport server.
+     * also set in LocalStorage.
      * @param credentials 
      */
     private getAccessToken(credentials)
@@ -74,9 +83,6 @@ export class AuthService {
         return promise;
     }
 
-    private refreshAccessToken()
-    {}
-
     private getCurrentUser()
     {
         let promise = new Promise((resolve, reject) => {
@@ -95,6 +101,40 @@ export class AuthService {
         return promise;
     }
 
+    private refreshAccessToken()
+    {}
+
+    /**
+     * Revoke the access token from the server.
+     * also remove from LocalStorage.
+     */
+    private revokeAccessToken()
+    {
+        let promise = new Promise((resolve, reject) => {
+            let apiUrl = 'http://localhost:8888/api/auth/logout';
+            this._http.post<any>(apiUrl, null, {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Accept':       'application/json'
+                })      
+            })
+            .toPromise()
+            .then(
+                res => {
+                    localStorage.removeItem('access_token');
+                    resolve(res)
+                },
+                err => reject(err)
+            );
+        });
+        return promise;
+    }
+
+    /**
+     * Return the error message to be displayed to the user.
+     * also log to the console a more specific error message.
+     * @param error 
+     */
     private handleError(error: any): Promise<any>
     {
         if (error.error instanceof Error) {

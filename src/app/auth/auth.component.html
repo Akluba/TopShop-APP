@@ -1,0 +1,29 @@
+<div>
+    <button *ngIf='!auth.isAuthenticated() && !loginModal' (click)='loginModal=true' type='button'>Login</button>
+    <button *ngIf='auth.isAuthenticated()' (click)='logout()' type='button'>Logout</button>
+
+    <div *ngIf='loginModal && !auth.isAuthenticated()'>
+        <form #loginForm='ngForm' (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
+            <div class='form-group' [ngClass]="{ 'error' : loginForm.controls.email?.invalid && loginForm.controls.email?.dirty }">
+                <label for='email'>Email:</label>
+                <em *ngIf="loginForm.controls.email?.invalid && loginForm.controls.email?.dirty">Required</em>
+                <input [(ngModel)]="credentials.email" required name="email" id="email" type="text" />
+            </div>
+
+            <div class='form-group' [ngClass]="{ 'error' : loginForm.controls.password?.invalid && loginForm.controls.password?.dirty }">
+                <label for='password'>Password:</label>
+                <em *ngIf="loginForm.controls.password?.invalid && loginForm.controls.password?.dirty">Required</em>
+                <input [(ngModel)]="credentials.password" required name="password" id="password" type="password" />
+            </div>
+
+            <div class='form-group butttons'>
+                <button class="save" type="submit" [disabled]="loginForm.invalid">Login</button>
+            </div>
+
+            <div class="form-error" *ngIf='authError'>
+                <p>{{authError}}</p>
+            </div>
+
+        </form>
+    </div>
+</div>
