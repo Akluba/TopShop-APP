@@ -1,8 +1,8 @@
 <div>
-    <button *ngIf='!auth.isAuthenticated() && !loginModal' (click)='loginModal=true' type='button'>Login</button>
-    <button *ngIf='auth.isAuthenticated()' (click)='logout()' type='button'>Logout</button>
+    <button *ngIf='!_auth.isAuthenticated() && !loginModal' (click)='loginModal=true' type='button'>Login</button>
+    <button *ngIf='_auth.isAuthenticated()' (click)='logout()' type='button'>Logout</button>
 
-    <div *ngIf='loginModal && !auth.isAuthenticated()'>
+    <div *ngIf='loginModal && !_auth.isAuthenticated()'>
         <form #loginForm='ngForm' (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
             <div class='form-group' [ngClass]="{ 'error' : loginForm.controls.email?.invalid && loginForm.controls.email?.dirty }">
                 <label for='email'>Email:</label>
@@ -20,8 +20,8 @@
                 <button class="save" type="submit" [disabled]="loginForm.invalid">Login</button>
             </div>
 
-            <div class="form-error" *ngIf='authError'>
-                <p>{{authError}}</p>
+            <div class="form-error" *ngIf='pageError'>
+                <p>{{pageError}}</p>
             </div>
 
         </form>

@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { tokenNotExpired } from 'angular2-jwt';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
+
+import { ICurrentUser } from '../auth/currentUser';
 
 @Injectable()
 export class AuthService {
-    public currentUser;
+    currentUser: ICurrentUser;
 
     constructor(private _http: HttpClient) { }
 
@@ -13,25 +18,53 @@ export class AuthService {
      * Function to login a user.
      * @param credentials 
      */
-    public login(credentials): Promise<any>
-    {
-        return this
-            .getAccessToken(credentials)
-            .then(() => this.getCurrentUser())
-            .catch(this.handleError);
+    login(credentials): Observable<any> {
+        let apiUrl = 'http://localhost:8888/api/auth/login';
+        let body = {
+            email:      credentials.email,
+            password:   credentials.password,
+        };
+        // Get initial access token from the Passport server.
+        return this._http.post<any>(apiUrl, body, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept':       'application/json'
+            })    
+        })
+        .do(res => {
+            // Set access token in LocalStorage.
+            localStorage.setItem('access_token', res.access_token);
+        })
+        .catch(this.handleError);
     }
 
-    public refresh()
-    {}
+    refresh(): Observable<any> {
+        let apiUrl = 'http://localhost:8888/api/auth/refresh';
+        return this._http.post<any>(apiUrl, null, {
+            headers: new HttpHeaders({
+                'content-type': 'application/x-www-form-urlencoded',
+                'Accept':       'application/json'
+            })     
+        })
+        .do(res => console.log(res))
+        .catch(this.handleError);
+    }
 
     /**
      * Function to logout a user.
      */
-    public logout(): Promise<any>
-    {
-        return this
-            .revokeAccessToken()
-            .catch(this.handleError);
+    logout(): Observable<any> {
+        let apiUrl = 'http://localhost:8888/api/auth/logout';
+        // Revoke the access token from the server.
+        return this._http.post<any>(apiUrl, null, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept':       'application/json'
+            })      
+        })
+        // Remove access_token from LocalStorage.
+        .do(() => localStorage.removeItem('access_token'))
+        .catch(this.handleError);
     }
 
     /**
@@ -53,81 +86,28 @@ export class AuthService {
     }
 
     /**
-     * Get initial access token from the Passport server.
-     * also set in LocalStorage.
-     * @param credentials 
+     * Function to get current user.
      */
-    private getAccessToken(credentials)
-    {
-        let promise = new Promise((resolve, reject) => {
-            let apiUrl = 'http://localhost:8888/api/auth/login';
-            let body = {
-                email:      credentials.email,
-                password:   credentials.password,
-            };
-            this._http.post<any>(apiUrl, body, {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    'Accept':       'application/json'
-                })      
-            })
-            .toPromise()
-            .then(
-                res => {
-                    localStorage.setItem('access_token', res.access_token);
-                    resolve(res);
-                },
-                err => reject(err)
-            );
-        });
-        return promise;
+    getCurrentUser() {
+        console.log(this.currentUser);
+        return this.currentUser;
     }
 
-    private getCurrentUser()
+    setCurrentUser()
     {
-        let promise = new Promise((resolve, reject) => {
-            let apiUrl = 'http://localhost:8888/api/auth/user';
-            this._http.get(apiUrl,{
-                headers: new HttpHeaders({
-                    'Accept': 'application/json'
-                })
+        let apiUrl = 'http://localhost:8888/api/auth/currentUser';
+        return this._http.get<ICurrentUser>(apiUrl,{
+            headers: new HttpHeaders({
+                'Accept': 'application/json'
             })
-            .toPromise()
-            .then(
-                res => resolve(res),
-                err => reject(err)
-            );
-        });
-        return promise;
-    }
-
-    private refreshAccessToken()
-    {}
-
-    /**
-     * Revoke the access token from the server.
-     * also remove from LocalStorage.
-     */
-    private revokeAccessToken()
-    {
-        let promise = new Promise((resolve, reject) => {
-            let apiUrl = 'http://localhost:8888/api/auth/logout';
-            this._http.post<any>(apiUrl, null, {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    'Accept':       'application/json'
-                })      
-            })
-            .toPromise()
-            .then(
-                res => {
-                    localStorage.removeItem('access_token');
-                    resolve(res)
-                },
-                err => reject(err)
-            );
-        });
-        return promise;
+        })
+        .do(currentUser => {
+            if (!!currentUser.id) {
+                this.currentUser = currentUser;
+            }
+        })
+        .catch(this.handleError)
+        .subscribe();
     }
 
     /**
@@ -135,14 +115,14 @@ export class AuthService {
      * also log to the console a more specific error message.
      * @param error 
      */
-    private handleError(error: any): Promise<any>
-    {
-        if (error.error instanceof Error) {
-            console.log(`An error occurred: ${error.error.message}`);
+    private handleError(err: HttpErrorResponse) {
+        if (err.error instanceof Error) {
+            console.log(`An error occurred: ${err.error.message}`);
+        } else {
+            console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
-        else {
-            console.log(`Backend returned code ${error.status}, body was: ${error.error.message}`);
-        }
-        return Promise.reject(error.error.message);
+        
+        return Observable.throw(err.error.message);
     }
+    
 }

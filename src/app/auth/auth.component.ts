@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { AuthService } from '../core/auth.service';
+import { ICurrentUser } from '../auth/currentUser';
 
 @Component({
   styleUrls: ['./auth.component.css'],
@@ -9,25 +10,32 @@ import { AuthService } from '../core/auth.service';
 export class AuthComponent {
     loginModal: boolean = false;
     credentials: any = {};
-    authError: String;
+    pageError: String;
+    currentUser: ICurrentUser;
 
-    constructor(private auth:AuthService) {}
+    constructor(private _auth:AuthService) {}
     
     login(credentials) {
-        this.authError = null;
-        this.auth
+        this.pageError = null;
+        this._auth
             .login(credentials)
-            .then(result => console.log(result))
-            .catch(error => this.authError = error);
+            .subscribe(
+                null,
+                err => this.pageError = err,
+                () => console.log('route to /dash')
+            );
     }
 
     logout() {
-        this.auth.logout()
-        .then(result => {
-            console.log(result);
-            this.loginModal = false;
-        })
-        .catch(error => console.log(error));
+        this._auth
+            .logout()
+            .subscribe(
+                res => {
+                    console.log(res)
+                    this.loginModal = false;
+                },
+                err => console.log(err)
+            );
     }
 
 }
