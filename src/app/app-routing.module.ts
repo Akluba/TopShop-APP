@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 export const routes: Routes = [
+    
+    { path: 'auth', loadChildren: 'app/auth/auth.module#AuthModule'},
+    { path: 'setup', loadChildren: 'app/setup/setup.module#SetupModule' }
     //{ path: '', redirectTo: 'home', pathMatch: 'full'},
-    { path: 'auth', loadChildren: 'app/auth/auth.module#AuthModule'}
+    //{ path: '**' component: PageNotFoundComponent }
 ];
 
 @NgModule({

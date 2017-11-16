@@ -9,4 +9,4 @@ import { AuthRoutingModule } from './auth-routing.module';
     declarations: [ AuthComponent ],
     providers: [ ]
 })
-export class AuthModule {};
+export class AuthModule {}

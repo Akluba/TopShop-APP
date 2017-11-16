@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/schematics": "0.0.34",
     "@angular/animations": "^4.2.4",
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
@@ -24,6 +25,7 @@
     "angular2-jwt": "^0.2.3",
     "core-js": "^2.4.1",
     "rxjs": "^5.4.2",
+    "semantic-ui": "^2.2.13",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
@@ -34,6 +36,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "~3.2.0",
+    "gulp": "^3.9.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
