@@ -1,7 +1,8 @@
+<h1>{{ pageTitle }}</h1>
 <div class="ui segments">
     <div class="ui segment">
         <div>
-            {{pageTitle}}
+            <h2>{{sectionTitle}}</h2>
         </div>
         <button class="ui small primary labeled icon button"
                 (click)="createCategory()">
@@ -29,10 +30,10 @@
                             <i class="green checkmark icon"></i>
                         </button>
                     </div>
-                    <button type="button"
-                            class="ui primary button">
+                    <a class="ui primary button"
+                        [routerLink]="['/setup', category.id]">
                         Edit Fields
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -45,17 +46,20 @@
     </div>
     <div class="content"
         *ngIf="newCategory | async; let newCategory;">
-        <div class="ui fluid input">
-            <input type="text" required 
-                    [(ngModel)] = "newCategory.title"
-                    #newCategoryTitle = "ngModel">
-        </div>
+        <form class="ui form">
+            <div class="field">
+                <label>Title</label>
+                <input type="text" required name="title"
+                        [(ngModel)] = "newCategory.title"
+                        #newCategoryTitle = "ngModel">
+            </div>
+        </form>
     </div>
     <div class="actions"
-        *ngIf="newCategory | async; let newCategory;">
+        *ngIf="newCategory | async; let newCategory">
         <button class="ui cancel deny button">Cancel</button>
         <button class="ui positive button"
-                [disabled]="newCategoryTitle.invalid"
+                [disabled]="!newCategory.title"
                 (click)="saveCategory(newCategory)">
             Save 
         </button>

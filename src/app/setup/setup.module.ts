@@ -3,12 +3,16 @@ import { SharedModule } from '../shared/shared.module';
 import { SetupRoutingModule } from './setup-routing.module';
 
 import { CategoryListComponent } from './category-list.component';
+import { FieldListComponent } from './field-list.component';
 
-import { SetupService } from './setup.service';
+import { CategoryService } from './category.service';
+import { FieldService } from './field.service';
+
+import { FieldResolver } from './field-resolver.service';
 
 @NgModule({
     imports: [ SharedModule, SetupRoutingModule ],
-    declarations: [ CategoryListComponent ],
-    providers: [ SetupService ]
+    declarations: [ CategoryListComponent, FieldListComponent ],
+    providers: [ CategoryService, FieldService, FieldResolver ]
 })
 export class SetupModule {}

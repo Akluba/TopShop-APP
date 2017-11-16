@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { share, delay } from 'rxjs/operators';
 
-import { SetupService } from './setup.service';
+import { CategoryService } from './category.service';
 import { ICategory } from './category';
 
 declare var $ :any;
@@ -12,16 +11,17 @@ declare var $ :any;
     templateUrl: './category-list.component.html'
 })
 export class CategoryListComponent implements OnInit{
-    pageTitle: string = 'Categories';
+    pageTitle: string = 'Setup Shop Fields';
+    sectionTitle: string = 'Shop Categories';
     errorMessage: string;
     successMessage: string;
     categories: Array<any>;
     newCategory: Observable<{}>;
 
-    constructor(private _setupService: SetupService){}
+    constructor(private _categoryService: CategoryService){}
 
     ngOnInit(): void {
-        this._setupService.getCategories('Shop')
+        this._categoryService.getCategories('Shop')
             .subscribe(
                 response => this.categories = response.data,
                 error => this.errorMessage = <any>error
@@ -30,12 +30,20 @@ export class CategoryListComponent implements OnInit{
 
     deleteCategory(category): void {
         if(confirm(`Are you sure you want to delete the category: ${category.title}?`)) {
-            this._setupService.deleteCategory(category.id)
+            this._categoryService.deleteCategory(category.id)
                 .subscribe(
                     category => this.onSaveComplete(category),
                     (error: any) => this.errorMessage = <any>error
                 );
         }
+    }
+
+    saveCategory(category): void {
+        this._categoryService.saveCategory(category)
+        .subscribe(
+            category => this.onSaveComplete(category),
+            (error: any) => this.errorMessage = <any>error
+        )
     }
 
     createCategory(): void {
@@ -46,17 +54,9 @@ export class CategoryListComponent implements OnInit{
     initNewCategory() {
         return of({
             id: 0,
-            title: 'testing',
+            title: null,
             source_class: 'Shop'
-        }).pipe();
-    }
-
-    saveCategory(category): void {
-        this._setupService.saveCategory(category)
-        .subscribe(
-            category => this.onSaveComplete(category),
-            (error: any) => this.errorMessage = <any>error
-        )
+        });
     }
 
     onSaveComplete(category: any): void {

@@ -8,54 +8,54 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 
-import { ICategory } from './category';
-
 @Injectable()
-export class SetupService {
+export class FieldService {
     private baseUrl = 'http://localhost:8888/';
     private categoryUrl = `${this.baseUrl}api/category`;
+    private fieldUrl = `${this.baseUrl}api/field`;
 
     constructor(private _http: HttpClient) {}
 
-    getCategories(sourceClass): Observable<any> {
+    getCategory(id: number): Observable<any> {
+        const url = `${this.categoryUrl}/${id}`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let params = new HttpParams().set('source_class', sourceClass);
-        let options = { headers: headers, params: params };
+        let options = { headers: headers };
 
-        return this._http.get(this.categoryUrl, options)
+        return this._http.get(url, options)
             .do(data => console.log(data))
             .catch(this.handleError);
     }
 
-    deleteCategory(id: number): Observable<Response> {
+    deleteField(id: number): Observable<Response> {
+        const url = `${this.fieldUrl}/${id}`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
         
-        const url = `${this.categoryUrl}/${id}`;
         return this._http.delete(url, options)
             .do(data => data['method'] = 'delete')
             .catch(this.handleError);
     }
 
-    saveCategory(category: ICategory): Observable<ICategory> {
+    saveField(field: any): Observable<any> {
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
 
-        if (category.id === 0) {
-            return this.createCategory(category, options);
+        if (field.id === 0) {
+            return this.createField(field, options);
         }
-        return this.updateCategory(category, options);
+        return this.updateField(field, options);
     }
 
-    private createCategory(category: ICategory, options: any): Observable<ICategory> {
-        return this._http.post(this.categoryUrl, category, options)
-            .do(data => data['method'] = 'create')
-            .catch(this.handleError);
+    private createField(field: any, options: any): Observable<any> {
+        return this._http.post(this.fieldUrl, field, options)
+        .do(data => data['method'] = 'create')
+        .catch(this.handleError);
     }
 
-    private updateCategory(category: ICategory, options: any): Observable<ICategory> {
-        const url = `${this.categoryUrl}/${category.id}`;
-        return this._http.put(url, category, options)
+    private updateField(field: any, options: any): Observable<any> {
+        const url = `${this.fieldUrl}/${field.id}`;
+        
+        return this._http.put(url, field, options)
             .do(data => data['method'] = 'update')
             .catch(this.handleError);
     }
