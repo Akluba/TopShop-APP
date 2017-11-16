@@ -1,0 +1,63 @@
+<div class="ui segments">
+    <div class="ui segment">
+        <div>
+            {{pageTitle}}
+        </div>
+        <button class="ui small primary labeled icon button"
+                (click)="createCategory()">
+            <i class="plus icon"></i>
+            Create a new Category
+        </button>
+        <div *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+    <div class="ui secondary segment">
+        <div class="ui relaxed divided list">
+            <div class="item" *ngFor="let category of categories">
+                <i class="middle aligned red large minus link icon"
+                    (click)="deleteCategory(category)">
+                </i>
+                <div class="middle aligned content">
+                    <div class="ui action input">
+                        <input type="text" required
+                                [(ngModel)] = category.title
+                                #categoryTitle = "ngModel"
+                                >
+                        <button class="ui icon button"
+                                [disabled]="!categoryTitle.dirty || categoryTitle.invalid"
+                                (click)="saveCategory(category); categoryTitle.control.markAsPristine()">
+                            <i class="green checkmark icon"></i>
+                        </button>
+                    </div>
+                    <button type="button"
+                            class="ui primary button">
+                        Edit Fields
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui small modal new-category">
+    <div class="header">
+        Create a new Category
+    </div>
+    <div class="content"
+        *ngIf="newCategory | async; let newCategory;">
+        <div class="ui fluid input">
+            <input type="text" required 
+                    [(ngModel)] = "newCategory.title"
+                    #newCategoryTitle = "ngModel">
+        </div>
+    </div>
+    <div class="actions"
+        *ngIf="newCategory | async; let newCategory;">
+        <button class="ui cancel deny button">Cancel</button>
+        <button class="ui positive button"
+                [disabled]="newCategoryTitle.invalid"
+                (click)="saveCategory(newCategory)">
+            Save 
+        </button>
+    </div>
+</div>
