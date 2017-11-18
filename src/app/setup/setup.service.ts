@@ -9,15 +9,24 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 
 @Injectable()
-export class FieldService {
-    private baseUrl = 'http://localhost:8888/';
-    private categoryUrl = `${this.baseUrl}api/category`;
-    private fieldUrl = `${this.baseUrl}api/field`;
+export class SetupService {
+    private baseUrl = 'http://localhost:8888/api';
 
     constructor(private _http: HttpClient) {}
 
-    getCategory(id: number): Observable<any> {
-        const url = `${this.categoryUrl}/${id}`;
+    index(config?: {}): Observable<any> {
+        const url = `${this.baseUrl}/${config['route']}`;
+        let headers = new HttpHeaders({ 'Accept': 'application/json' });
+        let params = new HttpParams().set('source_class', config['params']);
+        let options = { headers: headers, params: params };
+
+        return this._http.get(url, options)
+            .do(data => console.log(data))
+            .catch(this.handleError);
+    }
+
+    show(id: number, config?: {}): Observable<any> {
+        const url = `${this.baseUrl}/${config['route']}/${id}`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
 
@@ -26,8 +35,8 @@ export class FieldService {
             .catch(this.handleError);
     }
 
-    deleteField(id: number): Observable<Response> {
-        const url = `${this.fieldUrl}/${id}`;
+    destroy(id: number, config?: {}): Observable<Response> {
+        const url = `${this.baseUrl}/${config['route']}/${id}`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
         
@@ -36,26 +45,28 @@ export class FieldService {
             .catch(this.handleError);
     }
 
-    saveField(field: any): Observable<any> {
+    save(body: any, config?: {}): Observable<any> {
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
 
-        if (field.id === 0) {
-            return this.createField(field, options);
+        if (body.id === 0) {
+            return this.store(body, options, config);
         }
-        return this.updateField(field, options);
+        return this.update(body, options, config);
     }
 
-    private createField(field: any, options: any): Observable<any> {
-        return this._http.post(this.fieldUrl, field, options)
-        .do(data => data['method'] = 'create')
-        .catch(this.handleError);
+    private store(body: any, options: any, config?: {}): Observable<any> {
+        const url = `${this.baseUrl}/${config['route']}`;
+
+        return this._http.post(url, body, options)
+            .do(data => data['method'] = 'create')
+            .catch(this.handleError);
     }
 
-    private updateField(field: any, options: any): Observable<any> {
-        const url = `${this.fieldUrl}/${field.id}`;
+    private update(body: any, options: any, config?: {}): Observable<any> {
+        const url = `${this.baseUrl}/${config['route']}/${body.id}`;
         
-        return this._http.put(url, field, options)
+        return this._http.put(url, body, options)
             .do(data => data['method'] = 'update')
             .catch(this.handleError);
     }
@@ -69,5 +80,4 @@ export class FieldService {
         
         return Observable.throw(err.error.message);
     }
-
 }

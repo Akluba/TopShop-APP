@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { FieldService } from './field.service';
+import { SetupService } from './setup.service';
 
 declare var $ :any;
 
@@ -12,24 +12,27 @@ declare var $ :any;
 })
 export class FieldListComponent implements OnInit{
     pageTitle: string = 'Setup Shop Fields';
+    sectionTitle: string;
     errorMessage: string;
     successMessage: string;
     category: any;
     fields: Array<any>;
     newField: Observable<{}>;
     
-    constructor(private _route: ActivatedRoute, private _fieldService: FieldService){}
+    constructor(private _route: ActivatedRoute, private _setupService: SetupService){}
 
     ngOnInit(): void {
         let data = this._route.snapshot.data['category'].data;
 
         this.category = data;
         this.fields = data.fields;
+
+        this.sectionTitle = `Category: ${this.category.title} -> Fields`;
     }
 
     deleteField(field): void {
         if(confirm(`Are you sure you want to delete the field: ${field.title}?`)) {
-            this._fieldService.deleteField(field.id)
+            this._setupService.destroy(field.id, {route: 'field'})
                 .subscribe(
                     field => this.onSaveComplete(field),
                     (error: any) => this.errorMessage = <any>error
@@ -38,7 +41,7 @@ export class FieldListComponent implements OnInit{
     }
 
     saveField(field): void {
-        this._fieldService.saveField(field)
+        this._setupService.save(field, {route: 'field'})
         .subscribe(
             field => this.onSaveComplete(field),
             (error: any) => this.errorMessage = <any>error

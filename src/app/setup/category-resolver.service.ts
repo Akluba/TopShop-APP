@@ -5,11 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { SetupService } from './setup.service';
 
 @Injectable()
-export class FieldResolver implements Resolve<any> {
+export class CategoryResolver implements Resolve<any> {
     constructor(private _setupService: SetupService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-        let id = +route.params['field_id'];
-        return this._setupService.show(id, {route: 'field'});
+        let id = +route.params['category_id'];
+        return this._setupService.show(id, {route: 'category'});
     }
 }

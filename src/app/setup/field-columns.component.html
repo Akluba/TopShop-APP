@@ -1,0 +1,96 @@
+<div class="ui segments">
+    <div class="ui segment">
+        <a class="ui animated button" tabindex="0"
+            [routerLink]="['/setup', category.id]">
+            <div class="visible content">Back</div>
+            <div class="hidden content">
+                <i class="left arrow icon"></i>
+            </div>
+        </a>
+        <h2>{{ sectionTitle }}</h2>
+        <button class="ui small primary labeled icon button"
+                (click)="createColumn()">
+            <i class="plus icon"></i>
+            Create a new Column
+        </button>
+        <div *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+    <div class="ui secondary segment">
+        <div class="ui divided items">
+            <div class="item" *ngFor="let column of columns">
+                <div class="ui grid middle aligned content">
+                    <div class="one wide column">
+                        <i class="middle aligned red large minus link icon"
+                            (click)="deleteColumn(column)">
+                        </i>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui fluid action input">
+                            <input type="text" required
+                                    [(ngModel)] = column.title
+                                    #columnTitle = "ngModel"
+                                    >
+                            <button class="ui icon button"
+                                    [disabled]="!columnTitle.dirty || columnTitle.invalid"
+                                    (click)="saveColumn(column); columnTitle.control.markAsPristine()">
+                                <i class="green checkmark icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="three wide column meta">
+                        <span>{{ column.type }}</span>
+                    </div>
+                    <div class="three wide column">
+                        <a class="ui right floated primary button"
+                            *ngIf="column.type === 'select' ||
+                                column.type === 'select_multiple'"
+                            [routerLink]="['/setup', category.id, field.id, column.id ]">
+                            Edit Field
+                        </a>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui small modal new-column">
+    <div class="header">
+        Create a new Column
+    </div>
+    <div class="content"
+        *ngIf="newColumn | async; let newColumn;">
+        <form class="ui form">
+            <div class="two fields">
+                <div class="field">
+                    <label>Title</label>
+                    <input type="text" required name="title"
+                        [(ngModel)] = "newColumn.title"
+                        #newColumnTitle = "ngModel">
+                </div>
+                <div class="field">
+                    <label>Type</label>
+                    <select class="ui fluid dropdown" required name="type"
+                        [(ngModel)] = "newColumn.type"
+                        #newColumnType = "ngModel">
+                        <option value="text">Text</option>
+                        <option value="checkbox">Checkbox</option>
+                        <option value="select">Select</option>
+                        <option value="select_multiple">Select Multiple</option>
+                        <option value="textarea">Text Area</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions"
+        *ngIf="newColumn | async; let newColumn">
+        <button class="ui cancel deny button">Cancel</button>
+        <button class="ui positive button"
+                [disabled]="!newColumn.title"
+                (click)="saveColumn(newColumn)">
+            Save 
+        </button>
+    </div>
+</div>

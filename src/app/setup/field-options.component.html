@@ -1,0 +1,83 @@
+<div class="ui segments">
+    <div class="ui segment">
+        <a class="ui animated button" tabindex="0"
+            [routerLink]="['/setup', category.id]">
+            <div class="visible content">Back</div>
+            <div class="hidden content">
+                <i class="left arrow icon"></i>
+            </div>
+        </a>
+        <h2>{{ sectionTitle }}</h2>
+        <button class="ui small primary labeled icon button"
+                (click)="createOption()">
+            <i class="plus icon"></i>
+            Create a new Option
+        </button>
+        <div *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+    <div class="ui secondary segment">
+        <div class="ui divided items">
+            <div class="item" *ngFor="let option of options">
+                <div class="ui grid middle aligned content">
+                    <div class="one wide column">
+                        <i class="middle aligned red large minus link icon"
+                            (click)="deleteOption(option)">
+                        </i>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui fluid action input">
+                            <input type="text" required
+                                    [(ngModel)] = option.label
+                                    #optionLabel = "ngModel"
+                                    >
+                            <button class="ui icon button"
+                                    [disabled]="!optionLabel.dirty || optionLabel.invalid"
+                                    (click)="saveOption(option); optionLabel.control.markAsPristine()">
+                                <i class="green checkmark icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="three wide column meta">
+                        <!-- <span>{{ field.type }}</span> -->
+                    </div>
+                    <div class="three wide column">
+                        <!-- <a class="ui right floated primary button"
+                            *ngIf="field.type === 'select' ||
+                                field.type === 'select_multiple' ||
+                                field.type === 'log'"
+                            [routerLink]="['/setup', category.id, field.id]">
+                            Edit Field
+                        </a> -->
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui small modal new-option">
+    <div class="header">
+        Create a new Option
+    </div>
+    <div class="content"
+        *ngIf="newOption | async; let newOption;">
+        <form class="ui form">
+            <div class="field">
+                <label>Title</label>
+                <input type="text" required name="label"
+                    [(ngModel)] = "newOption.label"
+                    #newFieldTitle = "ngModel">
+            </div>
+        </form>
+    </div>
+    <div class="actions"
+        *ngIf="newOption | async; let newOption">
+        <button class="ui cancel deny button">Cancel</button>
+        <button class="ui positive button"
+                [disabled]="!newOption.label"
+                (click)="saveOption(newOption)">
+            Save 
+        </button>
+    </div>
+</div>

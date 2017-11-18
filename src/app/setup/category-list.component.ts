@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { CategoryService } from './category.service';
+import { SetupService } from './setup.service';
 import { ICategory } from './category';
 
 declare var $ :any;
@@ -18,10 +18,10 @@ export class CategoryListComponent implements OnInit{
     categories: Array<any>;
     newCategory: Observable<{}>;
 
-    constructor(private _categoryService: CategoryService){}
+    constructor(private _setupService: SetupService){}
 
     ngOnInit(): void {
-        this._categoryService.getCategories('Shop')
+        this._setupService.index({route: 'category', params: 'Shop'})
             .subscribe(
                 response => this.categories = response.data,
                 error => this.errorMessage = <any>error
@@ -30,7 +30,7 @@ export class CategoryListComponent implements OnInit{
 
     deleteCategory(category): void {
         if(confirm(`Are you sure you want to delete the category: ${category.title}?`)) {
-            this._categoryService.deleteCategory(category.id)
+            this._setupService.destroy(category.id, {route: 'category'})
                 .subscribe(
                     category => this.onSaveComplete(category),
                     (error: any) => this.errorMessage = <any>error
@@ -39,7 +39,7 @@ export class CategoryListComponent implements OnInit{
     }
 
     saveCategory(category): void {
-        this._categoryService.saveCategory(category)
+        this._setupService.save(category, {route: 'category'})
         .subscribe(
             category => this.onSaveComplete(category),
             (error: any) => this.errorMessage = <any>error
