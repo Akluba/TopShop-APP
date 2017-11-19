@@ -1,13 +1,10 @@
 <div class="ui segments">
     <div class="ui segment">
-        <a class="ui animated button" tabindex="0"
-            [routerLink]="['/setup', category.id]">
-            <div class="visible content">Back</div>
-            <div class="hidden content">
-                <i class="left arrow icon"></i>
-            </div>
-        </a>
-        <h2>{{ sectionTitle }}</h2>
+        <setup-breadcrumb
+            [category]="category"
+            [field]="field"
+            [options]="options">
+        </setup-breadcrumb>
         <button class="ui small primary labeled icon button"
                 (click)="createOption()">
             <i class="plus icon"></i>
@@ -18,40 +15,10 @@
     </div>
     <div class="ui secondary segment">
         <div class="ui divided items">
-            <div class="item" *ngFor="let option of options">
-                <div class="ui grid middle aligned content">
-                    <div class="one wide column">
-                        <i class="middle aligned red large minus link icon"
-                            (click)="deleteOption(option)">
-                        </i>
-                    </div>
-                    <div class="eight wide column">
-                        <div class="ui fluid action input">
-                            <input type="text" required
-                                    [(ngModel)] = option.label
-                                    #optionLabel = "ngModel"
-                                    >
-                            <button class="ui icon button"
-                                    [disabled]="!optionLabel.dirty || optionLabel.invalid"
-                                    (click)="saveOption(option); optionLabel.control.markAsPristine()">
-                                <i class="green checkmark icon"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="three wide column meta">
-                        <!-- <span>{{ field.type }}</span> -->
-                    </div>
-                    <div class="three wide column">
-                        <!-- <a class="ui right floated primary button"
-                            *ngIf="field.type === 'select' ||
-                                field.type === 'select_multiple' ||
-                                field.type === 'log'"
-                            [routerLink]="['/setup', category.id, field.id]">
-                            Edit Field
-                        </a> -->
-                    </div> 
-                </div>
-            </div>
+            <setup-action-items
+                [route]="route"
+                [items]="options">
+            </setup-action-items>
         </div>
     </div>
 </div>

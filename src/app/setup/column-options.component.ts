@@ -8,64 +8,65 @@ import { SetupService } from './setup.service';
 declare var $ :any;
 
 @Component({
-    templateUrl: 'field-options.component.html'
+    templateUrl: 'column-options.component.html'
 })
-export class FieldOptionsComponent implements OnInit{
+export class ColumnOptionsComponent implements OnInit{
+    pageTitle: string = 'Setup Shop Fields';
     errorMessage: string;
     successMessage: string;
     category: any;
     field: any;
+    column: any;
     options: Array<any>;
     newOption: Observable<{}>;
 
     route: string;
 
     constructor(private _route: ActivatedRoute, private _setupService: SetupService) {}
-
+    
     ngOnInit(): void {
-        this._route.parent.data.subscribe(data => {
-            this.field = data['field'].data;
-
-            this.category = this.field.category;
-            this.options = this.field.options;
-        });
-
         this._route.data.subscribe(data => {
+            this.column = data['column'].data;
+
             this.route = data['route'];
+
+            this.category = this.column.field.category;
+            this.field = this.column.field;
+            this.options = this.column.options;
         });
     }
 
-    saveOption(option): void {
-        this._setupService.save(option, {route: 'option'})
+    save(obj): void {
+        this._setupService.save(obj, {route: this.route})
         .subscribe(
-            option => this.onSaveComplete(option),
+            res => this.onSaveComplete(res),
             (error: any) => this.errorMessage = <any>error
         )
     }
 
-    createOption():void {
+    create():void {
         this.newOption = this.initNewOption()
             .do(() => $('.ui.modal.new-option').modal('show'));
     }
 
     initNewOption() {
         return of({
-            id: 0,
-            source_id: this.field.id,
-            source_class: 'CustomField',
-            label: null
+            id:           0,
+            source_id:    this.column.id,
+            source_class: 'CustomFieldLogColumn',
+            label:        null
         });
     }
 
-    onSaveComplete(option: any): void {
-        if (option.method === 'create') {
-            this.options.push(option.data);
+    onSaveComplete(res: any): void {
+        if (res.method === 'create') {
+            this.options.push(res.data);
         }
-        else if (option.method === 'delete') {
-            this.options = this.options.filter(obj => obj.id != option.data.id);
+        else if (res.method === 'delete') {
+            this.options = this.options.filter(obj => obj.id != res.data.id);
         }
         
-        this.successMessage = option.message;
+        this.successMessage = res.message;
     }
 
 }

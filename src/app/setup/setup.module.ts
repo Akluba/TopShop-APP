@@ -7,11 +7,13 @@ import { FieldListComponent } from './field-list.component';
 import { FieldEditComponent } from './field-edit.component';
 import { FieldOptionsComponent } from './field-options.component';
 import { FieldColumnsComponent } from './field-columns.component';
+import { ColumnOptionsComponent } from './column-options.component';
+
+import { BreadcrumbComponent } from './setup-breadcrumb.component';
+import { ActionItemsComponent } from './setup-action-items.component';
 
 import { SetupService } from './setup.service';
-
-import { CategoryResolver } from './category-resolver.service';
-import { FieldResolver } from './field-resolver.service';
+import { SetupResolver } from './setup-resolver.service';
 
 @NgModule({
     imports: [ SharedModule, SetupRoutingModule ],
@@ -20,12 +22,14 @@ import { FieldResolver } from './field-resolver.service';
         FieldListComponent,
         FieldEditComponent,
         FieldOptionsComponent,
-        FieldColumnsComponent
+        FieldColumnsComponent,
+        ColumnOptionsComponent,
+        BreadcrumbComponent,
+        ActionItemsComponent
     ],
     providers: [ 
         SetupService,
-        CategoryResolver, 
-        FieldResolver
+        SetupResolver
     ]
 })
 export class SetupModule {}

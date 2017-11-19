@@ -12,32 +12,23 @@ declare var $ :any;
 })
 export class FieldListComponent implements OnInit{
     pageTitle: string = 'Setup Shop Fields';
-    sectionTitle: string;
     errorMessage: string;
     successMessage: string;
     category: any;
     fields: Array<any>;
     newField: Observable<{}>;
+
+    route: string;
     
     constructor(private _route: ActivatedRoute, private _setupService: SetupService){}
 
     ngOnInit(): void {
-        let data = this._route.snapshot.data['category'].data;
+        this._route.data.subscribe(data => {
+            this.route = data['route'];
 
-        this.category = data;
-        this.fields = data.fields;
-
-        this.sectionTitle = `Category: ${this.category.title} -> Fields`;
-    }
-
-    deleteField(field): void {
-        if(confirm(`Are you sure you want to delete the field: ${field.title}?`)) {
-            this._setupService.destroy(field.id, {route: 'field'})
-                .subscribe(
-                    field => this.onSaveComplete(field),
-                    (error: any) => this.errorMessage = <any>error
-                );
-        }
+            this.category = data['category'].data;
+            this.fields = this.category.fields
+        });
     }
 
     saveField(field): void {

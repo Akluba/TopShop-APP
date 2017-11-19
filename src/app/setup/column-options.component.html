@@ -2,47 +2,51 @@
     <h1>{{ pageTitle }}</h1>
     <div class="ui segments">
         <div class="ui segment">
-            <setup-breadcrumb></setup-breadcrumb>
+            <setup-breadcrumb
+                [category] = "category"
+                [field] = "field"
+                [column] = "column">
+            </setup-breadcrumb>
             <button class="ui small primary labeled icon button"
-                    (click)="createCategory()">
+                    (click)="create()">
                 <i class="plus icon"></i>
-                Create a new Category
+                Create a new Option
             </button>
             <div *ngIf="errorMessage">{{ errorMessage }}</div>
             <div *ngIf="successMessage">{{ successMessage }}</div>
         </div>
         <div class="ui secondary segment">
-            <div class="ui relaxed divided list">
+            <div class="ui divided items">
                 <setup-action-items
                     [route]="route"
-                    [items]="categories">
+                    [items]="options">
                 </setup-action-items>
             </div>
         </div>
     </div>
 </div>
 
-<div class="ui small modal new-category">
+<div class="ui small modal new-option">
     <div class="header">
-        Create a new Category
+        Create a new Option
     </div>
     <div class="content"
-        *ngIf="newCategory | async; let newCategory;">
+        *ngIf="newOption | async; let newOption;">
         <form class="ui form">
             <div class="field">
                 <label>Title</label>
-                <input type="text" required name="title"
-                        [(ngModel)] = "newCategory.title"
-                        #newCategoryTitle = "ngModel">
+                <input type="text" required name="label"
+                    [(ngModel)] = "newOption.label"
+                    #newFieldTitle = "ngModel">
             </div>
         </form>
     </div>
     <div class="actions"
-        *ngIf="newCategory | async; let newCategory">
+        *ngIf="newOption | async; let newOption">
         <button class="ui cancel deny button">Cancel</button>
         <button class="ui positive button"
-                [disabled]="!newCategory.title"
-                (click)="saveCategory(newCategory)">
+                [disabled]="!newOption.label"
+                (click)="save(newOption)">
             Save 
         </button>
     </div>

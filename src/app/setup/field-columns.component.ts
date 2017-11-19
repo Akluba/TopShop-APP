@@ -11,13 +11,14 @@ declare var $ :any;
     templateUrl: 'field-columns.component.html'
 })
 export class FieldColumnsComponent {
-    sectionTitle: string;
     errorMessage: string;
     successMessage: string;
     category: any;
     field: any;
     columns: Array<any>;
     newColumn: Observable<{}>;
+
+    route: string;
 
     constructor(private _route: ActivatedRoute, private _setupService: SetupService) {}
     
@@ -29,17 +30,9 @@ export class FieldColumnsComponent {
             this.columns = this.field.columns;
         });
 
-        this.sectionTitle = `Category: ${this.category.title} -> Field: ${this.field.title} -> Columns`;
-    }
-
-    deleteColumn(column): void {
-        if(confirm(`Are you sure you want to delete the column: ${column.title}?`)) {
-            this._setupService.destroy(column.id, {route: 'column'})
-                .subscribe(
-                    column => this.onSaveComplete(column),
-                    (error: any) => this.errorMessage = <any>error
-                );
-        }
+        this._route.data.subscribe(data => {
+            this.route = data['route'];
+        });
     }
 
     saveColumn(column): void {
