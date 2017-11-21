@@ -1,34 +1,32 @@
-<div class="item" *ngFor="let item of items">
+<div class="item" *ngFor="let child of children">
     <div class="ui grid middle aligned content">
         <div class="one wide column">
             <i class="middle aligned red large minus link icon"
-                (click)="delete(item)">
+                (click)="delete(child)">
             </i>
         </div>
         <div class="eight wide column">
             <div class="ui fluid action input">
                 <input type="text" required
-                        [(ngModel)] = item.title
+                        [(ngModel)] = child.title
                         #title = "ngModel"
                         >
                 <button class="ui icon button"
                         [disabled]="!title.dirty || title.invalid"
-                        (click)="save(item); title.control.markAsPristine()">
+                        (click)="save(child); title.control.markAsPristine()">
                     <i class="green checkmark icon"></i>
                 </button>
             </div>
         </div>
-        <div class="three wide column meta" *ngIf="item.type">
-            <span>{{ item.type }}</span>
+        <div class="three wide column meta">
+            <span *ngIf="child.type">{{ child.type }}</span>
         </div>
         <div class="three wide column">
-            <!-- ATTENTION -->
-            <!-- <a class="ui right floated primary button"
-                [routerLink]="['/setup', category.id]">
-                [routerLink]="['/setup', category.id, field.id]">
-                [routerLink]="['/setup', category.id, field.id, column.id, 'options']">
-                Edit Field
-            </a> -->
+            <a class="ui right floated primary button"
+                *ngIf="canNavigate(child.type)"
+                (click)="navigateToChild(child.id)">
+                {{ natigateText }}
+            </a>
         </div> 
     </div>
 </div>

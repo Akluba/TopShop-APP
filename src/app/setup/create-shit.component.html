@@ -1,0 +1,98 @@
+<!-- <button class="ui small primary labeled icon button"
+        (click)="createCategory()">
+    <i class="plus icon"></i>
+    Create a new Category
+</button> -->
+
+<!-- <div class="ui small modal new-category">
+    <div class="header">
+        Create a new Category
+    </div>
+    <div class="content"
+        *ngIf="newCategory | async; let newCategory;">
+        <form class="ui form">
+            <div class="field">
+                <label>Title</label>
+                <input type="text" required name="title"
+                        [(ngModel)] = "newCategory.title"
+                        #newCategoryTitle = "ngModel">
+            </div>
+        </form>
+    </div>
+    <div class="actions"
+        *ngIf="newCategory | async; let newCategory">
+        <button class="ui cancel deny button">Cancel</button>
+        <button class="ui positive button"
+                [disabled]="!newCategory.title"
+                (click)="saveCategory(newCategory)">
+            Save 
+        </button>
+    </div>
+</div> -->
+
+<!-- <div class="ui small modal new-field">
+    <div class="header">
+        Create a new Field
+    </div>
+    <div class="content"
+        *ngIf="newField | async; let newField;">
+        <form class="ui form">
+            <div class="two fields">
+                <div class="field">
+                    <label>Title</label>
+                    <input type="text" required name="title"
+                        [(ngModel)] = "newField.title"
+                        #newFieldTitle = "ngModel">
+                </div>
+                <div class="field">
+                    <label>Type</label>
+                    <select class="ui fluid dropdown" required name="type"
+                        [(ngModel)] = "newField.type"
+                        #newFieldType = "ngModel">
+                        <option value="text">Text</option>
+                        <option value="checkbox">Checkbox</option>
+                        <option value="select">Select</option>
+                        <option value="select_multiple">Select Multiple</option>
+                        <option value="textarea">Text Area</option>
+                        <option value="log">Logging Field</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions"
+        *ngIf="newField | async; let newField">
+        <button class="ui cancel deny button">Cancel</button>
+        <button class="ui positive button"
+                [disabled]="!newField.title && !newField.type"
+                (click)="saveField(newField)">
+            Save 
+        </button>
+    </div>
+</div> -->
+
+<!-- <div class="ui small modal new-option">
+    <div class="header">
+        Create a new Option
+    </div>
+    <div class="content"
+        *ngIf="newOption | async; let newOption;">
+        <form class="ui form">
+            <div class="field">
+                <label>Title</label>
+                <input type="text" required name="label"
+                    [(ngModel)] = "newOption.label"
+                    #newFieldTitle = "ngModel">
+            </div>
+        </form>
+    </div>
+    <div class="actions"
+        *ngIf="newOption | async; let newOption">
+        <button class="ui cancel deny button">Cancel</button>
+        <button class="ui positive button"
+                [disabled]="!newOption.label"
+                (click)="saveOption(newOption)">
+            Save 
+        </button>
+    </div>
+</div> -->

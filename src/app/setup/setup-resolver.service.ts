@@ -13,14 +13,18 @@ export class SetupResolver implements Resolve<any> {
         let field_id    = +route.params['field_id'];
         let column_id   = +route.params['column_id'];
 
-        if (!isNaN(field_id) || !isNaN(column_id)) {
-            if (!isNaN(column_id)) {
-                return this._setupService.show(column_id, {route: 'column'});
+        if (!isNaN(category_id)) {
+            if (!isNaN(field_id) || !isNaN(column_id)) {
+                if (!isNaN(column_id)) {
+                    return this._setupService.show(column_id, {route: 'column'});
+                }
+
+                return this._setupService.show(field_id, {route: 'field'});
             }
 
-            return this._setupService.show(field_id, {route: 'field'});
+            return this._setupService.show(category_id, {route: 'category'});
         }
-
-        return this._setupService.show(category_id, {route: 'category'});
+    
+        return this._setupService.index({route: 'category', params: 'Shop'});
     }
 }

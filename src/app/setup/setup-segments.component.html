@@ -1,0 +1,19 @@
+<div class="ui container">
+    <h1>{{ pageTitle }}</h1>
+    <div class="ui segments">
+        <div class="ui segment">
+            <setup-breadcrumb
+                [data]="data">
+            </setup-breadcrumb>
+            <div *ngIf="errorMessage">{{ errorMessage }}</div>
+            <div *ngIf="successMessage">{{ successMessage }}</div>
+        </div>
+        <div class="ui secondary segment">
+            <div class="ui divided items">
+                <setup-action-items
+                    [data]="data">
+                </setup-action-items>
+            </div>
+        </div>
+    </div>
+</div>
