@@ -1,3 +1,7 @@
+<div class="ui message transition hidden">
+    <div class="header" *ngIf="message">{{ message.text }}</div>
+</div>
+
 <div class="item" *ngFor="let child of children">
     <div class="ui grid middle aligned content">
         <div class="one wide column">
@@ -24,8 +28,8 @@
         <div class="three wide column">
             <a class="ui right floated primary button"
                 *ngIf="canNavigate(child.type)"
-                (click)="navigateToChild(child.id)">
-                {{ natigateText }}
+                (click)="navigateToChild(child)">
+                {{ navigateText }}
             </a>
         </div> 
     </div>

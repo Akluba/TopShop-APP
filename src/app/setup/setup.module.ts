@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { SetupRoutingModule } from './setup-routing.module';
 
-import { SetupSegmentsComponent } from './setup-segments.component';
+import { SetupComponent } from './setup.component';
 import { BreadcrumbComponent } from './template-breadcrumb.component';
-import { ActionItemsComponent } from './setup-action-items.component';
+import { FieldTableComponent } from './template-field-table.component';
 
 import { SetupService } from './setup.service';
 import { SetupResolver } from './setup-resolver.service';
@@ -12,9 +12,9 @@ import { SetupResolver } from './setup-resolver.service';
 @NgModule({
     imports: [ SharedModule, SetupRoutingModule ],
     declarations: [
-        SetupSegmentsComponent,
+        SetupComponent,
         BreadcrumbComponent,
-        ActionItemsComponent
+        FieldTableComponent
     ],
     providers: [ 
         SetupService,

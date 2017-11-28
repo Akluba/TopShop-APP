@@ -1,101 +1,16 @@
 <div class="ui big breadcrumb">
+    <div class="section" *ngFor="let crumb of breadCrumbs"
+        [ngClass]="{'active': crumb.active}">
+        
+        <div *ngIf="crumb.active; then activeTemplate else previousTemplate"></div>
 
-    <div class="section"
-        [ngClass]="{'active': !primary}">
-        <div *ngIf="!parent && primary; then categoryPrevious else categoryActive"></div>
+        <ng-template #activeTemplate>
+            <div>{{ crumb.title }}</div>
+        </ng-template>
+
+        <ng-template #previousTemplate>
+            <a [routerLink]="crumb.link">{{ crumb.title }}</a>
+            <i class="right chevron icon divider"></i>
+        </ng-template>
     </div>
-
-    <ng-template #categoryPrevious>
-        <a [routerLink]="['/setup']">Category: {{ primary.title }}</a>
-        <i class="right chevron icon divider"></i>
-    </ng-template>
-
-    <ng-template #categoryActive>
-        <div>Categories</div>
-    </ng-template> 
-
-    <!-- Field Breadcrumb -->
-    <!-- <div class="section"
-        *ngIf="primary"
-        [ngClass]="{'active': primary && !parent}">
-        <div *ngIf="primary && !parent; then fieldActive else fieldPrevious"></div>
-    </div>
-    
-    <ng-template #fieldPrevious>
-        <a [routerLink]="['/setup', category.id]">Field: {{ field.title }}</a>
-        <i class="right chevron icon divider"></i>    
-    </ng-template>
-
-    <ng-template #fieldActive>
-        <div>Fields</div>
-    </ng-template> -->
-
-    <!-- Field-Options Breadcrumb -->
-    <!-- <div class="section active"
-        *ngIf="fieldOptions">
-        <div>Select Options</div>
-    </div> -->
-
-    <!-- Field-Columns Breadcrumb -->
-    <!-- <div class="section"
-        *ngIf="fieldColumns || column"
-        [ngClass]="{'active': !column}">
-        <div *ngIf="column; then columnPrevious else columnActive"></div>
-    </div>
-
-    <ng-template #columnPrevious>
-        <a [routerLink]="['/setup', category.id, field.id]">Column: {{ column.title }}</a>
-        <i class="right chevron icon divider"></i>    
-    </ng-template>
-
-    <ng-template #columnActive>
-        <div>Columns</div>
-    </ng-template> -->
-
-    <!-- Column-Options Breadcrumb -->
-    <!-- <div class="section active"
-        *ngIf="column">
-        <div>Select Options</div>
-    </div> -->
-    
 </div>
-
-
-<!-- <div class="ui big breadcrumb">
-
-<div *ngIf="!primary && children; then categoryActive"></div>
-<div *ngIf="primary && !parent; then fieldActive"></div>
-<div *ngIf="!ancestor && parent; then optionActive"></div>
-
-</div>
-
-
-<ng-template #categoryActive>
-    <div class="section active">
-        <div>Categories</div>
-    </div>
-</ng-template>
-
-<ng-template #fieldActive>
-    <div class="section">
-        <a [routerLink]="['/setup']">Category: {{ primary.title }}</a>
-        <i class="right chevron icon divider"></i>
-    </div>
-    <div class="section active">
-        <div>Fields</div>
-    </div>
-</ng-template>
-
-<ng-template #fieldOptionsActive>
-    <div class="section">
-        <a [routerLink]="['/setup']">Category: {{ primary.title }}</a>
-        <i class="right chevron icon divider"></i>
-    </div>
-    <div class="section">
-        <a [routerLink]="['/setup']">Category: {{ primary.title }}</a>
-        <i class="right chevron icon divider"></i>
-    </div>
-    <div class="section active">
-        <div>Options</div>
-    </div>
-</ng-template> -->

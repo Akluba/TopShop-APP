@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { SetupSegmentsComponent } from './setup-segments.component';
+import { SetupComponent } from './setup.component';
 import { SetupResolver } from './setup-resolver.service';
 
 @NgModule({
@@ -9,7 +9,7 @@ import { SetupResolver } from './setup-resolver.service';
         RouterModule.forChild([
             { 
                 path: '',
-                component: SetupSegmentsComponent,
+                component: SetupComponent,
                 resolve: { response: SetupResolver },
                 data: {
                     activeSection: 'categories',
@@ -18,7 +18,7 @@ import { SetupResolver } from './setup-resolver.service';
             },
             { 
                 path: ':category_id', 
-                component: SetupSegmentsComponent, 
+                component: SetupComponent, 
                 resolve: { response: SetupResolver },
                 data: {
                     activeSection: 'fields',
@@ -27,7 +27,7 @@ import { SetupResolver } from './setup-resolver.service';
             },
             { 
                 path: ':category_id/:field_id/options', 
-                component: SetupSegmentsComponent,
+                component: SetupComponent,
                 resolve: { response: SetupResolver },
                 data: {
                     activeSection: 'field-options',
@@ -36,7 +36,7 @@ import { SetupResolver } from './setup-resolver.service';
             },
             { 
                 path: ':category_id/:field_id/columns',
-                component: SetupSegmentsComponent,
+                component: SetupComponent,
                 resolve: { response: SetupResolver },
                 data: {
                     activeSection: 'field-columns',
@@ -45,7 +45,7 @@ import { SetupResolver } from './setup-resolver.service';
             },
             {
                 path: ':category_id/:field_id/:column_id/options',
-                component: SetupSegmentsComponent,
+                component: SetupComponent,
                 resolve: { response: SetupResolver },
                 data: {
                     activeSection: 'column-options',

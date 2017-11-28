@@ -5,14 +5,12 @@
             <setup-breadcrumb
                 [data]="data">
             </setup-breadcrumb>
-            <div *ngIf="errorMessage">{{ errorMessage }}</div>
-            <div *ngIf="successMessage">{{ successMessage }}</div>
         </div>
         <div class="ui secondary segment">
             <div class="ui divided items">
-                <setup-action-items
+                <setup-field-table
                     [data]="data">
-                </setup-action-items>
+                </setup-field-table>
             </div>
         </div>
     </div>

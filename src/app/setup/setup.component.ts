@@ -3,15 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 
 import { SetupService } from './setup.service';
 
-declare var $ :any;
-
 @Component({
-    templateUrl: './setup-segments.component.html'
+    templateUrl: './setup.component.html'
 })
-export class SetupSegmentsComponent implements OnInit{
+export class SetupComponent implements OnInit{
     pageTitle: string = 'Setup Shop Fields';
-    errorMessage: string;
-    successMessage: string;
     data: {};
 
     constructor(private _route: ActivatedRoute, private _setupService: SetupService){}
