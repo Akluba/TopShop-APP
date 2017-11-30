@@ -1,0 +1,55 @@
+<button class="positive ui right floated button"
+    (click)="initiateModal()">
+    Create new {{ objectTitle }}
+</button>
+
+<div class="ui small modal setup-create">
+    <div class="header">
+        Create a new Record
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <div *ngIf="includeType; then titleAndType else titleOnly"></div>
+        </form>
+    </div>
+    <div class="actions">
+        <button class="ui cancel deny button">Cancel</button>
+        <button class="ui positive button"
+            [disabled]="!newObject.title">
+            Save
+        </button>
+    </div>
+</div>
+
+<ng-template #titleOnly>
+    <div class="field">
+        <label>Title</label>
+        <input type="text" required name="title"
+            [(ngModel)] = "newObject.title"
+            #newTitle = "ngModel" />
+    </div>
+</ng-template>
+
+<ng-template #titleAndType>
+    <div class="two fields">
+        <div class="field">
+            <label>Title</label>
+            <input type="text" required name="title"
+                [(ngModel)] = "newObject.title" 
+                #newTitle = "ngModel" />
+        </div>
+        <div class="field">
+            <label>Type</label>
+            <select class="ui fluid dropdown" required name="type"
+                [(ngModel)] = "newObject.type"
+                #newType = "ngModel">
+                <option value="text">Text</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="select">Select</option>
+                <option value="select_multiple">Select Multiple</option>
+                <option value="textarea">Text Area</option>
+                <option value="log" *ngIf="activeSection === 'fields'">Logging Field</option>
+            </select>
+        </div>
+    </div>
+</ng-template>

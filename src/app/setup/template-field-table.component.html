@@ -2,7 +2,8 @@
     <div class="header" *ngIf="message">{{ message.text }}</div>
 </div>
 
-<div class="item" *ngFor="let child of children">
+<!-- <div class="item" *ngFor="let child of children"> -->
+<div class="item" *ngFor="let child of _setupService.children">
     <div class="ui grid middle aligned content">
         <div class="one wide column">
             <i class="middle aligned red large minus link icon"
@@ -25,7 +26,7 @@
         <div class="three wide column meta">
             <span *ngIf="child.type">{{ child.type }}</span>
         </div>
-        <div class="three wide column">
+        <div class="four wide column">
             <a class="ui right floated primary button"
                 *ngIf="canNavigate(child.type)"
                 (click)="navigateToChild(child)">

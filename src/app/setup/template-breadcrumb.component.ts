@@ -65,8 +65,8 @@ export class BreadcrumbComponent implements OnInit{
         }
         else if (this.activeSection === 'column-options') {
             this.breadCrumbs = [
-                new breadCrumb(false, `Category: ${this.parent.title}`, ['/setup']),
-                new breadCrumb(false, `Field: ${this.primary.title}`, ['/setup', this.ancestor.id]),
+                new breadCrumb(false, `Category: ${this.ancestor.title}`, ['/setup']),
+                new breadCrumb(false, `Field: ${this.parent.title}`, ['/setup', this.ancestor.id]),
                 new breadCrumb(false, `Column: ${this.primary.title}`, ['/setup', this.ancestor.id, this.parent.id, 'columns']),
                 new breadCrumb(true, 'Options', null)
             ];

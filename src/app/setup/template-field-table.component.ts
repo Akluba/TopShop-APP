@@ -22,7 +22,7 @@ export class FieldTableComponent {
     navigateText: string;
     message: {};
 
-    constructor(private _route: ActivatedRoute,private _setupService: SetupService, private _router: Router) {}
+    constructor(private _route: ActivatedRoute, private _setupService: SetupService, private _router: Router) {}
 
     ngOnInit(): void {
         let data = this.data.response.data;
@@ -57,12 +57,9 @@ export class FieldTableComponent {
     }
 
     onSaveComplete(res: any): void {
-        if (res.method === 'create') {
-            this.children.push(res.data);
-        }
-        else if (res.method === 'delete') {
-            this.children = this.children.filter(obj => obj.id != res.data.id);
-        }
+        // if (res.method === 'create') {
+        //     this.children.push(res.data);
+        // }
         
         this.flashMessage({text: res.message, status: 'success'});
     }

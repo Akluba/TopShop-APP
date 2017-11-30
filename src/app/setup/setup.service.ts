@@ -11,6 +11,7 @@ import 'rxjs/add/observable/of';
 @Injectable()
 export class SetupService {
     private baseUrl = 'http://localhost:8888/api';
+    private children = [];
 
     constructor(private _http: HttpClient) {}
 
@@ -21,7 +22,9 @@ export class SetupService {
         let options = { headers: headers, params: params };
 
         return this._http.get(url, options)
-            .do(data => console.log(data))
+            .do(data => {
+                this.children = data['data']['children'];
+            })
             .catch(this.handleError);
     }
 
@@ -31,7 +34,9 @@ export class SetupService {
         let options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(data => console.log(data))
+            .do(data => {
+                this.children = data['data']['children'];
+            })
             .catch(this.handleError);
     }
 
@@ -41,7 +46,9 @@ export class SetupService {
         let options = { headers: headers };
         
         return this._http.delete(url, options)
-            .do(data => data['method'] = 'delete')
+            .do(data => {
+                this.children = this.children.filter(obj => obj.id != data['data']['id']);
+            })
             .catch(this.handleError);
     }
 
@@ -59,7 +66,9 @@ export class SetupService {
         const url = `${this.baseUrl}/${config['route']}`;
 
         return this._http.post(url, body, options)
-            .do(data => data['method'] = 'create')
+            .do(data => {
+                this.children.push(data['data']);
+            })
             .catch(this.handleError);
     }
 
