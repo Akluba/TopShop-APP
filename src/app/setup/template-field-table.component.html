@@ -2,7 +2,6 @@
     <div class="header" *ngIf="message">{{ message.text }}</div>
 </div>
 
-<!-- <div class="item" *ngFor="let child of children"> -->
 <div class="item" *ngFor="let child of _setupService.children">
     <div class="ui grid middle aligned content">
         <div class="one wide column">
@@ -14,8 +13,7 @@
             <div class="ui fluid action input">
                 <input type="text" required
                         [(ngModel)] = child.title
-                        #title = "ngModel"
-                        >
+                        #title = "ngModel" />
                 <button class="ui icon button"
                         [disabled]="!title.dirty || title.invalid"
                         (click)="save(child); title.control.markAsPristine()">

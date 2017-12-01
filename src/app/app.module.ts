@@ -6,6 +6,7 @@ import { AppComponent }  from './app.component';
 
 /* Feature Modules */
 import { CoreModule } from './core/core.module';
+import { NavModule } from './nav/nav.module';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     HttpClientModule,
     CoreModule,
+    NavModule,
     AppRoutingModule
   ],
   declarations: [ AppComponent ],

@@ -57,10 +57,6 @@ export class FieldTableComponent {
     }
 
     onSaveComplete(res: any): void {
-        // if (res.method === 'create') {
-        //     this.children.push(res.data);
-        // }
-        
         this.flashMessage({text: res.message, status: 'success'});
     }
 
