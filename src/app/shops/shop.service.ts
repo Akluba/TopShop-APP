@@ -25,6 +25,16 @@ export class ShopService {
             .catch(this.handleError);
     }
 
+    show(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        let headers = new HttpHeaders({ 'Accept': 'application/json' });
+        let options = { headers: headers };
+
+        return this._http.get(url, options)
+            // .do(data => console.log(data))
+            .catch(this.handleError);
+    }
+
     save(body: any): Observable<any> {
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };

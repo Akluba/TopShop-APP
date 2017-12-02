@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { SetupService } from './setup.service';
 
 @Component({
-    styles: ['.main.container{ padding-left: 260px }'],
     templateUrl: './setup.component.html'
 })
 export class SetupComponent implements OnInit{

@@ -1,0 +1,38 @@
+<div class="main ui container">
+    <h1 class="ui header">{{ shopName }}</h1>
+    <!-- Shop Categories Secondary menu -->
+    <div class="ui pointing secondary menu">
+        <a class="item" *ngFor="let category of shopCategories"
+            [ngClass]="{'active': category.title==='Primary Details'}"
+            attr.data-tab="{{ category.title }}">{{ category.title }}</a>
+    </div>
+    <!-- Shop Category segments -->
+    <div class="ui tab segment" *ngFor="let category of shopCategories"
+        [ngClass]="{'active': category.title==='Primary Details'}"
+        attr.data-tab="{{ category.title }}">
+        <!-- Shop Category fields -->
+        <div class="ui list">
+            <div class="item" *ngFor="let field of category.fields">
+                <div class="ui grid content">
+                    <div class="six wide column header">
+                        {{ field.title }}:
+                    </div>
+                    <div class="six wide column">
+                        <div class="description"
+                            *ngIf="field.value !== 1 && field.value !== 0; else checkBoxValue">
+                            {{ field.value }}
+                        </div>
+                        <!-- template for checkbox fields -->
+                        <ng-template #checkBoxValue>
+                            <i class="icon"
+                                [ngClass]="{'green checkmark': field.value==1, 'red remove': field.value==0}"></i>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
