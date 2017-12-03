@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { ShopRoutingModule } from './shop-routing.module';
 
@@ -11,7 +12,7 @@ import { ShopListResolver } from './shop-list-resolver.service';
 import { ShopDetailsResolver } from './shop-details-resolver.service';
 
 @NgModule({
-    imports      : [ SharedModule, ShopRoutingModule ],
+    imports      : [ SharedModule, ReactiveFormsModule, ShopRoutingModule ],
     declarations : [ 
         ShopListComponent,
         ShopCreateComponent,

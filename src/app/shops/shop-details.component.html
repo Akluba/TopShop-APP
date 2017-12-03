@@ -1,38 +1,73 @@
 <div class="main ui container">
     <h1 class="ui header">{{ shopName }}</h1>
+    
     <!-- Shop Categories Secondary menu -->
     <div class="ui pointing secondary menu">
-        <a class="item" *ngFor="let category of shopCategories"
-            [ngClass]="{'active': category.title==='Primary Details'}"
-            attr.data-tab="{{ category.title }}">{{ category.title }}</a>
+        <a class="item" *ngFor="let fieldset of categoryFieldsets"
+            [ngClass]="{'active': fieldset.categoryTab==='PrimaryDetails'}"
+            attr.data-tab="{{ fieldset.categoryTab }}">{{ fieldset.categoryTitle }}</a>
     </div>
-    <!-- Shop Category segments -->
-    <div class="ui tab segment" *ngFor="let category of shopCategories"
-        [ngClass]="{'active': category.title==='Primary Details'}"
-        attr.data-tab="{{ category.title }}">
-        <!-- Shop Category fields -->
-        <div class="ui list">
-            <div class="item" *ngFor="let field of category.fields">
-                <div class="ui grid content">
-                    <div class="six wide column header">
-                        {{ field.title }}:
-                    </div>
-                    <div class="six wide column">
-                        <div class="description"
-                            *ngIf="field.value !== 1 && field.value !== 0; else checkBoxValue">
-                            {{ field.value }}
+
+    <form class="ui form"
+        novalidate
+        (ngSubmit)="save()"
+        [formGroup]="shopForm">
+
+        <!-- Shop Category segments -->
+        <div class="ui tab segment" *ngFor="let fieldset of categoryFieldsets"
+            [ngClass]="{'active': fieldset.categoryTab==='PrimaryDetails'}"
+            attr.data-tab="{{ fieldset.categoryTab }}">
+
+            <div formGroupName="{{ fieldset.categoryGroup }}">
+                <div class="field" *ngFor="let field of fieldset.fields">
+                    <div class="ui grid middle aligned content">
+                        <div class="right aligned three wide column">
+                            <label>{{ field.title }}</label>
                         </div>
-                        <!-- template for checkbox fields -->
-                        <ng-template #checkBoxValue>
-                            <i class="icon"
-                                [ngClass]="{'green checkmark': field.value==1, 'red remove': field.value==0}"></i>
-                        </ng-template>
+                        <div class="ten wide column" [ngSwitch]="field.type">
+                            
+                            <!-- Text Input -->
+                            <input *ngSwitchCase="'text'" type="text" formControlName="{{ field.column_name }}" />
+
+                            <!-- Checkbox -->
+                            <div *ngSwitchCase="'checkbox'" class="ui toggle checkbox">
+                                <input type="checkbox" tabindex="0" class="hidden" formControlName="{{ field.column_name }}">
+                            </div>
+
+                            <!-- Select -->
+                            <select *ngSwitchCase="'select'" class="ui fluid dropdown"
+                                formControlName="{{ field.column_name }}">
+                                <option *ngFor="let option of field.options"
+                                    value="{{ option.id }}">{{ option.title }}
+                                </option>
+                            </select>
+                            
+                            <!-- Select Multiple -->
+                            <select *ngSwitchCase="'select_multiple'" multiple="" class="ui fluid dropdown"
+                                formControlName="{{ field.column_name }}">
+                                <option *ngFor="let option of field.options"
+                                    value="{{ option.id }}">{{ option.title }}
+                                </option>
+                            </select>
+
+                            <!-- Textarea -->
+                            <textarea *ngSwitchCase="'textarea'" rows="2" formControlName="{{ field.column_name }}"></textarea>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <button class="ui positive button"
+                [disabled]="!shopForm.valid">
+            Save
+        </button>
+
+    </form>
+
+    <br>Dirty: {{ shopForm.dirty }} 
+    <br>Touched: {{ shopForm.touched }}
+    <br>Valid: {{ shopForm.valid }}
+    <br>Value: {{ shopForm.value | json }}
 </div>
-
-
-
