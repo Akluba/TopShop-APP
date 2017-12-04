@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 
+import { ShopService } from './shop.service';
+
 declare let $ : any;
 
 @Component({
@@ -10,10 +12,12 @@ declare let $ : any;
 export class ShopDetailsComponent implements OnInit{
     response: {};
     data: {};
-    shopForm: FormGroup;
     shopName: string;
+    shopForm: FormGroup;
+    rawShopData: {} = {};
     categoryFieldsets = [];
-    constructor(private _route: ActivatedRoute, private _fb: FormBuilder) {}
+
+    constructor(private _route: ActivatedRoute, private _fb: FormBuilder, private _shopService: ShopService) {}
 
     ngOnInit(): void {
         this._route.data.subscribe(data => {
@@ -23,8 +27,8 @@ export class ShopDetailsComponent implements OnInit{
             this.shopName = this.data['shop_name'];
 
             this.buildShopForm();
+            this.setRawShopData();
             this.buildCategoryFieldsets();
-            
         });
     }
 
@@ -35,17 +39,28 @@ export class ShopDetailsComponent implements OnInit{
     }
 
     buildShopForm(): void {
-        let groups = {};
+        let field_controls = {};
+        let field_values = {};
         this.data['categories'].forEach(category => {
-            let categoryGroup = `${category.category.replace(/\s+/g, '')}Group`;
-            let fields = {};
             category.fields.forEach(field => {
-                fields[field.column_name] = null
+                field_controls[field.column_name] = null;
+                field_values[field.column_name] = ((field.type === 'select_multiple') ? JSON.parse(field.value) : field.value);
             });
-            groups[categoryGroup] = this._fb.group(fields);
         });
 
-        this.shopForm = this._fb.group(groups);
+        // Building form controls.
+        this.shopForm = this._fb.group(field_controls);
+        // Populating form with data.
+        this.shopForm.patchValue(field_values);
+    }
+
+    setRawShopData(): void {
+        this.rawShopData['id'] = this.data['id'];
+        this.data['categories'].forEach(category => {
+            category.fields.forEach(field => {
+                this.rawShopData[field.column_name] = field.value;
+            });
+        });
     }
 
     buildCategoryFieldsets(): void {
@@ -53,14 +68,28 @@ export class ShopDetailsComponent implements OnInit{
             let fieldset = [];
             fieldset['categoryTitle'] = category.category;
             fieldset['categoryTab'] = category.category.replace(/\s+/g, '');
-            fieldset['categoryGroup'] = `${category.category.replace(/\s+/g, '')}Group`;
             fieldset['fields'] = category.fields;
             this.categoryFieldsets.push(fieldset);
         });
     }
 
+    save(): void {        
+        if (this.shopForm.dirty && this.shopForm.valid) {
+            let body = Object.assign({}, this.rawShopData, this.shopForm.value);
 
-    save(): void {
-        console.log('Saved: ' + JSON.stringify(this.shopForm.value));
+            this.categoryFieldsets.forEach(category => {
+                category.fields.forEach(field => {
+                    if (field.type === 'select_multiple' && body[field.column_name] != null) {
+                        body[field.column_name] = JSON.stringify(body[field.column_name]);
+                    }
+                });
+            });
+
+            this._shopService.save(body)
+                .subscribe(
+                    res => console.log(res),
+                    err => console.log(err)
+                );
+        }
     }
 }

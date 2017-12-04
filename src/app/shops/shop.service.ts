@@ -42,13 +42,20 @@ export class ShopService {
         if (body.id === 0) {
             return this.store(body, options);
         }
-        // return this.update(body, options, config);
+        return this.update(body, options);
     }
 
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)
             .do(data => this.shopList.push(data['data']))
+            .catch(this.handleError);
+    }
+
+    private update(body: any, options: any): Observable<any> {
+        const url = `${this.baseUrl}/${body.id}`;
+        return this._http.put(url, body, options)
+            .do(res => console.log(res))
             .catch(this.handleError);
     }
 

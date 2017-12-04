@@ -18,42 +18,40 @@
             [ngClass]="{'active': fieldset.categoryTab==='PrimaryDetails'}"
             attr.data-tab="{{ fieldset.categoryTab }}">
 
-            <div formGroupName="{{ fieldset.categoryGroup }}">
-                <div class="field" *ngFor="let field of fieldset.fields">
-                    <div class="ui grid middle aligned content">
-                        <div class="right aligned three wide column">
-                            <label>{{ field.title }}</label>
+            <div class="field" *ngFor="let field of fieldset.fields">
+                <div class="ui grid middle aligned content">
+                    <div class="right aligned three wide column">
+                        <label>{{ field.title }}</label>
+                    </div>
+                    <div class="ten wide column" [ngSwitch]="field.type">
+                        
+                        <!-- Text Input -->
+                        <input *ngSwitchCase="'text'" type="text" formControlName="{{ field.column_name }}" />
+
+                        <!-- Checkbox -->
+                        <div *ngSwitchCase="'checkbox'" class="ui toggle checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" formControlName="{{ field.column_name }}">
                         </div>
-                        <div class="ten wide column" [ngSwitch]="field.type">
-                            
-                            <!-- Text Input -->
-                            <input *ngSwitchCase="'text'" type="text" formControlName="{{ field.column_name }}" />
 
-                            <!-- Checkbox -->
-                            <div *ngSwitchCase="'checkbox'" class="ui toggle checkbox">
-                                <input type="checkbox" tabindex="0" class="hidden" formControlName="{{ field.column_name }}">
-                            </div>
+                        <!-- Select -->
+                        <select *ngSwitchCase="'select'" class="ui fluid dropdown"
+                            formControlName="{{ field.column_name }}">
+                            <option *ngFor="let option of field.options"
+                                value="{{ option.id }}">{{ option.title }}
+                            </option>
+                        </select>
+                        
+                        <!-- Select Multiple -->
+                        <select *ngSwitchCase="'select_multiple'" multiple="" class="ui fluid dropdown"
+                            formControlName="{{ field.column_name }}">
+                            <option *ngFor="let option of field.options"
+                                value="{{ option.id }}">{{ option.title }}
+                            </option>
+                        </select>
 
-                            <!-- Select -->
-                            <select *ngSwitchCase="'select'" class="ui fluid dropdown"
-                                formControlName="{{ field.column_name }}">
-                                <option *ngFor="let option of field.options"
-                                    value="{{ option.id }}">{{ option.title }}
-                                </option>
-                            </select>
-                            
-                            <!-- Select Multiple -->
-                            <select *ngSwitchCase="'select_multiple'" multiple="" class="ui fluid dropdown"
-                                formControlName="{{ field.column_name }}">
-                                <option *ngFor="let option of field.options"
-                                    value="{{ option.id }}">{{ option.title }}
-                                </option>
-                            </select>
+                        <!-- Textarea -->
+                        <textarea *ngSwitchCase="'textarea'" rows="2" formControlName="{{ field.column_name }}"></textarea>
 
-                            <!-- Textarea -->
-                            <textarea *ngSwitchCase="'textarea'" rows="2" formControlName="{{ field.column_name }}"></textarea>
-
-                        </div>
                     </div>
                 </div>
             </div>
@@ -63,11 +61,5 @@
                 [disabled]="!shopForm.valid">
             Save
         </button>
-
     </form>
-
-    <br>Dirty: {{ shopForm.dirty }} 
-    <br>Touched: {{ shopForm.touched }}
-    <br>Valid: {{ shopForm.valid }}
-    <br>Value: {{ shopForm.value | json }}
 </div>
