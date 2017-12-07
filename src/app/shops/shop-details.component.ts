@@ -7,11 +7,34 @@ import { ShopService } from './shop.service';
 
 declare let $ : any;
 
+export class LogEntry {
+    id: number = 0;
+    source_class: string = 'Shop';
+    source_id: number;
+    field_id: number;
+    log_field1: string = null;
+    log_field2: string = null;
+    log_field3: string = null;
+    log_field4: string = null;
+    log_field5: string = null;
+    log_field6: string = null;
+    log_field7: string = null;
+    log_field8: string = null;
+    log_field9: string = null;
+    log_field10: string = null;
+
+    constructor(source_id, field_id) {
+        this.source_id = source_id;
+        this.field_id = field_id;
+    }
+}
+
 @Component({
     templateUrl: 'shop-details.component.html'
 })
 export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     shop: {};
+    shopId: number;
     shopName: string;
     message: {};
     rawShopData: {} = {};
@@ -26,8 +49,9 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         // Read the data from the resolver.
         this.sub = this._route.data.subscribe(data => {
             this.shop = data.response.data;
+            this.shopId = this.shop['id'];
             this.shopName = this.shop['shop_name'];
-
+            
             this.buildShopForm();
             this.populateShopForm();
             this.setRawShopData();
@@ -69,8 +93,9 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             category.fields.forEach(field => {
                 if (field.type !== 'log') {
                     field_values[field.column_name] = ((field.type === 'select_multiple') ? JSON.parse(field.value) : field.value);
-                } else if (field.log_entries) {
-                    this.setLogEntries(field.column_name, field.log_entries);
+                } 
+                else {
+                    this.setLogEntries(field);
                 }
             });
         });
@@ -79,8 +104,21 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.shopForm.patchValue(field_values);
     }
 
-    setLogEntries(control, log_entries) {
-        const logEntryFGs = log_entries.map(log_entry => this._fb.group(log_entry));
+    setLogEntries(field) {
+        const fieldId = field.id;
+        const control = field.column_name;
+        const logEntryFGs = [];
+        
+        // Initial empty log entry.
+        logEntryFGs.push(this._fb.group(new LogEntry(this.shopId, fieldId)));
+
+        // Existing log entries.
+        if (field.log_entries) {
+            field.log_entries.map(logEntry => {
+                logEntryFGs.push(this._fb.group(logEntry));
+            });
+        }
+
         const logEntryFA = this._fb.array(logEntryFGs);
         this.shopForm.setControl(control, logEntryFA);
     }
@@ -104,8 +142,27 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
+    unsetPristineInitialLEs(): void {
+        this.shop['categories'].forEach(category => {
+            category.fields.forEach(field => {
+                if (field.type === 'log') {
+                    let logEntryFA = this.shopForm.get(field.column_name) as FormArray;
+                    let initialLE = logEntryFA.controls[0];
+                    if (initialLE.pristine) {
+                        logEntryFA.removeAt(0);
+                    }
+                    console.log(logEntryFA)
+                }
+            });
+        });
+    }
+
     save(): void {        
         if (this.shopForm.dirty && this.shopForm.valid) {
+
+            // unset Initial log entries that are pristine.
+            // this.unsetPristineInitialLEs();
+
             // Copy the form values over the rawShopData object values.
             let body = Object.assign({}, this.rawShopData, this.shopForm.value);
 
@@ -116,6 +173,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 });
             });
+
+            // console.log(body);
 
             this._shopService.save(body)
                 .subscribe(

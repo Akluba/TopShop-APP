@@ -14,9 +14,8 @@ import { Component, Input } from '@angular/core';
             </tr>
         </thead>
         <tbody>
-            <!-- Existing Log Entries for Field -->
-            <tr *ngFor="let log_entry of logEntries.controls">
-                <td><i class="red large minus link icon"></i></td> 
+            <tr *ngFor="let log_entry of logEntries.controls; let i=index">
+                <td><i class="red large minus link icon" *ngIf="i!==0"></i></td> 
                 <td *ngFor="let column of field.columns"> 
                     <shop-field-control
                         [formGroup]="log_entry"
