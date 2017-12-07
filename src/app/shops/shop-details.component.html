@@ -4,7 +4,7 @@
     <!-- Shop Categories Secondary menu -->
     <div class="ui pointing secondary menu">
         <a class="item" *ngFor="let fieldset of categoryFieldsets"
-            [ngClass]="{'active': fieldset.categoryTab==='PrimaryDetails'}"
+            [ngClass]="{'active': fieldset.categoryTab==='ShopDetails'}"
             attr.data-tab="{{ fieldset.categoryTab }}">{{ fieldset.categoryTitle }}</a>
     </div>
 
@@ -13,53 +13,47 @@
         (ngSubmit)="save()"
         [formGroup]="shopForm">
 
-        <!-- Shop Category segments -->
-        <div class="ui tab segment" *ngFor="let fieldset of categoryFieldsets"
-            [ngClass]="{'active': fieldset.categoryTab==='PrimaryDetails'}"
-            attr.data-tab="{{ fieldset.categoryTab }}">
-
-            <div class="field" *ngFor="let field of fieldset.fields">
-                <div class="ui grid middle aligned content">
-                    <div class="right aligned three wide column">
-                        <label>{{ field.title }}</label>
-                    </div>
-                    <div class="ten wide column" [ngSwitch]="field.type">
-                        
-                        <!-- Text Input -->
-                        <input *ngSwitchCase="'text'" type="text" formControlName="{{ field.column_name }}" />
-
-                        <!-- Checkbox -->
-                        <div *ngSwitchCase="'checkbox'" class="ui toggle checkbox">
-                            <input type="checkbox" tabindex="0" class="hidden" formControlName="{{ field.column_name }}">
-                        </div>
-
-                        <!-- Select -->
-                        <select *ngSwitchCase="'select'" class="ui fluid dropdown"
-                            formControlName="{{ field.column_name }}">
-                            <option *ngFor="let option of field.options"
-                                value="{{ option.id }}">{{ option.title }}
-                            </option>
-                        </select>
-                        
-                        <!-- Select Multiple -->
-                        <select *ngSwitchCase="'select_multiple'" multiple="" class="ui fluid dropdown"
-                            formControlName="{{ field.column_name }}">
-                            <option *ngFor="let option of field.options"
-                                value="{{ option.id }}">{{ option.title }}
-                            </option>
-                        </select>
-
-                        <!-- Textarea -->
-                        <textarea *ngSwitchCase="'textarea'" rows="2" formControlName="{{ field.column_name }}"></textarea>
-
-                    </div>
+        <!-- Form Actions -->
+        <div class="ui grid middle aligned content" style="min-height: 75px;">
+            <div class="left floated thirteen wide column">
+                <div class="ui hidden message transition">
+                    <div class="header" *ngIf="message">{{ message.text }}</div>
                 </div>
+            </div>
+            <div class="right floated three wide column">
+                <button class="ui fluid positive button"
+                        [disabled]="!shopForm.valid || !shopForm.dirty">
+                    Save
+                </button>
             </div>
         </div>
 
-        <button class="ui positive button"
-                [disabled]="!shopForm.valid">
-            Save
-        </button>
+        <!-- Shop Category segments -->
+        <div class="ui tab segment" *ngFor="let fieldset of categoryFieldsets"
+            [ngClass]="{'active': fieldset.categoryTab==='ShopDetails'}"
+            attr.data-tab="{{ fieldset.categoryTab }}">
+            <div class="field" *ngFor="let field of fieldset.fields">
+                <!-- Input Field -->
+                <div class="ui grid middle aligned content" *ngIf="field.type !== 'log'; else loggingFieldTemplate">
+                    <div class="right aligned three wide column">
+                        <label>{{ field.title }}</label>
+                    </div>
+                    <div class="ten wide column">
+                        <shop-field-control
+                            [formGroup]="shopForm"
+                            [control]="field">
+                        </shop-field-control>
+                    </div>
+                </div>
+                <!-- Logging Field -->
+                <ng-template #loggingFieldTemplate>
+                    <shop-logging-field
+                        formArrayName="{{ field.column_name }}"
+                        [field]="field"
+                        [logEntries]="shopForm.get(field.column_name)">
+                    </shop-logging-field> 
+                </ng-template>
+            </div>
+        </div>
     </form>
 </div>
