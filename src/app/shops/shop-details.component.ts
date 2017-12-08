@@ -34,12 +34,9 @@ export class LogEntry {
 })
 export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     shop: {};
-    shopId: number;
-    shopName: string;
-    message: {};
-    rawShopData: {} = {};
+    formElements;
     shopForm: FormGroup;
-    categoryFieldsets = [];
+    message: {};
 
     private sub: Subscription;
 
@@ -48,14 +45,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         // Read the data from the resolver.
         this.sub = this._route.data.subscribe(data => {
-            this.shop = data.response.data;
-            this.shopId = this.shop['id'];
-            this.shopName = this.shop['shop_name'];
+            this.shop = data.response.data.shop;
+            this.formElements = data.response.data.form_elements;
             
             this.buildShopForm();
             this.populateShopForm();
-            this.setRawShopData();
-            this.buildCategoryFieldsets();
         });
     }
 
@@ -72,13 +66,9 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     buildShopForm(): void {
         let field_controls = {};
 
-        this.shop['categories'].forEach(category => {
+        this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if (field.type !== 'log') {
-                    field_controls[field.column_name] = null;
-                } else {
-                    field_controls[field.column_name] = this._fb.array([]);
-                }            
+                field_controls[field.column_name] = null;
             });
         });
 
@@ -89,10 +79,10 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     populateShopForm(): void {
         let field_values = {};
 
-        this.shop['categories'].forEach(category => {
+        this.formElements.forEach(category => {
             category.fields.forEach(field => {
                 if (field.type !== 'log') {
-                    field_values[field.column_name] = ((field.type === 'select_multiple') ? JSON.parse(field.value) : field.value);
+                    field_values[field.column_name] = ((field.type === 'select_multiple') ? JSON.parse(this.shop[field.column_name]) : this.shop[field.column_name]);
                 } 
                 else {
                     this.setLogEntries(field);
@@ -110,11 +100,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         const logEntryFGs = [];
         
         // Initial empty log entry.
-        logEntryFGs.push(this._fb.group(new LogEntry(this.shopId, fieldId)));
+        logEntryFGs.push(this._fb.group(new LogEntry(this.shop['id'], fieldId)));
 
         // Existing log entries.
-        if (field.log_entries) {
-            field.log_entries.map(logEntry => {
+        if (this.shop[field.column_name]) {
+            this.shop[field.column_name].map(logEntry => {
                 logEntryFGs.push(this._fb.group(logEntry));
             });
         }
@@ -123,50 +113,30 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.shopForm.setControl(control, logEntryFA);
     }
 
-    setRawShopData(): void {
-        this.rawShopData['id'] = this.shop['id'];
-        this.shop['categories'].forEach(category => {
-            category.fields.forEach(field => {
-                this.rawShopData[field.column_name] = field.value;
-            });
-        });
-    }
-
-    buildCategoryFieldsets(): void {
-        this.shop['categories'].forEach(category => {
-            let fieldset = [];
-            fieldset['categoryTitle'] = category.title;
-            fieldset['categoryTab'] = category.title.replace(/\s+/g, '');
-            fieldset['fields'] = category.fields;
-            this.categoryFieldsets.push(fieldset);
-        });
-    }
-
-    unsetPristineInitialLEs(): void {
-        this.shop['categories'].forEach(category => {
-            category.fields.forEach(field => {
-                if (field.type === 'log') {
-                    let logEntryFA = this.shopForm.get(field.column_name) as FormArray;
-                    let initialLE = logEntryFA.controls[0];
-                    if (initialLE.pristine) {
-                        logEntryFA.removeAt(0);
-                    }
-                    console.log(logEntryFA)
+    removeLogEntry(body): void {
+        for (let control in body) {
+            if (Array.isArray(body[control])) {
+                let logEntryFA = this.getLogEntryFA(control);
+                let newLogEntry = logEntryFA.controls[0];
+                if (newLogEntry.pristine) {
+                    body[control].splice(0,1);
                 }
-            });
-        });
+            }
+        }
+
+        return body;
+    }
+
+    getLogEntryFA(control): FormArray {
+        return this.shopForm.get(control) as FormArray;
     }
 
     save(): void {        
         if (this.shopForm.dirty && this.shopForm.valid) {
-
-            // unset Initial log entries that are pristine.
-            // this.unsetPristineInitialLEs();
-
             // Copy the form values over the rawShopData object values.
-            let body = Object.assign({}, this.rawShopData, this.shopForm.value);
+            let body = Object.assign({}, this.shop, this.shopForm.value);
 
-            this.categoryFieldsets.forEach(category => {
+            this.formElements.forEach(category => {
                 category.fields.forEach(field => {
                     if (field.type === 'select_multiple' && body[field.column_name] != null) {
                         body[field.column_name] = JSON.stringify(body[field.column_name]);
@@ -174,7 +144,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
 
-            // console.log(body);
+            // console.log(JSON.stringify(body));
+            body = this.removeLogEntry(body);
 
             this._shopService.save(body)
                 .subscribe(

@@ -1,11 +1,11 @@
 <div class="main ui container">
-    <h1 class="ui header">{{ shopName }}</h1>
+    <h1 class="ui header">{{ shop.shop_name }}</h1>
     
     <!-- Shop Categories Secondary menu -->
     <div class="ui pointing secondary menu">
-        <a class="item" *ngFor="let fieldset of categoryFieldsets"
-            [ngClass]="{'active': fieldset.categoryTab==='ShopDetails'}"
-            attr.data-tab="{{ fieldset.categoryTab }}">{{ fieldset.categoryTitle }}</a>
+        <a class="item" *ngFor="let element of formElements"
+            [ngClass]="{'active': element.title==='Shop Details'}"
+            attr.data-tab="{{ element.title }}">{{ element.title }}</a>
     </div>
 
     <form class="ui form"
@@ -29,10 +29,10 @@
         </div>
 
         <!-- Shop Category segments -->
-        <div class="ui tab segment" *ngFor="let fieldset of categoryFieldsets"
-            [ngClass]="{'active': fieldset.categoryTab==='ShopDetails'}"
-            attr.data-tab="{{ fieldset.categoryTab }}">
-            <div class="field" *ngFor="let field of fieldset.fields">
+        <div class="ui tab segment" *ngFor="let element of formElements"
+            [ngClass]="{'active': element.title==='Shop Details'}"
+            attr.data-tab="{{ element.title }}">
+            <div class="field" *ngFor="let field of element.fields">
                 <!-- Input Field -->
                 <div class="ui grid middle aligned content" *ngIf="field.type !== 'log'; else loggingFieldTemplate">
                     <div class="right aligned three wide column">
