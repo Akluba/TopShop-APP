@@ -1,7 +1,11 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 import { ShopService } from './shop.service';
 
@@ -55,8 +59,6 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         $('.secondary.menu .item').tab();
-        $('.dropdown').dropdown();
-        $('.checkbox').checkbox();
     }
 
     ngOnDestroy(): void {
@@ -76,16 +78,29 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.shopForm = this._fb.group(field_controls);
     }
 
+    formatInputValues(type, value): any {
+        if (type === 'select_multiple') {
+            return JSON.parse(value);
+        }
+        else if (type === 'checkbox') {
+            return (value === '1') ? true : false;
+        }
+        else {
+            return value;
+        }
+    }
+
     populateShopForm(): void {
         let field_values = {};
 
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
                 if (field.type !== 'log') {
-                    field_values[field.column_name] = ((field.type === 'select_multiple') ? JSON.parse(this.shop[field.column_name]) : this.shop[field.column_name]);
-                } 
+                    field_values[field.column_name] = this.formatInputValues(field.type, this.shop[field.column_name]);
+                }
                 else {
-                    this.setLogEntries(field);
+                    this.setExistingLogEntries(field);
+                    this.addLogEntry(field);
                 }
             });
         });
@@ -94,71 +109,50 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.shopForm.patchValue(field_values);
     }
 
-    setLogEntries(field) {
-        const fieldId = field.id;
-        const control = field.column_name;
-        const logEntryFGs = [];
-        
-        // Initial empty log entry.
-        logEntryFGs.push(this._fb.group(new LogEntry(this.shop['id'], fieldId)));
+    formatFG(field, logEntry): FormGroup {
+        field.columns.forEach(column => {
+            logEntry[column.column_name] = this.formatInputValues(column.type, logEntry[column.column_name]);
+        });
 
-        // Existing log entries.
-        if (this.shop[field.column_name]) {
-            this.shop[field.column_name].map(logEntry => {
-                logEntryFGs.push(this._fb.group(logEntry));
-            });
-        }
-
-        const logEntryFA = this._fb.array(logEntryFGs);
-        this.shopForm.setControl(control, logEntryFA);
+        return this._fb.group(logEntry);
     }
 
-    removeLogEntry(body): void {
-        for (let control in body) {
-            if (Array.isArray(body[control])) {
-                let logEntryFA = this.getLogEntryFA(control);
-                let newLogEntry = logEntryFA.controls[0];
-                if (newLogEntry.pristine) {
-                    body[control].splice(0,1);
-                }
-            }
-        }
+    setExistingLogEntries(field): void {
+        let control = field.column_name;
 
-        return body;
+        if (this.shop[control]) {
+            let logEntryFGs = this.shop[control].map(logEntry => this.formatFG(field, logEntry));
+            let logEntryFA = this._fb.array(logEntryFGs);
+            this.shopForm.setControl(control, logEntryFA);
+        }
+    }
+
+    addLogEntry(field): void {
+        let control = field.column_name;
+        let fieldId = field.id; 
+
+        // Get the existing log entry form array.
+        let logEntryFA = this.getLogEntryFA(control);
+        let logEntryFGs = (logEntryFA.controls) ? logEntryFA.controls : [];
+
+        // Position the new log entry control in index 0.
+        let newLogEntry = this._fb.group(new LogEntry(this.shop['id'], fieldId));
+        logEntryFGs.unshift(newLogEntry);
+        
+        // Set the form array control with the new log entry included.
+        logEntryFA = this._fb.array(logEntryFGs);
+        this.shopForm.setControl(control, logEntryFA);
     }
 
     getLogEntryFA(control): FormArray {
         return this.shopForm.get(control) as FormArray;
     }
 
-    save(): void {        
-        if (this.shopForm.dirty && this.shopForm.valid) {
-            // Copy the form values over the rawShopData object values.
-            let body = Object.assign({}, this.shop, this.shopForm.value);
-
-            this.formElements.forEach(category => {
-                category.fields.forEach(field => {
-                    if (field.type === 'select_multiple' && body[field.column_name] != null) {
-                        body[field.column_name] = JSON.stringify(body[field.column_name]);
-                    }
-                });
-            });
-
-            // console.log(JSON.stringify(body));
-            body = this.removeLogEntry(body);
-
-            this._shopService.save(body)
-                .subscribe(
-                    res => this.onSaveComplete(res),
-                    (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
-                );
-        }
-    }
-
-    onSaveComplete(res: any): void {
-        // clear the flags and display success message.
-        this.shopForm.markAsPristine();
-        this.flashMessage({text: res.message, status: 'success'});
+    logEntryPristine(control): boolean {
+        let logEntryFA = this.getLogEntryFA(control);
+        let newLogEntry = logEntryFA.controls[0];
+                
+        return newLogEntry.pristine;
     }
 
     flashMessage(message): void {
@@ -170,4 +164,55 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         .transition('fade', 1000)
         .transition('fade', 1000);
     }
+
+    updateLoggingFields(): void {
+        this.formElements.forEach(category => {
+            category.fields.forEach(field => {
+                if (field.type === 'log' && !this.logEntryPristine(field.column_name)) {
+                    this.setExistingLogEntries(field);
+                    this.addLogEntry(field);
+                }
+            });
+        });
+    }
+
+    onSaveComplete(response: any): void {
+        // store the new shop object.
+        this.shop = response.data;
+        this.updateLoggingFields();
+
+        // clear the flags and display success message.
+        this.shopForm.markAsPristine();
+        this.flashMessage({text: response.message, status: 'success'});
+    }
+
+    formatBody(body): void {
+        this.formElements.forEach(category => {
+            category.fields.forEach(field => {
+                if (field.type === 'log' && this.logEntryPristine(field.column_name)) {
+                    body[field.column_name].splice(0,1);
+                }
+                else if (field.type === 'select_multiple' && body[field.column_name] != null) {
+                    body[field.column_name] = JSON.stringify(body[field.column_name]);
+                }
+            });
+        });
+
+        return body;
+    }
+
+    save(): void {        
+        if (this.shopForm.dirty && this.shopForm.valid) {
+            // Copy the form values over the rawShopData object values.
+            let body = Object.assign({}, this.shop, this.shopForm.value);
+            body = this.formatBody(body);
+
+            this._shopService.save(body)
+                .subscribe(
+                    response => this.onSaveComplete(response),
+                    (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
+                );
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
+declare let $ : any;
 
 @Component({
     selector: 'shop-field-control',
@@ -31,10 +33,15 @@ import { FormGroup } from '@angular/forms';
 </div>
 `
 })
-export class ShopFieldControl {
+export class ShopFieldControl implements AfterViewInit{
     @Input()
     public formGroup: FormGroup;
 
     @Input()
     public control;
+
+    ngAfterViewInit(): void {
+        $('.dropdown').dropdown();
+        $('.checkbox').checkbox();
+    }
 }

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+declare let $ : any;
+
 @Component({
     selector: 'shop-logging-field',
     template: 
@@ -15,7 +17,8 @@ import { Component, Input } from '@angular/core';
         </thead>
         <tbody>
             <tr *ngFor="let log_entry of logEntries.controls; let i=index">
-                <td><i class="red large minus link icon" *ngIf="i!==0"></i></td> 
+                <td><i class="red large minus link icon" *ngIf="i!==0"
+                    (click)="deleteLogEntry(log_entry)"></i></td> 
                 <td *ngFor="let column of field.columns"> 
                     <shop-field-control
                         [formGroup]="log_entry"
@@ -31,4 +34,8 @@ import { Component, Input } from '@angular/core';
 export class ShopLoggingField {
     @Input() field;
     @Input() logEntries;
+
+    deleteLogEntry(log_entry): void {
+        console.log(log_entry);
+    }
 }
