@@ -16,9 +16,10 @@ declare let $ : any;
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let log_entry of logEntries.controls; let i=index">
+            <tr *ngFor="let log_entry of logEntries.controls; let i=index"
+                attr.data-logentry="{{ field.id}}-{{i}}">
                 <td><i class="red large minus link icon" *ngIf="i!==0"
-                    (click)="deleteLogEntry(log_entry)"></i></td> 
+                    (click)="deleteLogEntry(i, log_entry)"></i></td> 
                 <td *ngFor="let column of field.columns"> 
                     <shop-field-control
                         [formGroup]="log_entry"
@@ -35,7 +36,17 @@ export class ShopLoggingField {
     @Input() field;
     @Input() logEntries;
 
-    deleteLogEntry(log_entry): void {
-        console.log(log_entry);
+    deleteLogEntry(i, log_entry): void {
+        // confirm the user wishes to delete the item.
+        if(confirm(`Are you sure you wish to remove this entry from ${this.field.title}`)) {
+            // add classes to tr.
+            $(`tr[data-logentry='${this.field.id}-${i}']`).addClass('error disabled');
+
+            // add key to form group to signify marked to delete.
+            log_entry.patchValue({deleted: true});
+            
+            // mark log entry as dirty so changes can be saved.
+            log_entry.markAsDirty();
+        }
     }
 }

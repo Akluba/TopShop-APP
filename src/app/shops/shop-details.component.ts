@@ -114,6 +114,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             logEntry[column.column_name] = this.formatInputValues(column.type, logEntry[column.column_name]);
         });
 
+        logEntry['deleted'] = null;
+
         return this._fb.group(logEntry);
     }
 
@@ -165,10 +167,27 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         .transition('fade', 1000);
     }
 
+    logEntryDeleted(control): boolean {
+        let logEntryFA = this.getLogEntryFA(control);
+        if (logEntryFA.pristine) {
+            return false;
+        }
+
+        let logEntryFGs = logEntryFA.value;
+
+        for(let i=0; i<logEntryFGs.length; i++) {
+            if (logEntryFGs[i]['deleted'] === true) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     updateLoggingFields(): void {
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if (field.type === 'log' && !this.logEntryPristine(field.column_name)) {
+                if (field.type === 'log' && (!this.logEntryPristine(field.column_name) || this.logEntryDeleted(field.column_name))) {
                     this.setExistingLogEntries(field);
                     this.addLogEntry(field);
                 }
@@ -206,6 +225,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             // Copy the form values over the rawShopData object values.
             let body = Object.assign({}, this.shop, this.shopForm.value);
             body = this.formatBody(body);
+
+            // console.log(body);
 
             this._shopService.save(body)
                 .subscribe(
