@@ -3,14 +3,14 @@
         <div class="header">Shops</div>
         <div class="menu">
         <a class="item" [routerLink]="['/shops']" routerLinkActive="active">Shop List</a>
-        <a class="item" [routerLink]="['/setup']" routerLinkActive="active">Setup</a>
+        <a class="item" [routerLink]="['/setup/shop']" routerLinkActive="active">Setup</a>
         </div>
     </div>
     <div class="item">
         <div class="header">Insurance Companies</div>
         <div class="menu">
         <a class="item">DRP Managers</a>
-        <a class="item">Setup</a>
+        <a class="item" [routerLink]="['/setup/manager']" routerLinkActive="active">Setup</a>
         </div>
     </div>
 </div>

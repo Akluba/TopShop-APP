@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+declare var $ :any;
 
 class breadCrumb {
     active: boolean;
@@ -25,50 +28,69 @@ export class BreadcrumbComponent implements OnInit{
     children;
 
     apiRoute: string;
-    activeSection: string;
 
-    breadCrumbs: {};
+    sourceClass: string;
+    categoryId: number;
+    fieldId: number;
+    columnId: number;
+
+    breadCrumbs;
+
+    constructor(private _route: ActivatedRoute) {}
 
     ngOnInit(): void {
         let data = this.data.response.data;
-        
+
         this.ancestor = data.ancestor;
         this.parent   = data.parent;
         this.primary  = data.primary;
-        this.children = data.children; 
+        this.children = data.children;
 
-        this.apiRoute      = this.data.apiRoute;
-        this.activeSection = this.data.activeSection;
+        this.apiRoute = this.data.apiRoute;
+        if (this.apiRoute == undefined) {
+            this.apiRoute = ($.inArray(data.primary.type, ['log','notes']) != -1) ? 'column' : 'option';
+        }
 
-        this.configBreadCrumbs();
+        this._route.params.subscribe(params => {
+            this.sourceClass = params.source_class;
+            this.categoryId = params.category_id;
+            this.fieldId = params.field_id;
+            this.columnId = params.column_id;
+
+            this.configBreadCrumbs();
+        });
+
     }
 
     configBreadCrumbs(): void {
-        if (this.activeSection === 'categories') {
+        if (this.apiRoute === 'category') {
             this.breadCrumbs = [
-                new breadCrumb(true, "Categories", null)
+                new breadCrumb(true, 'Categories', null)
             ];
         }
-        else if (this.activeSection === 'fields') {
+        else if (this.apiRoute === 'field') {
             this.breadCrumbs = [
-                new breadCrumb(false, `Category: ${this.primary.title}`, ['/setup']),
-                new breadCrumb(true, "Fields", null)
+                new breadCrumb(false, `Category: ${this.primary.title}`, [ '/setup', this.sourceClass ]),
+                new breadCrumb(true, 'Fields', null)
             ];
         }
-        else if (this.activeSection === 'field-options' || this.activeSection === 'field-columns') {
-            let activeTitle = (this.activeSection === 'field-columns' ? 'Columns' : 'Options')
+        else if (this.apiRoute === 'option') {
             this.breadCrumbs = [
-                new breadCrumb(false, `Category: ${this.parent.title}`, ['/setup']),
-                new breadCrumb(false, `Field: ${this.primary.title}`, ['/setup', this.parent.id]),
-                new breadCrumb(true, activeTitle, null)
-            ];
-        }
-        else if (this.activeSection === 'column-options') {
-            this.breadCrumbs = [
-                new breadCrumb(false, `Category: ${this.ancestor.title}`, ['/setup']),
-                new breadCrumb(false, `Field: ${this.parent.title}`, ['/setup', this.ancestor.id]),
-                new breadCrumb(false, `Column: ${this.primary.title}`, ['/setup', this.ancestor.id, this.parent.id, 'columns']),
+                new breadCrumb(false, `Category: ${this.primary.title}`, ['/setup', this.sourceClass]),
+                new breadCrumb(false, `Field: ${this.parent.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
                 new breadCrumb(true, 'Options', null)
+            ];
+
+            if (this.columnId) {
+                let column = new breadCrumb(false, `Column: ${this.primary.title}`, ['/setup', this.sourceClass, this.categoryId, this.fieldId ]);
+                this.breadCrumbs.splice(2, 0, column);
+            }
+        }
+        else if (this.apiRoute === 'column') {
+            this.breadCrumbs = [
+                new breadCrumb(false, `Category: ${this.parent.title}`, ['/setup', this.sourceClass]),
+                new breadCrumb(false, `Field: ${this.primary.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
+                new breadCrumb(true, 'Columns', null)
             ];
         }
     }

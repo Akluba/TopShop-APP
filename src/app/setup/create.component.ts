@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { SetupService } from './setup.service';
 
 declare let $ : any;
@@ -11,7 +13,7 @@ class newObject {
     category_id?  : number;
     field_id?     : number;
     type?         : string;
-    
+
     constructor(source_class?, source_id?, category_id?, field_id?, type?) {
         this.source_class = source_class;
         this.source_id    = source_id;
@@ -28,57 +30,73 @@ class newObject {
 export class CreateComponent implements OnInit{
     @Input() data;
 
-    ancestor;
-    parent;
-    primary;
-    children;
+    sourceClass: string;
+    categoryId: number;
+    fieldId: number;
+    columnId: number;
 
     apiRoute: string;
-    activeSection: string;
-    newObject: {};
+    newObject: newObject;
     objectTitle: string;
+    primaryTitle: string;
+    primaryType: string;
     includeType = false;
 
-    constructor(private _setupService: SetupService) {}
+    constructor(private _route: ActivatedRoute, private _setupService: SetupService) {}
 
     ngOnInit(): void {
         let data = this.data.response.data;
 
-        this.ancestor = data.ancestor;
-        this.parent   = data.parent;
-        this.primary  = data.primary;
-        this.children = data.children; 
-        
-        this.apiRoute      = this.data.apiRoute;
-        this.activeSection = this.data.activeSection;
+        if (data.primary !== null){
+            this.primaryTitle = data.primary.title;
+            this.primaryType = data.primary.type;
+        }
 
-        this.initiateNewObject();
+        console.log(this.primaryTitle);
+
+        this.apiRoute = this.data.apiRoute;
+        if (this.apiRoute == undefined) {
+            this.apiRoute = ($.inArray(this.primaryType, ['log','notes']) != -1) ? 'column' : 'option';
+        }
+
+        this._route.params.subscribe(params => {
+            this.sourceClass = params.source_class;
+            this.categoryId = params.category_id;
+            this.fieldId = params.field_id;
+            this.columnId = params.column_id;
+
+            this.initiateNewObject();
+        });
+
     }
 
     initiateNewObject(): void {
-        if (this.activeSection === 'categories') {
+        if (this.apiRoute === 'category') {
             this.objectTitle = 'Category';
-            this.newObject  = new newObject('Shop');
+            this.newObject = new newObject(this.sourceClass);
         }
-        else if (this.activeSection === 'fields') {
+        else if (this.apiRoute === 'field') {
             this.objectTitle = 'Field';
             this.includeType = true;
-            this.newObject  = new newObject('Shop', undefined, this.primary.id, undefined, null);
+            this.newObject = new newObject(this.sourceClass, undefined, this.categoryId, undefined, null);
         }
-        else if (this.activeSection === 'field-columns') {
+        else if (this.apiRoute === 'option') {
+            this.objectTitle = 'Option';
+            let source_class = ( this.columnId ? 'CustomFieldLogColumn' : 'CustomField' );
+            let source_id = ( this.columnId ? this.columnId : this.fieldId );
+
+            this.newObject = new newObject(source_class, source_id);
+        }
+        else if (this.apiRoute === 'column') {
             this.objectTitle = 'Column';
             this.includeType = true;
-            this.newObject  = new newObject(undefined, undefined, undefined, this.primary.id, null);
+            this.newObject = new newObject(undefined, undefined, undefined, this.fieldId, null);
         }
-        else if (this.activeSection === 'field-options' || this.activeSection === 'column-options') {
-            this.objectTitle = 'Option';
-            let source_class = (this.activeSection === 'field-options' ? 'CustomField' : 'CustomFieldLogColumn');
-            this.newObject  = new newObject(source_class, this.primary.id);
-        }
+
     }
 
     initiateModal(): void {
-        // temp-fix: check to see if a create modal already exists. 
+        // temp-fix: check to see if a create modal already exists.
         // if so, remove the previous element.
         if ($('.setup-create').length > 1) {
             $('.setup-create').slice(1).remove();
@@ -88,26 +106,24 @@ export class CreateComponent implements OnInit{
         $('.setup-create')
         .modal({
             closable  : false,
-            onDeny    : () => {
-                return true;
-            },
             onApprove : () => {
-                return this.save(this.newObject);
+                this.save();
+                return false;
             }
         })
         .modal('show');
     }
 
-    save(obj): void {
-        this._setupService.save(obj, {route: this.apiRoute})
+    save(): void {
+        this._setupService.save(this.newObject, this.apiRoute)
         .subscribe(
-            res => this.onSaveComplete(res),
-            // (error: any) => this.errorMessage = <any>error
-        )
+            res => console.log(res),
+            (error: any) => console.log(<any>error),
+            () => {
+                $('.setup-create').modal('hide');
+                this.initiateNewObject();
+            }
+        );
     }
 
-    onSaveComplete(res: any): boolean {
-        this.initiateNewObject();
-        return true;
-    }
 }

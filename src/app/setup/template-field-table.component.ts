@@ -13,34 +13,28 @@ declare var $ :any;
 export class FieldTableComponent {
     @Input() data;
 
-    ancestor;
-    parent;
-    primary;
     children;
     apiRoute: string;
-    activeSection: string;
     navigateText: string;
     message: {};
 
-    constructor(private _route: ActivatedRoute, private _setupService: SetupService, private _router: Router) {}
+    constructor(private _route: ActivatedRoute, private _router: Router, private _setupService: SetupService,) {}
 
     ngOnInit(): void {
         let data = this.data.response.data;
-
-        this.ancestor = data.ancestor;
-        this.parent   = data.parent;
-        this.primary  = data.primary;
         this.children = data.children;
 
-        this.apiRoute      = this.data.apiRoute;
-        this.activeSection = this.data.activeSection;
+        this.apiRoute = this.data.apiRoute;
+        if (this.apiRoute == undefined) {
+            this.apiRoute = ($.inArray(data.primary.type, ['log','notes']) != -1) ? 'column' : 'option';
+        }
 
-        this.navigateText = (this.activeSection === 'categories' ? 'Edit Fields' : 'Edit Field');
+        this.navigateText = (this.apiRoute === 'category' ? 'Edit Fields' : 'Edit Field');
     }
 
     delete(child): void {
-        if(confirm(`Are you sure you want to delete the ${this.apiRoute}: ${child.title}?`)) {
-            this._setupService.destroy(child.id, {route: this.apiRoute})
+        if(confirm(`Are you sure you want to delete: ${child.title}?`)) {
+            this._setupService.destroy(child.id, this.apiRoute)
                 .subscribe(
                     res => this.onSaveComplete(res),
                     (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
@@ -49,11 +43,11 @@ export class FieldTableComponent {
     }
 
     save(child): void {
-        this._setupService.save(child, {route: this.apiRoute})
-        .subscribe(
-            res => this.onSaveComplete(res),
-            (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
-        )
+        this._setupService.save(child, this.apiRoute)
+            .subscribe(
+                res => this.onSaveComplete(res),
+                (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
+            )
     }
 
     onSaveComplete(res: any): void {
@@ -62,22 +56,16 @@ export class FieldTableComponent {
 
     flashMessage(message): void {
         $('.message').addClass(message.status);
-        
+
         this.message = message;
-        
+
         $('.message')
         .transition('fade up',1000)
         .transition('fade up',1000);
     }
 
     canNavigate(child_type): boolean {
-        if (this.activeSection === 'categories' || this.activeSection === 'fields' || this.activeSection === 'field-columns') {
-            if (this.activeSection != 'categories') {
-                if (child_type != 'select' && child_type != 'select_multiple' && child_type != 'log') {
-                    return false;
-                }
-            }
-
+        if (this.apiRoute == 'category' || ($.inArray(child_type, ['select', 'select_multiple','log','notes']) != -1)) {
             return true;
         }
 
@@ -85,18 +73,7 @@ export class FieldTableComponent {
     }
 
     navigateToChild(child): void {
-        if (this.activeSection === 'categories') {
-            this._router.navigate(['/setup', child.id]);
-        }
-        else if (this.activeSection === 'fields') {
-            if (child.type === 'log') {
-                this._router.navigate(['/setup', this.primary.id, child.id, 'columns']);
-            } else {
-                this._router.navigate(['/setup', this.primary.id, child.id, 'options']);
-            }
-        }
-        else if (this.activeSection === 'field-columns') {
-            this._router.navigate(['/setup', this.parent.id, this.primary.id, child.id, 'options']);
-        }
+        this._router.navigate([ child.id ], { relativeTo: this._route });
     }
+
 }

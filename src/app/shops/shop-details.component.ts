@@ -126,6 +126,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             let logEntryFGs = this.shop[control].map(logEntry => this.formatFG(field, logEntry));
             let logEntryFA = this._fb.array(logEntryFGs);
             this.shopForm.setControl(control, logEntryFA);
+        } else {
+            this.shopForm.setControl(control, this._fb.array([]));
         }
     }
 

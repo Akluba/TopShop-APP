@@ -35,7 +35,7 @@
         <div class="field">
             <label>Title</label>
             <input type="text" required name="title"
-                [(ngModel)] = "newObject.title" 
+                [(ngModel)] = "newObject.title"
                 #newTitle = "ngModel" />
         </div>
         <div class="field">
@@ -43,13 +43,24 @@
             <select class="ui fluid dropdown" required name="type"
                 [(ngModel)] = "newObject.type"
                 #newType = "ngModel">
-                <option value="text">Text</option>
-                <option value="checkbox">Checkbox</option>
-                <option value="select">Select</option>
-                <option value="select_multiple">Select Multiple</option>
-                <option value="textarea">Text Area</option>
-                <option value="log" *ngIf="activeSection === 'fields'">Logging Field</option>
+                <div *ngIf="primaryType === 'notes' || primaryTitle === 'Notes'; then noteOptions else inputOptions"></div>
             </select>
         </div>
     </div>
+</ng-template>
+
+<ng-template #inputOptions>
+    <option value="text">Text</option>
+    <option value="checkbox">Checkbox</option>
+    <option value="select">Select</option>
+    <option value="select_multiple">Select Multiple</option>
+    <option value="textarea">Text Area</option>
+    <option value="log" *ngIf="apiRoute === 'field'">Logging Field</option>
+</ng-template>
+
+<ng-template #noteOptions>
+    <option value="notes" *ngIf="primaryTitle === 'Notes'">Note Collection</option>
+    <option value="user_stamp" *ngIf="primaryType === 'notes'">User Stamp</option>
+    <option value="date_stamp" *ngIf="primaryType === 'notes'">Date Stamp</option>
+    <option value="textarea" *ngIf="primaryType === 'notes'">Text Area</option>
 </ng-template>

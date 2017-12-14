@@ -9,22 +9,23 @@ export class SetupResolver implements Resolve<any> {
     constructor(private _setupService: SetupService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-        let category_id = +route.params['category_id'];
-        let field_id    = +route.params['field_id'];
-        let column_id   = +route.params['column_id'];
+        let source_class = route.params['source_class'];
+        let category_id  = +route.params['category_id'];
+        let field_id     = +route.params['field_id'];
+        let column_id    = +route.params['column_id'];
 
         if (!isNaN(category_id)) {
             if (!isNaN(field_id) || !isNaN(column_id)) {
                 if (!isNaN(column_id)) {
-                    return this._setupService.show(column_id, {route: 'column'});
+                    return this._setupService.show(column_id, 'column');
                 }
 
-                return this._setupService.show(field_id, {route: 'field'});
+                return this._setupService.show(field_id, 'field');
             }
 
-            return this._setupService.show(category_id, {route: 'category'});
+            return this._setupService.show(category_id, 'category');
         }
-    
-        return this._setupService.index({route: 'category', params: 'Shop'});
+
+        return this._setupService.index(source_class, 'category');
     }
 }

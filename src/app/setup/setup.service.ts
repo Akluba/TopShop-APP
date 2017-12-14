@@ -15,10 +15,10 @@ export class SetupService {
 
     constructor(private _http: HttpClient) {}
 
-    index(config?: {}): Observable<any> {
-        const url = `${this.baseUrl}/${config['route']}`;
+    index(source_class: string, route: string): Observable<any> {
+        const url = `${this.baseUrl}/${route}`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let params = new HttpParams().set('source_class', config['params']);
+        let params = new HttpParams().set('source_class', source_class);
         let options = { headers: headers, params: params };
 
         return this._http.get(url, options)
@@ -28,8 +28,8 @@ export class SetupService {
             .catch(this.handleError);
     }
 
-    show(id: number, config?: {}): Observable<any> {
-        const url = `${this.baseUrl}/${config['route']}/${id}`;
+    show(id: number, route: string): Observable<any> {
+        const url = `${this.baseUrl}/${route}/${id}`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
 
@@ -40,11 +40,11 @@ export class SetupService {
             .catch(this.handleError);
     }
 
-    destroy(id: number, config?: {}): Observable<Response> {
-        const url = `${this.baseUrl}/${config['route']}/${id}`;
+    destroy(id: number, route): Observable<Response> {
+        const url = `${this.baseUrl}/${route}/${id}`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
-        
+
         return this._http.delete(url, options)
             .do(data => {
                 this.children = this.children.filter(obj => obj.id != data['data']['id']);
@@ -52,18 +52,18 @@ export class SetupService {
             .catch(this.handleError);
     }
 
-    save(body: any, config?: {}): Observable<any> {
+    save(body: any, route: string): Observable<any> {
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
 
         if (body.id === 0) {
-            return this.store(body, options, config);
+            return this.store(body, options, route);
         }
-        return this.update(body, options, config);
+        return this.update(body, options, route);
     }
 
-    private store(body: any, options: any, config?: {}): Observable<any> {
-        const url = `${this.baseUrl}/${config['route']}`;
+    private store(body: any, options: any, route: string): Observable<any> {
+        const url = `${this.baseUrl}/${route}`;
 
         return this._http.post(url, body, options)
             .do(data => {
@@ -72,9 +72,9 @@ export class SetupService {
             .catch(this.handleError);
     }
 
-    private update(body: any, options: any, config?: {}): Observable<any> {
-        const url = `${this.baseUrl}/${config['route']}/${body.id}`;
-        
+    private update(body: any, options: any, route: string): Observable<any> {
+        const url = `${this.baseUrl}/${route}/${body.id}`;
+
         return this._http.put(url, body, options)
             .do(data => data['method'] = 'update')
             .catch(this.handleError);
@@ -86,7 +86,7 @@ export class SetupService {
         } else {
             console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
-        
+
         return Observable.throw(err.error.message);
     }
 }

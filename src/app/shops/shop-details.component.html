@@ -3,9 +3,9 @@
     
     <!-- Shop Categories Secondary menu -->
     <div class="ui pointing secondary menu">
-        <a class="item" *ngFor="let element of formElements"
-            [ngClass]="{'active': element.title==='Shop Details'}"
-            attr.data-tab="{{ element.title }}">{{ element.title }}</a>
+        <a class="item" *ngFor="let element of formElements; let tab_i=index"
+            [ngClass]="{'active': tab_i == 0}"
+            attr.data-tab="{{ tab_i }}">{{ element.title }}</a>
     </div>
 
     <form class="ui form"
@@ -29,9 +29,9 @@
         </div>
 
         <!-- Shop Category segments -->
-        <div class="ui tab segment" *ngFor="let element of formElements"
-            [ngClass]="{'active': element.title==='Shop Details'}"
-            attr.data-tab="{{ element.title }}">
+        <div class="ui tab segment" *ngFor="let element of formElements; let tab_i=index"
+            [ngClass]="{'active': tab_i == 0}"
+            attr.data-tab="{{ tab_i }}">
             <div class="field" *ngFor="let field of element.fields">
                 <!-- Input Field -->
                 <div class="ui grid middle aligned content" *ngIf="field.type !== 'log'; else loggingFieldTemplate">
