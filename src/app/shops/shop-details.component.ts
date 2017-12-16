@@ -27,9 +27,11 @@ export class LogEntry {
     log_field9: string = null;
     log_field10: string = null;
 
-    constructor(source_id, field_id) {
-        this.source_id = source_id;
-        this.field_id = field_id;
+    constructor(source_id, field_id, log_field1?, log_field2?) {
+        this.source_id  = source_id;
+        this.field_id   = field_id;
+        this.log_field1 = log_field1;
+        this.log_field2 = log_field2;
     }
 }
 
@@ -51,14 +53,15 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sub = this._route.data.subscribe(data => {
             this.shop = data.response.data.shop;
             this.formElements = data.response.data.form_elements;
-            
+
             this.buildShopForm();
             this.populateShopForm();
         });
     }
 
     ngAfterViewInit(): void {
-        $('.secondary.menu .item').tab();
+        $('.secondary.menu .item').tab({context: 'parent'});
+        $('.notes.menu .item').tab();
     }
 
     ngOnDestroy(): void {
@@ -95,8 +98,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if (field.type !== 'log') {
+                if (field.type !== 'log' && field.type !== 'notes') {
                     field_values[field.column_name] = this.formatInputValues(field.type, this.shop[field.column_name]);
+                }
+                else if(field.type === 'notes') {
+                    this.addLogEntry(field);
                 }
                 else {
                     this.setExistingLogEntries(field);
@@ -133,16 +139,27 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     addLogEntry(field): void {
         let control = field.column_name;
-        let fieldId = field.id; 
+        let fieldId = field.id;
+        let newLogEntry;
 
         // Get the existing log entry form array.
         let logEntryFA = this.getLogEntryFA(control);
         let logEntryFGs = (logEntryFA.controls) ? logEntryFA.controls : [];
 
         // Position the new log entry control in index 0.
-        let newLogEntry = this._fb.group(new LogEntry(this.shop['id'], fieldId));
-        logEntryFGs.unshift(newLogEntry);
-        
+        if (field.type === 'notes') {
+            let user = 'Anthony Kluba';
+            let today = new Date();
+            let date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+            newLogEntry = new LogEntry(this.shop['id'], fieldId, user, date);
+        }
+        else {
+            newLogEntry = new LogEntry(this.shop['id'], fieldId);
+        }
+
+        let newLogEntryFG = this._fb.group(newLogEntry);
+        logEntryFGs.unshift(newLogEntryFG);
+
         // Set the form array control with the new log entry included.
         logEntryFA = this._fb.array(logEntryFGs);
         this.shopForm.setControl(control, logEntryFA);
@@ -155,15 +172,15 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     logEntryPristine(control): boolean {
         let logEntryFA = this.getLogEntryFA(control);
         let newLogEntry = logEntryFA.controls[0];
-                
+
         return newLogEntry.pristine;
     }
 
     flashMessage(message): void {
         $('.message').addClass(message.status);
-        
+
         this.message = message;
-        
+
         $('.message')
         .transition('fade', 1000)
         .transition('fade', 1000);
@@ -193,6 +210,10 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.setExistingLogEntries(field);
                     this.addLogEntry(field);
                 }
+                else if (field.type === 'notes') {
+                    this.shopForm.setControl(field.column_name, this._fb.array([]));
+                    this.addLogEntry(field);
+                }
             });
         });
     }
@@ -210,7 +231,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     formatBody(body): void {
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if (field.type === 'log' && this.logEntryPristine(field.column_name)) {
+                if ($.inArray(field.type, ['log','notes']) != -1 && this.logEntryPristine(field.column_name)) {
                     body[field.column_name].splice(0,1);
                 }
                 else if (field.type === 'select_multiple' && body[field.column_name] != null) {
@@ -222,13 +243,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         return body;
     }
 
-    save(): void {        
+    save(): void {
         if (this.shopForm.dirty && this.shopForm.valid) {
             // Copy the form values over the rawShopData object values.
             let body = Object.assign({}, this.shop, this.shopForm.value);
             body = this.formatBody(body);
-
-            // console.log(body);
 
             this._shopService.save(body)
                 .subscribe(

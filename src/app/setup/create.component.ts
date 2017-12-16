@@ -52,8 +52,6 @@ export class CreateComponent implements OnInit{
             this.primaryType = data.primary.type;
         }
 
-        console.log(this.primaryTitle);
-
         this.apiRoute = this.data.apiRoute;
         if (this.apiRoute == undefined) {
             this.apiRoute = ($.inArray(this.primaryType, ['log','notes']) != -1) ? 'column' : 'option';

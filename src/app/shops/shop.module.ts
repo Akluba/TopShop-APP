@@ -11,6 +11,7 @@ import { ShopDetailsComponent } from './shop-details.component';
 // Template Components
 import { ShopLoggingField } from './template-logging-field.component';
 import { ShopFieldControl } from './template-field-control.component';
+import { ShopNote } from './template-note.component';
 
 // Services
 import { ShopService } from './shop.service';
@@ -19,19 +20,20 @@ import { ShopDetailsResolver } from './shop-details-resolver.service';
 import { ShopDetailsGuard } from './shop-guard.service';
 
 @NgModule({
-    imports      : [ 
+    imports      : [
         SharedModule,
         ReactiveFormsModule,
-        ShopRoutingModule 
+        ShopRoutingModule
     ],
-    declarations : [ 
+    declarations : [
         ShopListComponent,
         ShopCreateComponent,
         ShopDetailsComponent,
         ShopLoggingField,
-        ShopFieldControl
+        ShopFieldControl,
+        ShopNote
     ],
-    providers    : [ 
+    providers    : [
         ShopService,
         ShopListResolver,
         ShopDetailsResolver,

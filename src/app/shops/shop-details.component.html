@@ -1,6 +1,6 @@
 <div class="main ui container">
     <h1 class="ui header">{{ shop.shop_name }}</h1>
-    
+
     <!-- Shop Categories Secondary menu -->
     <div class="ui pointing secondary menu">
         <a class="item" *ngFor="let element of formElements; let tab_i=index"
@@ -32,28 +32,66 @@
         <div class="ui tab segment" *ngFor="let element of formElements; let tab_i=index"
             [ngClass]="{'active': tab_i == 0}"
             attr.data-tab="{{ tab_i }}">
-            <div class="field" *ngFor="let field of element.fields">
-                <!-- Input Field -->
-                <div class="ui grid middle aligned content" *ngIf="field.type !== 'log'; else loggingFieldTemplate">
-                    <div class="right aligned four wide column">
-                        <label>{{ field.title }}</label>
+
+            <div *ngIf="element.title === 'Notes'; then noteTemplate else inputLogTemplate"></div>
+
+            <!-- Note Segment -->
+            <ng-template #noteTemplate>
+                <div class="ui grid">
+                    <div class="four wide column">
+                        <div class="ui vertical pointing notes menu">
+                            <a class="item" *ngFor="let field of element.fields; let note_i=index"
+                            [ngClass]="{'active': note_i == 0}"
+                            attr.data-tab="{{ tab_i }}/{{ note_i }}">{{ field.title }}</a>
+                        </div>
                     </div>
-                    <div class="ten wide column">
-                        <shop-field-control
-                            [formGroup]="shopForm"
-                            [control]="field">
-                        </shop-field-control>
+                    <div class="twelve wide column">
+                        <div class="ui tab segment" *ngFor="let field of element.fields; let note_i=index" style="margin: 0;"
+                            [ngClass]="{'active': note_i == 0}"
+                            attr.data-tab="{{ tab_i }}/{{ note_i }}">
+                            <shop-note-feed
+                                formArrayName="{{ field.column_name }}"
+                                [field]="field"
+                                [existingNotes]="shop[field.column_name]"
+                                [newNote]="shopForm.get(field.column_name)">
+                            </shop-note-feed>
+                        </div>
                     </div>
                 </div>
-                <!-- Logging Field -->
-                <ng-template #loggingFieldTemplate>
-                    <shop-logging-field
-                        formArrayName="{{ field.column_name }}"
-                        [field]="field"
-                        [logEntries]="shopForm.get(field.column_name)">
-                    </shop-logging-field> 
-                </ng-template>
-            </div>
+            </ng-template>
+
+            <!-- Inputs / Logging Fields Segment -->
+            <ng-template #inputLogTemplate>
+                <div class="field" *ngFor="let field of element.fields">
+
+                    <div *ngIf="field.type === 'log'; then loggingFieldTemplate else inputTemplate"></div>
+
+                    <!-- Input Field -->
+                    <ng-template #inputTemplate>
+                        <div class="ui grid middle aligned content">
+                            <div class="right aligned four wide column">
+                                <label>{{ field.title }}</label>
+                            </div>
+                            <div class="ten wide column">
+                                <shop-field-control
+                                    [formGroup]="shopForm"
+                                    [control]="field">
+                                </shop-field-control>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <!-- Logging Field -->
+                    <ng-template #loggingFieldTemplate>
+                        <shop-logging-field
+                            formArrayName="{{ field.column_name }}"
+                            [field]="field"
+                            [logEntries]="shopForm.get(field.column_name)">
+                        </shop-logging-field>
+                    </ng-template>
+
+                </div>
+            </ng-template>
         </div>
     </form>
 </div>
