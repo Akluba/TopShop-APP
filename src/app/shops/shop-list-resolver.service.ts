@@ -11,5 +11,4 @@ export class ShopListResolver implements Resolve<any> {
     resolve(): Observable<any> {
         return this._shopService.index();
     }
-
 }

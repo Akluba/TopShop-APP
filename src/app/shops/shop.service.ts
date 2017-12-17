@@ -65,7 +65,7 @@ export class ShopService {
         } else {
             console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
-        
+
         return Observable.throw(err.error.message);
     }
 }

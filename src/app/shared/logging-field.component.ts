@@ -3,8 +3,8 @@ import { Component, Input } from '@angular/core';
 declare let $ : any;
 
 @Component({
-    selector: 'shop-logging-field',
-    template: 
+    selector: 'logging-field',
+    template:
 `
 <div class="ui raised secondary segment">
     <h4 class="header">{{ field.title }}</h4>
@@ -19,12 +19,12 @@ declare let $ : any;
             <tr *ngFor="let log_entry of logEntries.controls; let i=index"
                 attr.data-logentry="{{ field.id}}-{{i}}">
                 <td><i class="red large minus link icon" *ngIf="i!==0"
-                    (click)="deleteLogEntry(i, log_entry)"></i></td> 
-                <td *ngFor="let column of field.columns"> 
-                    <shop-field-control
+                    (click)="deleteLogEntry(i, log_entry)"></i></td>
+                <td *ngFor="let column of field.columns">
+                    <field-control
                         [formGroup]="log_entry"
                         [control]="column">
-                    </shop-field-control>    
+                    </field-control>
                 </td>
             </tr>
         </tbody>
@@ -32,7 +32,7 @@ declare let $ : any;
 </div>
 `
 })
-export class ShopLoggingField {
+export class LoggingFieldTemplate {
     @Input() field;
     @Input() logEntries;
 
@@ -44,7 +44,7 @@ export class ShopLoggingField {
 
             // add key to form group to signify marked to delete.
             log_entry.patchValue({deleted: true});
-            
+
             // mark log entry as dirty so changes can be saved.
             log_entry.markAsDirty();
         }

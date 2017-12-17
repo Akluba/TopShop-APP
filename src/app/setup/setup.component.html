@@ -1,29 +1,27 @@
-<div class="main ui container">
-    <h1 class="ui header">{{ pageTitle }}</h1>
-    <div class="ui segments">
-        <div class="ui segment">
-            <div class="ui grid middle aligned content">
-                <div class="thirteen wide column">
-                    <!-- BreadCrumbs -->
-                    <setup-breadcrumb
-                        [data]="data">
-                    </setup-breadcrumb>
-                </div>
-                <div class="three wide column">
-                    <!-- Create Modal -->
-                    <setup-create
-                        [data]="data">
-                    </setup-create>
-                </div>
+<h1 class="ui header">{{ pageTitle }}</h1>
+<div class="ui segments">
+    <div class="ui segment">
+        <div class="ui grid middle aligned content">
+            <div class="thirteen wide column">
+                <!-- BreadCrumbs -->
+                <setup-breadcrumb
+                    [data]="data">
+                </setup-breadcrumb>
+            </div>
+            <div class="three wide column">
+                <!-- Create Modal -->
+                <setup-create
+                    [data]="data">
+                </setup-create>
             </div>
         </div>
-        <div class="ui secondary segment">
-            <div class="ui divided items">
-                <!-- Field Table -->
-                <setup-field-table
-                    [data]="data">
-                </setup-field-table>
-            </div>
+    </div>
+    <div class="ui secondary segment">
+        <div class="ui divided items">
+            <!-- Field Table -->
+            <setup-field-table
+                [data]="data">
+            </setup-field-table>
         </div>
     </div>
 </div>

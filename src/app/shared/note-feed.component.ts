@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'shop-note-feed',
+    selector: 'note-feed',
     template:
 `
 <div class="ui feed">
@@ -28,7 +28,7 @@ import { Component, Input } from '@angular/core';
 </div>
 `
 })
-export class ShopNote {
+export class NoteFeedTemplate {
     @Input() field;
     @Input() existingNotes;
     @Input() newNote;

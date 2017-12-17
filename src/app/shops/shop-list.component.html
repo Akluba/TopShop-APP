@@ -1,27 +1,25 @@
-<div class="main ui container">
-    <h1 class="ui header">Shop List</h1>
-    <div class="ui segments">
-        <div class="ui segment">
-            <div class="ui grid middle aligned content">
-                <div class="eight wide column">
-                    <!-- Shop Filter??? -->
-                    <div class="ui fluid input">
-                        <input placeholder="Filter Shops.."/>
-                    </div>
+<h1 class="ui header">Shop List</h1>
+<div class="ui segments">
+    <div class="ui segment">
+        <div class="ui grid middle aligned content">
+            <div class="eight wide column">
+                <!-- Shop Filter??? -->
+                <div class="ui fluid input">
+                    <input placeholder="Filter Shops.."/>
                 </div>
-                <div class="eight wide column">
-                    <!-- Create New Shop Modal -->
-                    <shop-create></shop-create>
-                </div>   
+            </div>
+            <div class="eight wide column">
+                <!-- Create New Shop Modal -->
+                <shop-create></shop-create>
             </div>
         </div>
-        <div class="ui secondary segment">
-            <!-- Shop List -->
-            <div class="ui divided items">
-                <div class="item" *ngFor="let shop of _shopService.shopList">
-                    <div class="ui grid middle aligned content">
-                        <a [routerLink]="['/shops', shop.id]">{{shop.shop_name}}</a>
-                    </div>
+    </div>
+    <div class="ui secondary segment">
+        <!-- Shop List -->
+        <div class="ui divided items">
+            <div class="item" *ngFor="let shop of _shopService.shopList">
+                <div class="ui grid middle aligned content">
+                    <a [routerLink]="['/shops', shop.id]">{{shop.shop_name}}</a>
                 </div>
             </div>
         </div>

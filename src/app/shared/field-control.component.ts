@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 declare let $ : any;
 
 @Component({
-    selector: 'shop-field-control',
+    selector: 'field-control',
     template:
 `
 <div [ngSwitch]="control.type" [formGroup]="formGroup">
@@ -39,7 +39,7 @@ declare let $ : any;
 </div>
 `
 })
-export class ShopFieldControl implements AfterViewInit{
+export class FieldControlTemplate implements AfterViewInit{
     @Input()
     public formGroup: FormGroup;
 
