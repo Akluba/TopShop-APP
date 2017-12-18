@@ -9,7 +9,7 @@ import { AuthInterceptor } from '../auth/auth.interceptor';
     imports: [ CommonModule ],
     declarations: [ ],
     exports: [ ],
-    providers: [ AuthService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true} ],
+    providers: [ AuthService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
 })
 export class CoreModule {
     constructor (@Optional() @SkipSelf() parentModule: CoreModule) {

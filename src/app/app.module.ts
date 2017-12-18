@@ -6,6 +6,7 @@ import { AppComponent }  from './app.component';
 
 /* Feature Modules */
 import { CoreModule } from './core/core.module';
+import { AuthModule } from './auth/auth.module';
 import { NavModule } from './nav/nav.module';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -14,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     HttpClientModule,
     CoreModule,
+    AuthModule,
     NavModule,
     AppRoutingModule
   ],

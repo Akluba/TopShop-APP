@@ -10,13 +10,14 @@ import { ICurrentUser } from '../auth/currentUser';
 
 @Injectable()
 export class AuthService {
+    private baseUrl = 'http://localhost:8888/api/auth';
     currentUser: ICurrentUser;
 
     constructor(private _http: HttpClient) { }
 
     /**
      * Function to login a user.
-     * @param credentials 
+     * @param credentials
      */
     login(credentials): Observable<any> {
         let apiUrl = 'http://localhost:8888/api/auth/login';
@@ -29,13 +30,30 @@ export class AuthService {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Accept':       'application/json'
-            })    
+            })
         })
         .do(res => {
             // Set access token in LocalStorage.
             localStorage.setItem('access_token', res.access_token);
+            // Get the current user.
+            this.getCurrentUser();
         })
         .catch(this.handleError);
+    }
+
+    getCurrentUser() {
+        const url = `${this.baseUrl}/currentUser`;
+        let headers = new HttpHeaders({ 'Accept': 'application/json' });
+        let options = { headers: headers };
+
+        return this._http.get<ICurrentUser>(url, options)
+        .do(currentUser => {
+            if (!!currentUser['id']) {
+                this.currentUser = currentUser;
+            }
+        })
+        .catch(this.handleError)
+        .subscribe();
     }
 
     refresh(): Observable<any> {
@@ -44,7 +62,7 @@ export class AuthService {
             headers: new HttpHeaders({
                 'content-type': 'application/x-www-form-urlencoded',
                 'Accept':       'application/json'
-            })     
+            })
         })
         .do(res => console.log(res))
         .catch(this.handleError);
@@ -60,10 +78,14 @@ export class AuthService {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Accept':       'application/json'
-            })      
+            })
         })
-        // Remove access_token from LocalStorage.
-        .do(() => localStorage.removeItem('access_token'))
+        .do(() => {
+            // Remove access_token from LocalStorage.
+            localStorage.removeItem('access_token');
+            // Remove the currentUser.
+            this.currentUser = undefined;
+        })
         .catch(this.handleError);
     }
 
@@ -86,34 +108,9 @@ export class AuthService {
     }
 
     /**
-     * Function to get current user.
-     */
-    getCurrentUser() {
-        console.log(this.currentUser);
-        return this.currentUser;
-    }
-
-    setCurrentUser()
-    {
-        let apiUrl = 'http://localhost:8888/api/auth/currentUser';
-        return this._http.get<ICurrentUser>(apiUrl,{
-            headers: new HttpHeaders({
-                'Accept': 'application/json'
-            })
-        })
-        .do(currentUser => {
-            if (!!currentUser.id) {
-                this.currentUser = currentUser;
-            }
-        })
-        .catch(this.handleError)
-        .subscribe();
-    }
-
-    /**
      * Return the error message to be displayed to the user.
      * also log to the console a more specific error message.
-     * @param error 
+     * @param error
      */
     private handleError(err: HttpErrorResponse) {
         if (err.error instanceof Error) {
@@ -121,8 +118,8 @@ export class AuthService {
         } else {
             console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
-        
+
         return Observable.throw(err.error.message);
     }
-    
+
 }
