@@ -1,0 +1,29 @@
+<button class="positive ui right floated button"
+(click)="initiateModal()">
+Create new Manager
+</button>
+
+<div class="ui small modal manager-create">
+<div class="header">
+    New Manager Information
+</div>
+<div class="content">
+    <form class="ui form" #managerForm="ngForm">
+        <div class="field">
+            <label>Manager Name</label>
+            <input type="text" name="manager_name" required
+                [(ngModel)]="newManager.manager_name" />
+        </div>
+    </form>
+</div>
+<div class="actions">
+    <button class="ui cancel deny button"
+        (click)="managerForm.reset()">
+        Cancel
+    </button>
+    <button class="ui positive button"
+        [disabled]="managerForm.form.invalid">
+        Save
+    </button>
+</div>
+</div>

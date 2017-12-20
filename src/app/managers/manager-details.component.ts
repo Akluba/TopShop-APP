@@ -7,14 +7,14 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { ShopService } from './shop.service';
+import { ManagerService } from './manager.service';
 import { AuthService } from '../core/auth.service';
 
 declare let $ : any;
 
 export class LogEntry {
     id: number = 0;
-    source_class: string = 'Shop';
+    source_class: string = 'manager';
     source_id: number;
     field_id: number;
     log_field1: string = null;
@@ -37,26 +37,26 @@ export class LogEntry {
 }
 
 @Component({
-    templateUrl: 'shop-details.component.html'
+    templateUrl: 'manager-details.component.html'
 })
-export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
-    shop: {};
+export class ManagerDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+    manager: {};
     formElements;
-    shopForm: FormGroup;
+    managerForm: FormGroup;
     message: {};
 
     private sub: Subscription;
 
-    constructor(private _fb: FormBuilder, private _route: ActivatedRoute, private _shopService: ShopService, private _authService: AuthService) {}
+    constructor(private _fb: FormBuilder, private _route: ActivatedRoute, private _managerService: ManagerService, private _authService: AuthService) {}
 
     ngOnInit(): void {
         // Read the data from the resolver.
         this.sub = this._route.data.subscribe(data => {
-            this.shop = data.response.data.shop;
+            this.manager = data.response.data.manager;
             this.formElements = data.response.data.form_elements;
 
-            this.buildShopForm();
-            this.populateShopForm();
+            this.buildManagerForm();
+            this.populateManagerForm();
         });
     }
 
@@ -69,7 +69,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
-    buildShopForm(): void {
+    buildManagerForm(): void {
         let field_controls = {};
 
         this.formElements.forEach(category => {
@@ -79,7 +79,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         // Build the shopForm controls.
-        this.shopForm = this._fb.group(field_controls);
+        this.managerForm = this._fb.group(field_controls);
     }
 
     formatInputValues(type, value): any {
@@ -94,13 +94,13 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    populateShopForm(): void {
+    populateManagerForm(): void {
         let field_values = {};
 
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
                 if (field.type !== 'log' && field.type !== 'notes') {
-                    field_values[field.column_name] = this.formatInputValues(field.type, this.shop[field.column_name]);
+                    field_values[field.column_name] = this.formatInputValues(field.type, this.manager[field.column_name]);
                 }
                 else if(field.type === 'notes') {
                     this.addLogEntry(field);
@@ -113,7 +113,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         // Populate shopForm with data.
-        this.shopForm.patchValue(field_values);
+        this.managerForm.patchValue(field_values);
     }
 
     formatFG(field, logEntry): FormGroup {
@@ -129,12 +129,12 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     setExistingLogEntries(field): void {
         let control = field.column_name;
 
-        if (this.shop[control]) {
-            let logEntryFGs = this.shop[control].map(logEntry => this.formatFG(field, logEntry));
+        if (this.manager[control]) {
+            let logEntryFGs = this.manager[control].map(logEntry => this.formatFG(field, logEntry));
             let logEntryFA = this._fb.array(logEntryFGs);
-            this.shopForm.setControl(control, logEntryFA);
+            this.managerForm.setControl(control, logEntryFA);
         } else {
-            this.shopForm.setControl(control, this._fb.array([]));
+            this.managerForm.setControl(control, this._fb.array([]));
         }
     }
 
@@ -152,10 +152,10 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             let user = this._authService.currentUser.name;
             let today = new Date();
             let date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-            newLogEntry = new LogEntry(this.shop['id'], fieldId, user, date);
+            newLogEntry = new LogEntry(this.manager['id'], fieldId, user, date);
         }
         else {
-            newLogEntry = new LogEntry(this.shop['id'], fieldId);
+            newLogEntry = new LogEntry(this.manager['id'], fieldId);
         }
 
         let newLogEntryFG = this._fb.group(newLogEntry);
@@ -163,11 +163,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Set the form array control with the new log entry included.
         logEntryFA = this._fb.array(logEntryFGs);
-        this.shopForm.setControl(control, logEntryFA);
+        this.managerForm.setControl(control, logEntryFA);
     }
 
     getLogEntryFA(control): FormArray {
-        return this.shopForm.get(control) as FormArray;
+        return this.managerForm.get(control) as FormArray;
     }
 
     logEntryPristine(control): boolean {
@@ -212,7 +212,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.addLogEntry(field);
                 }
                 else if (field.type === 'notes') {
-                    this.shopForm.setControl(field.column_name, this._fb.array([]));
+                    this.managerForm.setControl(field.column_name, this._fb.array([]));
                     this.addLogEntry(field);
                 }
             });
@@ -221,11 +221,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onSaveComplete(response: any): void {
         // store the new shop object.
-        this.shop = response.data;
+        this.manager = response.data;
         this.updateLoggingFields();
 
         // clear the flags and display success message.
-        this.shopForm.markAsPristine();
+        this.managerForm.markAsPristine();
         this.flashMessage({text: response.message, status: 'success'});
     }
 
@@ -245,12 +245,12 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     save(): void {
-        if (this.shopForm.dirty && this.shopForm.valid) {
+        if (this.managerForm.dirty && this.managerForm.valid) {
             // Copy the form values over the rawShopData object values.
-            let body = Object.assign({}, this.shop, this.shopForm.value);
+            let body = Object.assign({}, this.manager, this.managerForm.value);
             body = this.formatBody(body);
 
-            this._shopService.save(body)
+            this._managerService.save(body)
                 .subscribe(
                     response => this.onSaveComplete(response),
                     (error: any) => this.flashMessage({text: <any>error, status: 'negative'})

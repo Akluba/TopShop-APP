@@ -1,0 +1,27 @@
+<h1 class="ui header">Shop List</h1>
+<div class="ui segments">
+    <div class="ui segment">
+        <div class="ui grid middle aligned content">
+            <div class="eight wide column">
+                <!-- Manager Filter??? -->
+                <div class="ui fluid input">
+                    <input placeholder="Filter Managers.."/>
+                </div>
+            </div>
+            <div class="eight wide column">
+                <!-- Create New Manager Modal -->
+                <manager-create></manager-create>
+            </div>
+        </div>
+    </div>
+    <div class="ui secondary segment">
+        <!-- Manager List -->
+        <div class="ui divided items">
+            <div class="item" *ngFor="let manager of _managerService.managerList">
+                <div class="ui grid middle aligned content">
+                    <a [routerLink]="['/managers', manager.id]">{{manager.manager_name}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
