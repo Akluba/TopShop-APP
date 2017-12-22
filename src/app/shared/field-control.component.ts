@@ -36,6 +36,14 @@ declare let $ : any;
     <!-- Textarea -->
     <textarea *ngSwitchCase="'textarea'" rows="2" formControlName="{{ control.column_name }}"></textarea>
 
+    <!-- Manager Link -->
+    <select *ngSwitchCase="'manager_link'" class="ui fluid dropdown"
+        formControlName="{{ control.column_name }}">
+        <option *ngFor="let option of control.options"
+            value="{{ option.id }}">{{ option.manager_name }}
+        </option>
+    </select>
+
 </div>
 `
 })
