@@ -44,6 +44,14 @@ declare let $ : any;
         </option>
     </select>
 
+    <!-- Shop Link -->
+    <select *ngSwitchCase="'shop_link'" class="ui fluid dropdown"
+        formControlName="{{ control.column_name }}">
+        <option *ngFor="let option of control.options"
+            value="{{ option.id }}">{{ option.shop_name }}
+        </option>
+    </select>
+
 </div>
 `
 })

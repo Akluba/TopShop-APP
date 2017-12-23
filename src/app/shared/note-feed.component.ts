@@ -36,16 +36,23 @@ import { Router } from '@angular/router';
             </div>
             <div class="extra text">{{ note.log_field3 }}</div>
             <div class="meta" *ngIf="metaRecordExist(field.columns, note)">
-                <div *ngFor="let column of metaColumns(field.columns)" [ngSwitch]="column.type">
+                <span *ngFor="let column of metaColumns(field.columns, note)" [ngSwitch]="column.type">
 
                     <!-- Manager Link -->
                     <a *ngSwitchCase="'manager_link'"
                         [routerLink]="['/managers', note[column.column_name]]">
                         <i class="blue linkify icon"></i>
-                        {{ linkText(column.options, note[column.column_name]) }}
+                        {{ linkText(column, note) }}
                     </a>
 
-                </div>
+                    <!-- Shop Link -->
+                    <a *ngSwitchCase="'shop_link'"
+                        [routerLink]="['/shops', note[column.column_name]]">
+                        <i class="blue linkify icon"></i>
+                        {{ linkText(column, note) }}
+                    </a>
+
+                </span>
             </div>
         </div>
     </div>
@@ -70,12 +77,16 @@ export class NoteFeedTemplate {
         return false;
     }
 
-    metaColumns(columns) {
-        return columns.filter(column => column.system !== 1);
+    metaColumns(columns, note) {
+        return columns.filter(column => column.system !== 1 && note[column.column_name] !== null);
     }
 
-    linkText(options, value): string {
-        return options[options.indexOf(options.find(x => x.id === +value))]['manager_name'];
+    linkText(column, note): string {
+        let linkName = (column.type === 'manager_link') ? 'manager_name' : 'shop_name';
+        let value = note[column.column_name];
+        let options = column.options;
+
+        return options[options.indexOf(options.find(x => x.id === +value))][linkName];
     }
 
 }

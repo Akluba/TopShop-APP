@@ -37,14 +37,14 @@
         <!-- Note Segment -->
         <ng-template #noteTemplate>
             <div class="ui grid">
-                <div class="four wide column">
-                    <div class="ui vertical pointing notes menu">
+                <div class="four wide column left floated">
+                    <div class="ui vertical pointing notes tiny menu">
                         <a class="item" *ngFor="let field of element.fields; let note_i=index"
                         [ngClass]="{'active': note_i == 0}"
                         attr.data-tab="{{ tab_i }}/{{ note_i }}">{{ field.title }}</a>
                     </div>
                 </div>
-                <div class="twelve wide column">
+                <div class="twelve wide column right floated">
                     <div class="ui tab segment" *ngFor="let field of element.fields; let note_i=index" style="margin: 0;"
                         [ngClass]="{'active': note_i == 0}"
                         attr.data-tab="{{ tab_i }}/{{ note_i }}">
