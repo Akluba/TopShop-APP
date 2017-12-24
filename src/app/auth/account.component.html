@@ -1,0 +1,58 @@
+<h2 class="ui header">Account Settings</h2>
+
+<form class="ui form" novalidate
+    *ngIf="currentUser"
+    (ngSubmit)="save(accountForm); accountForm.control.markAsPristine();"
+    #accountForm="ngForm">
+
+    <!-- Form Actions -->
+    <div class="ui grid middle aligned content" style="min-height: 75px;">
+        <div class="left floated thirteen wide column">
+            <div class="ui hidden message transition">
+                <div class="header" *ngIf="message">{{ message.text }}</div>
+            </div>
+        </div>
+        <div class="right floated three wide column">
+            <button type="submit" class="ui fluid positive button"
+                [disabled]="!accountForm.form.valid || !accountForm.form.dirty">
+                Save
+            </button>
+        </div>
+    </div>
+
+    <h4 class="ui dividing header">User Name</h4>
+    <div class="field">
+        <div class="ui fluid input">
+            <input type="text" class="ui input" required [ngModel]="currentUser.name" name="name" />
+        </div>
+    </div>
+
+    <h4 class="ui dividing header">Email Address</h4>
+    <div class="field">
+        <div class="ui fluid input">
+            <input type="text" class="ui input" required email [ngModel]="currentUser.email" name="email" />
+        </div>
+    </div>
+
+    <h4 class="ui dividing header">Password</h4>
+    <div class="field">
+        <label>Current Password</label>
+        <div class="ui fluid input">
+            <input class="ui input" ngModel #currentPassword="ngModel" type="password" name="currentPassword"/>
+        </div>
+    </div>
+    <div class="field">
+        <label>New Password</label>
+        <div class="ui fluid input">
+            <input class="ui input" ngModel #newPassword="ngModel" type="password" name="newPassword"/>
+        </div>
+    </div>
+    <div class="field">
+        <label>Confirm Password</label>
+        <div class="ui fluid input">
+            <input class="ui input" ngModel #confirmPassword="ngModel" type="password" name="confirmPassword"/>
+        </div>
+    </div>
+
+</form>
+

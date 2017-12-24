@@ -14,9 +14,9 @@ import { ICurrentUser } from '../auth/currentUser';
         .button:hover { background-color: #667084; color: white; }
         `
     ],
-    templateUrl: './auth.component.html'
+    templateUrl: './login.component.html'
 })
-export class AuthComponent {
+export class LoginComponent {
     loginModal: boolean = false;
     credentials: any = {};
     pageError: String;

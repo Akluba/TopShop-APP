@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../core/auth.service';
@@ -6,13 +6,9 @@ import { AuthService } from '../core/auth.service';
     selector: 'app-nav',
     templateUrl: 'nav.component.html'
 })
-export class NavComponent implements OnInit{
+export class NavComponent {
     user;
     constructor(private _authService: AuthService, private _router: Router) {}
-
-    ngOnInit(): void {
-        this.user = this._authService.currentUser;
-    }
 
     logout(): void {
         this._authService.logout()
