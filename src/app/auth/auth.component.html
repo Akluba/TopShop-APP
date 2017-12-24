@@ -1,47 +1,30 @@
-<!-- <div>
-    <button *ngIf='!_auth.isAuthenticated() && !loginModal' (click)='loginModal=true' type='button'>Login</button>
-    <button *ngIf='_auth.isAuthenticated()' (click)='logout()' type='button'>Logout</button>
-
-    <div *ngIf='loginModal && !_auth.isAuthenticated()'>
-        <form #loginForm='ngForm' (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
-            <div class='form-group' [ngClass]="{ 'error' : loginForm.controls.email?.invalid && loginForm.controls.email?.dirty }">
-                <label for='email'>Email:</label>
-                <em *ngIf="loginForm.controls.email?.invalid && loginForm.controls.email?.dirty">Required</em>
-                <input [(ngModel)]="credentials.email" required name="email" id="email" type="text" />
-            </div>
-
-            <div class='form-group' [ngClass]="{ 'error' : loginForm.controls.password?.invalid && loginForm.controls.password?.dirty }">
-                <label for='password'>Password:</label>
-                <em *ngIf="loginForm.controls.password?.invalid && loginForm.controls.password?.dirty">Required</em>
-                <input [(ngModel)]="credentials.password" required name="password" id="password" type="password" />
-            </div>
-
-            <div class='form-group butttons'>
-                <button class="save" type="submit" [disabled]="loginForm.invalid">Login</button>
-            </div>
-
-            <div class="form-error" *ngIf='pageError'>
-                <p>{{pageError}}</p>
-            </div>
-
-        </form>
-    </div>
-</div> -->
-
-
 <div class="ui middle aligned center aligned grid">
     <div class="column">
-        <h2>Top Shop Marketing</h2>
-        <form class="ui form" #loginForm='ngForm' (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
-            <div class="ui inverted stacked segment">
-                <div class="field">
-                    <input [(ngModel)]="credentials.email" required name="email" id="email" type="text" />
+        <h2 class="ui header">
+            <img class="ui image" src="./assets/images/tsm_logo.png" />
+        </h2>
+        <form class="ui large form" #loginForm='ngForm' (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
+            <div class="ui stacked segment">
+                <div class="field"
+                    [ngClass]="{ 'error' : loginForm.controls.email?.invalid && loginForm.controls.email?.dirty }">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input [(ngModel)]="credentials.email" required name="email" id="email" type="text" placeholder="E-mail address"/>
+                    </div>
                 </div>
-                <div class="field">
-                    <input [(ngModel)]="credentials.password" required name="password" id="password" type="password" />
+                <div class="field"
+                    [ngClass]="{ 'error' : loginForm.controls.password?.invalid && loginForm.controls.password?.dirty }">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input [(ngModel)]="credentials.password" required name="password" id="password" type="password" placeholder="Password"/>
+                    </div>
                 </div>
-                <button type="submit" class="ui fluid large submit button">Login</button>
+                <button type="submit" class="ui fluid large submit button" [disabled]="loginForm.invalid">Login</button>
             </div>
         </form>
+
+        <div class="ui error message" *ngIf='pageError'>
+            <p>{{pageError}}</p>
+        </div>
     </div>
 </div>

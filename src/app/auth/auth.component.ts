@@ -5,7 +5,16 @@ import { AuthService } from '../core/auth.service';
 import { ICurrentUser } from '../auth/currentUser';
 
 @Component({
-  templateUrl: './auth.component.html'
+    styles: [
+        `
+        .grid { height: 100%; background-color: #212a40; }
+        .grid .column { max-width: 450px; }
+        .ui.header img { width: auto; }
+        .button { background-color: #7e8aa2; color: white; }
+        .button:hover { background-color: #667084; color: white; }
+        `
+    ],
+    templateUrl: './auth.component.html'
 })
 export class AuthComponent {
     loginModal: boolean = false;

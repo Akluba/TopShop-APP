@@ -9,9 +9,7 @@ import { AuthService } from './core/auth.service';
 <div *ngIf="_authService.isAuthenticated() && _authService.currentUser; then authenticatedUI else login"></div>
 
 <ng-template #login>
-<div class="ui container">
   <router-outlet></router-outlet>
-</div>
 </ng-template>
 
 <ng-template #authenticatedUI>
