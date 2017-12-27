@@ -1,9 +1,9 @@
 <h2 class="ui header">Account Settings</h2>
 
-<form class="ui form" novalidate
-    *ngIf="currentUser"
-    (ngSubmit)="save(accountForm); accountForm.control.markAsPristine();"
-    #accountForm="ngForm">
+<form class="ui form"
+    novalidate
+    (ngSubmit)="save()"
+    [formGroup]="userForm">
 
     <!-- Form Actions -->
     <div class="ui grid middle aligned content" style="min-height: 75px;">
@@ -14,43 +14,65 @@
         </div>
         <div class="right floated three wide column">
             <button type="submit" class="ui fluid positive button"
-                [disabled]="!accountForm.form.valid || !accountForm.form.dirty">
+                [disabled]="!userForm.valid || !userForm.dirty">
                 Save
             </button>
         </div>
     </div>
 
     <h4 class="ui dividing header">User Name</h4>
-    <div class="field">
+    <div class="field"
+        [ngClass]="{ 'error' : userForm.controls.name?.invalid && userForm.controls.name?.dirty }">
         <div class="ui fluid input">
-            <input type="text" class="ui input" required [ngModel]="currentUser.name" name="name" />
+            <input type="text" class="ui input" formControlName="name" />
         </div>
     </div>
 
     <h4 class="ui dividing header">Email Address</h4>
-    <div class="field">
+    <div class="field"
+        [ngClass]="{ 'error' : userForm.controls.email?.invalid && userForm.controls.email?.dirty }">
         <div class="ui fluid input">
-            <input type="text" class="ui input" required email [ngModel]="currentUser.email" name="email" />
+            <input type="text" class="ui input" formControlName="email" />
         </div>
     </div>
 
-    <h4 class="ui dividing header">Password</h4>
-    <div class="field">
-        <label>Current Password</label>
-        <div class="ui fluid input">
-            <input class="ui input" ngModel #currentPassword="ngModel" type="password" name="currentPassword"/>
+    <h4 class="ui dividing header">Password Reset</h4>
+    <div formGroupName="pwGroup">
+        <div class="field"
+            [ngClass]="{ 'error' : userForm.get('pwGroup.password')?.invalid && userForm.get('pwGroup.password')?.dirty }">
+            <label>Current Password</label>
+            <span *ngIf="userForm.get('pwGroup.password').errors?.required">
+                Please enter your current password.
+            </span>
+            <div class="ui fluid input">
+                <input type="password" class="ui input" formControlName="password" (blur)="pwResetControls(userForm.get('pwGroup.password'))" />
+            </div>
         </div>
-    </div>
-    <div class="field">
-        <label>New Password</label>
-        <div class="ui fluid input">
-            <input class="ui input" ngModel #newPassword="ngModel" type="password" name="newPassword"/>
+        <div class="field"
+            [ngClass]="{ 'error' : userForm.get('pwGroup.newPW')?.invalid && userForm.get('pwGroup.newPW')?.dirty }">
+            <label>New Password</label>
+            <span *ngIf="userForm.get('pwGroup.newPW').errors?.required">
+                Please enter your new password.
+            </span>
+            <span *ngIf="userForm.get('pwGroup.newPW').errors?.minlength">
+                Your new password must be longer than 6 characters.
+            </span>
+            <div class="ui fluid input">
+                <input type="password" class="ui input" formControlName="newPW" (blur)="pwResetControls(userForm.get('pwGroup.newPW'))" />
+            </div>
         </div>
-    </div>
-    <div class="field">
-        <label>Confirm Password</label>
-        <div class="ui fluid input">
-            <input class="ui input" ngModel #confirmPassword="ngModel" type="password" name="confirmPassword"/>
+        <div class="field"
+            [ngClass]="{ 'error' : userForm.get('pwGroup.confirmPW')?.invalid && userForm.get('pwGroup.confirmPW')?.dirty }">
+            <label>Confirm Password</label>
+            <span *ngIf="userForm.get('pwGroup.confirmPW').errors?.required">
+                Please confirm your new password.
+            </span>
+            <span *ngIf="userForm.get('pwGroup').errors?.match">
+                The confirmation does not match the new password.
+            </span>
+            <div class="ui fluid input">
+                <input type="password" class="ui input" formControlName="confirmPW" (blur)="pwResetControls(userForm.get('pwGroup.confirmPW'))"/>
+            </div>
         </div>
     </div>
 
