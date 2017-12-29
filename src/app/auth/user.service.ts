@@ -10,18 +10,29 @@ import { ICurrentUser } from './currentUser';
 
 @Injectable()
 export class UserService {
-    private baseUrl = 'http://localhost:8888/api/user';
+    private baseUrl = 'http://localhost:8888/api/users';
     currentUser: ICurrentUser;
+    userList: ICurrentUser[];
     constructor(private _http: HttpClient) {}
 
-    save(body: any): Observable<any> {
+    index(): Observable<any> {
+        const url = `${this.baseUrl}`;
+        let headers = new HttpHeaders({ 'Accept': 'application/json' });
+        let options = { headers: headers };
+
+        return this._http.get(url, options)
+            .do(data => this.userList = data['data'])
+            .catch(this.handleError);
+    }
+
+    save(body: any, component: string = ''): Observable<any> {
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
 
         if (body.id === 0) {
             return this.store(body, options);
         }
-        return this.update(body, options);
+        return this.update(body, options, component);
     }
 
     private store(body: any, options: any): Observable<any> {
@@ -31,8 +42,9 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    private update(body: any, options: any): Observable<any> {
+    private update(body: any, options: any, component: string): Observable<any> {
         const url = `${this.baseUrl}/${body.id}`;
+        body.component = component;
         return this._http.put(url, body, options)
             .do(res => console.log(res))
             .catch(this.handleError);

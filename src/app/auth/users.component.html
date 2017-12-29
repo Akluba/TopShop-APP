@@ -1,0 +1,60 @@
+<h2 class="ui header">Manage Users</h2>
+
+<div class="ui inverted segment">
+    <div class="ui internally celled grid">
+        <div class="row">
+            <div class="center aligned two wide column">
+                <h4 class="ui inverted header">Active</h4>
+            </div>
+            <div class="center aligned four wide column">
+                <h4 class="ui inverted header">Name</h4>
+            </div>
+            <div class="center aligned four wide column">
+                <h4 class="ui inverted header">Email Address</h4>
+            </div>
+            <div class="center aligned three wide column">
+                <h4 class="ui inverted header">Profile</h4>
+            </div>
+            <div class="three wide column"></div>
+        </div>
+    </div>
+</div>
+
+<div class="ui hidden message transition">
+    <div class="header" *ngIf="message">{{ message.text }}</div>
+</div>
+
+<div class="ui middle aligned celled list">
+    <div class="item" *ngFor="let user of userList">
+        <div class="content">
+            <form class="ui form" #userForm="ngForm">
+                <div class="fields" style="margin:0; padding: 5px 0;">
+                    <div class="two wide inline field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" [(ngModel)]=user.active name="active" #active="ngModel" />
+                        </div>
+                    </div>
+                    <div class="four wide field">
+                        <input type="text" required [(ngModel)]=user.name name="name" #name />
+                    </div>
+                    <td class="four wide field">
+                        <input type="text" required [(ngModel)]=user.email name="email" #email />
+                    </td>
+                    <div class="three wide field">
+                        <select class="ui fluid dropdown" required [(ngModel)]=user.profile name="profile" #profile>
+                            <option *ngFor="let option of userProfiles"
+                                value="{{ option.value }}">{{ option.title }}</option>
+                        </select>
+                    </div>
+                    <div class="three wide field">
+                        <button class="ui fluid positive button"
+                            [disabled]="!userForm.dirty || !userForm.valid"
+                            (click)="save(user)">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

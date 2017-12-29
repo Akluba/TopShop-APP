@@ -104,8 +104,8 @@ export class AccountComponent implements OnInit{
         this.flashMessage({text: response.message, status: 'success'});
 
         this.pwValidators('clear');
-        this.userForm.reset();
-        this.populateUserData();
+        this.userForm.get('pwGroup').reset();
+        this.userForm.markAsPristine();
     }
 
     save(): void {
