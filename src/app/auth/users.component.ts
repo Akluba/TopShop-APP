@@ -7,17 +7,27 @@ import { ICurrentUser } from './currentUser';
 
 declare let $ : any;
 
+class User {
+    id: number = 0;
+    active: boolean = true;
+    name: string = null;
+    email: string = null;
+    profile: string = null;
+}
+
 @Component({
+    styles: [`
+        .inline.fields > .field { padding: 0px .5em; }
+        .ui.form .inline.fields .field>.selection.dropdown { width: 100%;}
+    `],
     templateUrl: 'users.component.html'
 })
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     private sub: Subscription;
     message: {};
     userList: ICurrentUser[];
-    userProfiles = [
-        {value:'admin', title:'Admin'},
-        {value:'employee', title:'Employee'}
-    ];
+    newUser: ICurrentUser;
+    userProfiles = ['admin','employee'];
 
     constructor(private _userService: UserService, private _route: ActivatedRoute) {}
 
@@ -25,6 +35,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sub = this._route.data.subscribe(data => {
             this.userList = data.response.data;
         });
+
+        this.newUser = new User();
     }
 
     ngAfterViewInit(): void {
@@ -45,16 +57,26 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
             .transition('fade', 1000);
     }
 
-    onSaveComplete(response: any): void {
-        // display success message.
-        this.flashMessage({text: response.message, status: 'success'});
-    }
+    save(user, userForm): void {
+        let body = Object.assign({}, user, userForm.value);
 
-    save(user): void {
-        this._userService.save(user, 'manage')
-            .subscribe(
-                response => this.onSaveComplete(response),
-                (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
-            );
+        if (userForm.control.dirty && userForm.control.valid) {
+            this._userService.save(body, 'manage')
+                .subscribe(
+                    response => {
+                        if (body.id === 0) {
+                            this.newUser = new User();
+                            $('.new.user.dropdown').dropdown('clear');
+                            $('.checkbox').checkbox();
+                        }
+
+                        userForm.control.markAsPristine();
+
+                        this.flashMessage({text: response.message, status: 'success'})
+                    },
+                    (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
+                );
+        }
+
     }
 }

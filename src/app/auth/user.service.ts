@@ -38,7 +38,7 @@ export class UserService {
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)
-            .do(() => console.log('testing'))
+            .do(data => this.userList.push(data['data']))
             .catch(this.handleError);
     }
 
