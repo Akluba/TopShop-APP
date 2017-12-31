@@ -26,7 +26,7 @@ export class AuthService {
                 // Set access token in LocalStorage.
                 localStorage.setItem('access_token', res.access_token);
                 // Get the current user.
-                this.getCurrentUser();
+                this.getCurrentUser().subscribe();
             })
             .catch(this.handleError);
     }
@@ -47,7 +47,7 @@ export class AuthService {
             .catch(this.handleError);
     }
 
-    getCurrentUser() {
+    getCurrentUser(): Observable<ICurrentUser> {
         const url = `${this.baseUrl}/currentUser`;
         let headers = new HttpHeaders({ 'Accept': 'application/json' });
         let options = { headers: headers };
@@ -58,8 +58,7 @@ export class AuthService {
                     this.currentUser = currentUser;
                 }
             })
-            .catch(this.handleError)
-            .subscribe();
+            .catch(this.handleError);
     }
 
     // refresh(): Observable<any> {

@@ -4,7 +4,7 @@
         <div class="menu">
             <a class="item" [routerLink]="['/dash']" routerLinkActive="active">Dash Board</a>
             <a class="item" [routerLink]="['/account']" routerLinkActive="active">Account Settings</a>
-            <a class="item" [routerLink]="['/users']" routerLinkActive="active">Manage Users</a>
+            <a *ngIf="_authService.currentUser.profile === 'admin'" class="item" [routerLink]="['/users']" routerLinkActive="active">Manage Users</a>
             <a class="item" (click)="logout()">Logout</a>
         </div>
     </div>

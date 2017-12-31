@@ -116,7 +116,7 @@ export class AccountComponent implements OnInit{
             .subscribe(
                 response => this.onSaveComplete(response),
                 (error: any) => this.flashMessage({text: <any>error, status: 'negative'}),
-                () => this._authService.getCurrentUser()
+                () => this._authService.getCurrentUser().subscribe()
             );
         }
     }

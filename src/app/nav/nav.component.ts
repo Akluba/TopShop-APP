@@ -7,7 +7,6 @@ import { AuthService } from '../core/auth.service';
     templateUrl: 'nav.component.html'
 })
 export class NavComponent {
-    user;
     constructor(private _authService: AuthService, private _router: Router) {}
 
     logout(): void {

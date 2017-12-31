@@ -17,6 +17,7 @@ class User {
 
 @Component({
     styles: [`
+        #users-header { padding: 0px; }
         .inline.fields > .field { padding: 0px .5em; }
         .ui.form .inline.fields .field>.selection.dropdown { width: 100%;}
     `],
@@ -54,7 +55,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
         $('.message')
             .transition('fade', 1000)
-            .transition('fade', 1000);
+            .transition('fade', 2000);
     }
 
     save(user, userForm): void {
@@ -67,7 +68,10 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
                         if (body.id === 0) {
                             this.newUser = new User();
                             $('.new.user.dropdown').dropdown('clear');
-                            $('.checkbox').checkbox();
+                            setTimeout(() => {
+                                $('.checkbox').checkbox();
+                                $('.dropdown').dropdown();
+                            }, 0);
                         }
 
                         userForm.control.markAsPristine();

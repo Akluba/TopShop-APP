@@ -6,6 +6,7 @@ import { AccountComponent } from './account.component';
 import { UsersComponent } from './users.component';
 
 import { AuthGuard } from './auth-guard.service';
+import { ProfileGuard } from './profile-guard.service';
 import { UsersResolver } from './users-resolver.service';
 
 @NgModule({
@@ -13,7 +14,13 @@ import { UsersResolver } from './users-resolver.service';
         RouterModule.forChild([
             { path: 'login', component: LoginComponent },
             { path: 'account', canActivate: [ AuthGuard ], component: AccountComponent },
-            { path: 'users', canActivate: [ AuthGuard ], resolve: { response: UsersResolver }, component: UsersComponent }
+            {
+                path: 'users',
+                canActivate: [ AuthGuard, ProfileGuard ],
+                resolve: { response: UsersResolver },
+                component: UsersComponent,
+                data: { authorizedProfile: 'admin' }
+            }
         ])
     ],
     exports: [ RouterModule ]

@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent }  from './app.component';
+import { UnauthorizedComponent } from './unauthorized.component';
 
 /* Feature Modules */
 import { CoreModule } from './core/core.module';
@@ -19,7 +20,10 @@ import { AppRoutingModule } from './app-routing.module';
     NavModule,
     AppRoutingModule
   ],
-  declarations: [ AppComponent ],
+  declarations: [
+    AppComponent,
+    UnauthorizedComponent
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

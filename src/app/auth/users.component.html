@@ -1,6 +1,6 @@
 <h2 class="ui header">Manage Users</h2>
 
-<div class="ui inverted segment">
+<div id="users-header" class="ui inverted segment">
     <div class="ui internally celled grid">
         <div class="row">
             <div class="center aligned two wide column">
@@ -20,8 +20,8 @@
     </div>
 </div>
 
-<div class="ui grid middle aligned content" style="min-height: 75px;">
-    <div class="sixteen wide column">
+<div class="ui grid middle aligned content" style="min-height: 47px;">
+    <div class="sixteen wide column" style="padding: 0px 1rem;">
         <div class="ui hidden message transition">
             <div class="header" *ngIf="message">{{ message.text }}</div>
         </div>
@@ -30,7 +30,7 @@
 
 <div class="ui middle aligned celled list">
     <!-- Create New User -->
-    <div class="item">
+    <div class="item" style="background-color: #f3f4f5;">
         <div class="content">
             <form class="ui form"
                 #newUserForm="ngForm"

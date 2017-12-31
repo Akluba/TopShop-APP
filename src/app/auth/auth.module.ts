@@ -9,6 +9,7 @@ import { UsersComponent } from './users.component';
 import { AuthRoutingModule } from './auth-routing.module';
 
 import { AuthGuard } from './auth-guard.service';
+import { ProfileGuard } from './profile-guard.service';
 import { UsersResolver } from './users-resolver.service';
 import { UserService } from './user.service';
 
@@ -25,6 +26,7 @@ import { UserService } from './user.service';
     ],
     providers: [
         AuthGuard,
+        ProfileGuard,
         UsersResolver,
         UserService
     ]
