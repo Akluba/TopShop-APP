@@ -14,7 +14,7 @@ declare let $ : any;
 
 export class LogEntry {
     id: number = 0;
-    source_class: string = 'manager';
+    source_class: string = 'Manager';
     source_id: number;
     field_id: number;
     log_field1: string = null;
