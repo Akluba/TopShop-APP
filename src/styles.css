@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
 .main.container {
-    padding-left: 260px;
+    padding: 25px 0px 0px 260px;
+    /* padding-left: 260px; */
 }

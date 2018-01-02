@@ -1,11 +1,11 @@
-<h1 class="ui header">Shop List</h1>
+<h2 class="ui header">Shop List</h2>
 <div class="ui segments">
     <div class="ui segment">
         <div class="ui grid middle aligned content">
             <div class="eight wide column">
-                <!-- Shop Filter??? -->
+                <!-- Shop Filter -->
                 <div class="ui fluid input">
-                    <input placeholder="Filter Shops.."/>
+                    <input [(ngModel)]="listFilter" placeholder="Filter Shops.."/>
                 </div>
             </div>
             <div class="eight wide column">
@@ -17,7 +17,7 @@
     <div class="ui secondary segment">
         <!-- Shop List -->
         <div class="ui divided items">
-            <div class="item" *ngFor="let shop of _shopService.shopList">
+            <div class="item" *ngFor="let shop of _shopService.shopList | shopFilter:listFilter">
                 <div class="ui grid middle aligned content">
                     <a [routerLink]="['/shops', shop.id]">{{shop.shop_name}}</a>
                 </div>

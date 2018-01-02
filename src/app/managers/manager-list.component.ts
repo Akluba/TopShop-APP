@@ -6,5 +6,6 @@ import { ManagerService } from './manager.service';
     templateUrl: 'manager-list.component.html'
 })
 export class ManagerListComponent {
+    listFilter: string;
     constructor(private _managerService: ManagerService) {}
 }

@@ -12,6 +12,7 @@ import { ManagerDetailsComponent } from './manager-details.component';
 import { ManagerListResolver } from './manager-list-resolver.service';
 import { ManagerDetailsResolver, ManagerDetailsGuard } from './manager-details.service';
 import { ManagerService } from './manager.service';
+import { ManagerFilterPipe } from './manager-filter.pipe';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { ManagerService } from './manager.service';
     declarations: [
         ManagerListComponent,
         ManagerCreateComponent,
-        ManagerDetailsComponent
+        ManagerDetailsComponent,
+        ManagerFilterPipe
     ],
     providers: [
         ManagerListResolver,

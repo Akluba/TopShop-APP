@@ -1,11 +1,11 @@
-<h1 class="ui header">Shop List</h1>
+<h2 class="ui header">Manager List</h2>
 <div class="ui segments">
     <div class="ui segment">
         <div class="ui grid middle aligned content">
             <div class="eight wide column">
-                <!-- Manager Filter??? -->
+                <!-- Manager Filter -->
                 <div class="ui fluid input">
-                    <input placeholder="Filter Managers.."/>
+                        <input [(ngModel)]="listFilter" placeholder="Filter Managers.."/>
                 </div>
             </div>
             <div class="eight wide column">
@@ -17,7 +17,7 @@
     <div class="ui secondary segment">
         <!-- Manager List -->
         <div class="ui divided items">
-            <div class="item" *ngFor="let manager of _managerService.managerList">
+            <div class="item" *ngFor="let manager of _managerService.managerList | managerFilter:listFilter">
                 <div class="ui grid middle aligned content">
                     <a [routerLink]="['/managers', manager.id]">{{manager.manager_name}}</a>
                 </div>

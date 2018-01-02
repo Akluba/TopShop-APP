@@ -12,6 +12,7 @@ import { ShopDetailsComponent } from './shop-details.component';
 import { ShopService } from './shop.service';
 import { ShopListResolver } from './shop-list-resolver.service';
 import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
+import { ShopFilterPipe } from './shop-filter.pipe';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
     declarations: [
         ShopListComponent,
         ShopCreateComponent,
-        ShopDetailsComponent
+        ShopDetailsComponent,
+        ShopFilterPipe
     ],
     providers: [
         ShopService,
