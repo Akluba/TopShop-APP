@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AppComponent }  from './app.component';
+import { AppComponent } from './app.component';
 import { UnauthorizedComponent } from './unauthorized.component';
+import { PageNotFoundComponent } from './pagenotfound.component';
 
 /* Feature Modules */
 import { CoreModule } from './core/core.module';
@@ -22,7 +23,8 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   declarations: [
     AppComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    PageNotFoundComponent
   ],
   bootstrap: [ AppComponent ]
 })
