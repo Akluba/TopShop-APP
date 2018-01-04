@@ -11,7 +11,7 @@ export class ProfileGuard implements CanActivate {
     private authorized: string;
     private profile: string;
 
-    constructor(private _authService: AuthService, private _router: Router){}
+    constructor(private _authService: AuthService, private _router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
         this.authorized = route.data.authorizedProfile;
@@ -25,7 +25,7 @@ export class ProfileGuard implements CanActivate {
             .map(() => {
                 this.profile = this._authService.currentUser.profile;
                 return this.checkProfile();
-            })
+            });
 
     }
 

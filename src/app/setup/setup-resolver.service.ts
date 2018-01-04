@@ -9,10 +9,10 @@ export class SetupResolver implements Resolve<any> {
     constructor(private _setupService: SetupService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-        let source_class = route.params['source_class'];
-        let category_id  = +route.params['category_id'];
-        let field_id     = +route.params['field_id'];
-        let column_id    = +route.params['column_id'];
+        const source_class = route.params['source_class'];
+        const category_id  = +route.params['category_id'];
+        const field_id     = +route.params['field_id'];
+        const column_id    = +route.params['column_id'];
 
         if (!isNaN(category_id)) {
             if (!isNaN(field_id) || !isNaN(column_id)) {

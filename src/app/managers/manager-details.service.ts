@@ -10,7 +10,7 @@ export class ManagerDetailsResolver implements Resolve<any> {
     constructor(private _managerService: ManagerService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        let manager_id = +route.params['manager_id'];
+        const manager_id = +route.params['manager_id'];
         return this._managerService.show(manager_id);
     }
 }
@@ -19,7 +19,7 @@ export class ManagerDetailsResolver implements Resolve<any> {
 export  class ManagerDetailsGuard implements CanDeactivate<ManagerDetailsComponent> {
     canDeactivate(component: ManagerDetailsComponent): boolean {
         if (component.managerForm.dirty) {
-            let managerName = component.manager['manager_name'];
+            const managerName = component.manager['manager_name'];
             return confirm(`Navigate away and lose all changes to ${managerName}?`);
         }
         return true;

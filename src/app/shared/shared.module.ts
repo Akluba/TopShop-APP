@@ -26,4 +26,4 @@ import { FieldControlTemplate } from './field-control.component';
         FieldControlTemplate
     ]
 })
-export class SharedModule {};
+export class SharedModule {}

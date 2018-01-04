@@ -15,10 +15,10 @@ export class AuthService {
     constructor(private _http: HttpClient) { }
 
     login(credentials): Observable<any> {
-        let url = `${this.baseUrl}/login`;
-        let body = { email: credentials.email, password: credentials.password };
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const url = `${this.baseUrl}/login`;
+        const body = { email: credentials.email, password: credentials.password };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         // Get initial access token from the Passport server.
         return this._http.post<any>(url, body, options)
@@ -32,9 +32,9 @@ export class AuthService {
     }
 
     logout(): Observable<any> {
-        let url = `${this.baseUrl}/logout`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const url = `${this.baseUrl}/logout`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         // Revoke the access token from the server.
         return this._http.post<any>(url, null, options)
@@ -49,8 +49,8 @@ export class AuthService {
 
     getCurrentUser(): Observable<ICurrentUser> {
         const url = `${this.baseUrl}/currentUser`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         return this._http.get<ICurrentUser>(url, options)
             .do(currentUser => {
@@ -73,13 +73,11 @@ export class AuthService {
     //     .catch(this.handleError);
     // }
 
-    public retrieveAccessToken()
-    {
+    public retrieveAccessToken() {
         return localStorage.getItem('access_token');
     }
 
-    public isAuthenticated(): boolean
-    {
+    public isAuthenticated(): boolean {
         const token = this.retrieveAccessToken();
 
         return tokenNotExpired(null, token);

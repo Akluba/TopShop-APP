@@ -10,11 +10,11 @@ import 'rxjs/add/observable/throw';
 import { ShopService } from './shop.service';
 import { AuthService } from '../core/auth.service';
 
-declare let $ : any;
+declare let $: any;
 
 export class LogEntry {
-    id: number = 0;
-    source_class: string = 'Shop';
+    id = 0;
+    source_class = 'Shop';
     source_id: number;
     field_id: number;
     log_field1: string = null;
@@ -47,7 +47,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private sub: Subscription;
 
-    constructor(private _fb: FormBuilder, private _route: ActivatedRoute, private _shopService: ShopService, private _authService: AuthService) {}
+    constructor(
+        private _fb: FormBuilder,
+        private _route: ActivatedRoute,
+        private _shopService: ShopService,
+        private _authService: AuthService) {}
 
     ngOnInit(): void {
         // Read the data from the resolver.
@@ -70,7 +74,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     buildShopForm(): void {
-        let field_controls = {};
+        const field_controls = {};
 
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
@@ -85,27 +89,23 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     formatInputValues(type, value): any {
         if (type === 'select_multiple') {
             return JSON.parse(value);
-        }
-        else if (type === 'checkbox') {
+        } else if (type === 'checkbox') {
             return (value === '1') ? true : false;
-        }
-        else {
+        } else {
             return value;
         }
     }
 
     populateShopForm(): void {
-        let field_values = {};
+        const field_values = {};
 
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
                 if (field.type !== 'log' && field.type !== 'notes') {
                     field_values[field.column_name] = this.formatInputValues(field.type, this.shop[field.column_name]);
-                }
-                else if(field.type === 'notes') {
+                } else if (field.type === 'notes') {
                     this.addLogEntry(field);
-                }
-                else {
+                } else {
                     this.setExistingLogEntries(field);
                     this.addLogEntry(field);
                 }
@@ -127,11 +127,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     setExistingLogEntries(field): void {
-        let control = field.column_name;
+        const control = field.column_name;
 
         if (this.shop[control]) {
-            let logEntryFGs = this.shop[control].map(logEntry => this.formatFG(field, logEntry));
-            let logEntryFA = this._fb.array(logEntryFGs);
+            const logEntryFGs = this.shop[control].map(logEntry => this.formatFG(field, logEntry));
+            const logEntryFA = this._fb.array(logEntryFGs);
             this.shopForm.setControl(control, logEntryFA);
         } else {
             this.shopForm.setControl(control, this._fb.array([]));
@@ -139,26 +139,25 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     addLogEntry(field): void {
-        let control = field.column_name;
-        let fieldId = field.id;
+        const control = field.column_name;
+        const fieldId = field.id;
         let newLogEntry;
 
         // Get the existing log entry form array.
         let logEntryFA = this.getLogEntryFA(control);
-        let logEntryFGs = (logEntryFA.controls) ? logEntryFA.controls : [];
+        const logEntryFGs = (logEntryFA.controls) ? logEntryFA.controls : [];
 
         // Position the new log entry control in index 0.
         if (field.type === 'notes') {
-            let user = this._authService.currentUser.name;
-            let today = new Date();
-            let date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+            const user = this._authService.currentUser.name;
+            const today = new Date();
+            const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
             newLogEntry = new LogEntry(this.shop['id'], fieldId, user, date);
-        }
-        else {
+        } else {
             newLogEntry = new LogEntry(this.shop['id'], fieldId);
         }
 
-        let newLogEntryFG = this._fb.group(newLogEntry);
+        const newLogEntryFG = this._fb.group(newLogEntry);
         logEntryFGs.unshift(newLogEntryFG);
 
         // Set the form array control with the new log entry included.
@@ -171,8 +170,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     logEntryPristine(control): boolean {
-        let logEntryFA = this.getLogEntryFA(control);
-        let newLogEntry = logEntryFA.controls[0];
+        const logEntryFA = this.getLogEntryFA(control);
+        const newLogEntry = logEntryFA.controls[0];
 
         return newLogEntry.pristine;
     }
@@ -188,14 +187,14 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     logEntryDeleted(control): boolean {
-        let logEntryFA = this.getLogEntryFA(control);
+        const logEntryFA = this.getLogEntryFA(control);
         if (logEntryFA.pristine) {
             return false;
         }
 
-        let logEntryFGs = logEntryFA.value;
+        const logEntryFGs = logEntryFA.value;
 
-        for(let i=0; i<logEntryFGs.length; i++) {
+        for (let i = 0; i < logEntryFGs.length; i++) {
             if (logEntryFGs[i]['deleted'] === true) {
                 return true;
             }
@@ -210,8 +209,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (field.type === 'log' && (!this.logEntryPristine(field.column_name) || this.logEntryDeleted(field.column_name))) {
                     this.setExistingLogEntries(field);
                     this.addLogEntry(field);
-                }
-                else if (field.type === 'notes') {
+                } else if (field.type === 'notes') {
                     this.shopForm.setControl(field.column_name, this._fb.array([]));
                     this.addLogEntry(field);
                 }
@@ -232,10 +230,9 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     formatBody(body): void {
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if ($.inArray(field.type, ['log','notes']) != -1 && this.logEntryPristine(field.column_name)) {
-                    body[field.column_name].splice(0,1);
-                }
-                else if (field.type === 'select_multiple' && body[field.column_name] != null) {
+                if ($.inArray(field.type, ['log', 'notes']) !== -1 && this.logEntryPristine(field.column_name)) {
+                    body[field.column_name].splice(0, 1);
+                } else if (field.type === 'select_multiple' && body[field.column_name] != null) {
                     body[field.column_name] = JSON.stringify(body[field.column_name]);
                 }
             });

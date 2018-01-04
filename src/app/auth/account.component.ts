@@ -8,17 +8,17 @@ import { ICurrentUser } from './currentUser';
 import { AuthService } from '../core/auth.service';
 import { UserService } from './user.service';
 
-declare let $ : any;
+declare let $: any;
 
 function passwordMatcher(c: AbstractControl): {[key: string]: boolean} | null {
-    let newPWControl = c.get('newPW');
-    let confirmPWControl = c.get('confirmPW');
+    const newPWControl = c.get('newPW');
+    const confirmPWControl = c.get('confirmPW');
 
     if (newPWControl.pristine || confirmPWControl.pristine) {
         return null;
     }
 
-    if(newPWControl.value === confirmPWControl.value) {
+    if (newPWControl.value === confirmPWControl.value) {
         return null;
     }
     return { 'match': true };
@@ -27,7 +27,7 @@ function passwordMatcher(c: AbstractControl): {[key: string]: boolean} | null {
 @Component({
     templateUrl: 'account.component.html'
 })
-export class AccountComponent implements OnInit{
+export class AccountComponent implements OnInit {
     currentUser: ICurrentUser;
     userForm: FormGroup;
     passwordMessage: string;
@@ -67,17 +67,16 @@ export class AccountComponent implements OnInit{
 
         if (control.value && control.validator === null) {
             this.pwValidators('set');
-        }
-        else if (!pwControl.value && !newPWControl.value && !confirmPWControl.value ) {
+        } else if (!pwControl.value && !newPWControl.value && !confirmPWControl.value ) {
             this.pwValidators('clear');
             this.userForm.get('pwGroup').markAsPristine();
         }
     }
 
     pwValidators(method): void {
-        let pwGroup = this.userForm.get('pwGroup').value;
-        for (let controlTitle in pwGroup) {
-            let control = this.userForm.get(`pwGroup.${controlTitle}`);
+        const pwGroup = this.userForm.get('pwGroup').value;
+        for (const field of Object.keys(pwGroup)) {
+            const control = this.userForm.get(`pwGroup.${field}`);
             if (method === 'set') {
                 control.setValidators(Validators.required);
             } else {
@@ -89,7 +88,7 @@ export class AccountComponent implements OnInit{
     }
 
     flashMessage(message): void {
-        $('.message').removeClass("success negative");
+        $('.message').removeClass('success negative');
         $('.message').addClass(message.status);
 
         this.message = message;
@@ -110,7 +109,7 @@ export class AccountComponent implements OnInit{
 
     save(): void {
         if (this.userForm.dirty && this.userForm.valid) {
-            let body = Object.assign({}, this.currentUser, this.userForm.value);
+            const body = Object.assign({}, this.currentUser, this.userForm.value);
 
             this._userService.save(body)
             .subscribe(

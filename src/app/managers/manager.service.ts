@@ -17,8 +17,8 @@ export class ManagerService {
 
     index(): Observable<any> {
         const url = `${this.baseUrl}`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         return this._http.get(url, options)
             .do(data => this.managerList = data['data'])
@@ -27,8 +27,8 @@ export class ManagerService {
 
     show(id: number): Observable<any> {
         const url = `${this.baseUrl}/${id}`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         return this._http.get(url, options)
             // .do(data => console.log(data))
@@ -36,8 +36,8 @@ export class ManagerService {
     }
 
     save(body: any): Observable<any> {
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         if (body.id === 0) {
             return this.store(body, options);

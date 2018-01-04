@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-declare let $ : any;
+declare let $: any;
 
 @Component({
     selector: 'logging-field',
@@ -38,7 +38,7 @@ export class LoggingFieldTemplate {
 
     deleteLogEntry(i, log_entry): void {
         // confirm the user wishes to delete the item.
-        if(confirm(`Are you sure you wish to remove this entry from ${this.field.title}`)) {
+        if (confirm(`Are you sure you wish to remove this entry from ${this.field.title}`)) {
             // add classes to tr.
             $(`tr[data-logentry='${this.field.id}-${i}']`).addClass('error disabled');
 

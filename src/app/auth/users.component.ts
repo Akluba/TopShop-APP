@@ -5,11 +5,11 @@ import { Subscription } from 'rxjs/Subscription';
 import { UserService } from './user.service';
 import { ICurrentUser } from './currentUser';
 
-declare let $ : any;
+declare let $: any;
 
 class User {
-    id: number = 0;
-    active: boolean = true;
+    id = 0;
+    active = true;
     name: string = null;
     email: string = null;
     profile: string = null;
@@ -28,7 +28,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     message: {};
     userList: ICurrentUser[];
     newUser: ICurrentUser;
-    userProfiles = ['admin','employee'];
+    userProfiles = ['admin', 'employee'];
 
     constructor(private _userService: UserService, private _route: ActivatedRoute) {}
 
@@ -50,7 +50,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     flashMessage(message): void {
-        $('.message').removeClass("success negative").addClass(message.status);
+        $('.message').removeClass('success negative').addClass(message.status);
         this.message = message;
 
         $('.message')
@@ -59,7 +59,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     save(user, userForm): void {
-        let body = Object.assign({}, user, userForm.value);
+        const body = Object.assign({}, user, userForm.value);
 
         if (userForm.control.dirty && userForm.control.valid) {
             this._userService.save(body, 'manage')
@@ -76,7 +76,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         userForm.control.markAsPristine();
 
-                        this.flashMessage({text: response.message, status: 'success'})
+                        this.flashMessage({text: response.message, status: 'success'});
                     },
                     (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
                 );

@@ -9,4 +9,4 @@ import { NavComponent } from './nav.component';
     declarations : [ NavComponent ],
     exports      : [ NavComponent ]
 })
-export class NavModule {};
+export class NavModule {}

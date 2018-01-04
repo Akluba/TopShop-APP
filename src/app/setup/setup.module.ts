@@ -3,7 +3,7 @@ import { SharedModule } from '../shared/shared.module';
 import { SetupRoutingModule } from './setup-routing.module';
 
 import { SetupComponent } from './setup.component';
-import { CreateComponent } from './create.component'; 
+import { CreateComponent } from './create.component';
 import { BreadcrumbComponent } from './template-breadcrumb.component';
 import { FieldTableComponent } from './template-field-table.component';
 
@@ -18,7 +18,7 @@ import { SetupResolver } from './setup-resolver.service';
         BreadcrumbComponent,
         FieldTableComponent
     ],
-    providers: [ 
+    providers: [
         SetupService,
         SetupResolver
     ]

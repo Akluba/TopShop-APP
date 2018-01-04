@@ -17,9 +17,9 @@ export class SetupService {
 
     index(source_class: string, route: string): Observable<any> {
         const url = `${this.baseUrl}/${route}`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let params = new HttpParams().set('source_class', source_class);
-        let options = { headers: headers, params: params };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const params = new HttpParams().set('source_class', source_class);
+        const options = { headers: headers, params: params };
 
         return this._http.get(url, options)
             .do(data => {
@@ -30,8 +30,8 @@ export class SetupService {
 
     show(id: number, route: string): Observable<any> {
         const url = `${this.baseUrl}/${route}/${id}`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         return this._http.get(url, options)
             .do(data => {
@@ -42,19 +42,19 @@ export class SetupService {
 
     destroy(id: number, route): Observable<Response> {
         const url = `${this.baseUrl}/${route}/${id}`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         return this._http.delete(url, options)
             .do(data => {
-                this.children = this.children.filter(obj => obj.id != data['data']['id']);
+                this.children = this.children.filter(obj => obj.id !== data['data']['id']);
             })
             .catch(this.handleError);
     }
 
     save(body: any, route: string): Observable<any> {
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         if (body.id === 0) {
             return this.store(body, options, route);

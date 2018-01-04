@@ -17,12 +17,12 @@ import { ICurrentUser } from '../auth/currentUser';
     templateUrl: './login.component.html'
 })
 export class LoginComponent {
-    loginModal: boolean = false;
+    loginModal = false;
     credentials: any = {};
     pageError: String;
     currentUser: ICurrentUser;
 
-    constructor(private _authService:AuthService, private _router: Router) {}
+    constructor(private _authService: AuthService, private _router: Router) {}
 
     login(credentials) {
         this.pageError = null;

@@ -3,16 +3,16 @@ import { ActivatedRoute } from '@angular/router';
 
 import { SetupService } from './setup.service';
 
-declare let $ : any;
+declare let $: any;
 
-class newObject {
-    id            : number = 0;
-    title         : string = null;
-    source_class? : string;
-    source_id?    : number;
-    category_id?  : number;
-    field_id?     : number;
-    type?         : string;
+class NewObject {
+    id = 0;
+    title: string = null;
+    source_class?: string;
+    source_id?: number;
+    category_id?: number;
+    field_id?: number;
+    type?: string;
 
     constructor(source_class?, source_id?, category_id?, field_id?, type?) {
         this.source_class = source_class;
@@ -27,7 +27,7 @@ class newObject {
     selector: 'setup-create',
     templateUrl: 'create.component.html'
 })
-export class CreateComponent implements OnInit{
+export class CreateComponent implements OnInit {
     @Input() data;
 
     sourceClass: string;
@@ -36,7 +36,7 @@ export class CreateComponent implements OnInit{
     columnId: number;
 
     apiRoute: string;
-    newObject: newObject;
+    newObject: NewObject;
     objectTitle: string;
     primaryTitle: string;
     primaryType: string;
@@ -45,16 +45,16 @@ export class CreateComponent implements OnInit{
     constructor(private _route: ActivatedRoute, private _setupService: SetupService) {}
 
     ngOnInit(): void {
-        let data = this.data.response.data;
+        const data = this.data.response.data;
 
-        if (data.primary !== null){
+        if (data.primary !== null) {
             this.primaryTitle = data.primary.title;
             this.primaryType = data.primary.type;
         }
 
         this.apiRoute = this.data.apiRoute;
-        if (this.apiRoute == undefined) {
-            this.apiRoute = ($.inArray(this.primaryType, ['log','notes']) != -1) ? 'column' : 'option';
+        if (this.apiRoute === undefined) {
+            this.apiRoute = ($.inArray(this.primaryType, ['log', 'notes']) !== -1) ? 'column' : 'option';
         }
 
         this._route.params.subscribe(params => {
@@ -71,24 +71,21 @@ export class CreateComponent implements OnInit{
     initiateNewObject(): void {
         if (this.apiRoute === 'category') {
             this.objectTitle = 'Category';
-            this.newObject = new newObject(this.sourceClass);
-        }
-        else if (this.apiRoute === 'field') {
+            this.newObject = new NewObject(this.sourceClass);
+        } else if (this.apiRoute === 'field') {
             this.objectTitle = 'Field';
             this.includeType = true;
-            this.newObject = new newObject(this.sourceClass, undefined, this.categoryId, undefined, null);
-        }
-        else if (this.apiRoute === 'option') {
+            this.newObject = new NewObject(this.sourceClass, undefined, this.categoryId, undefined, null);
+        } else if (this.apiRoute === 'option') {
             this.objectTitle = 'Option';
-            let source_class = ( this.columnId ? 'CustomFieldLogColumn' : 'CustomField' );
-            let source_id = ( this.columnId ? this.columnId : this.fieldId );
+            const source_class = ( this.columnId ? 'CustomFieldLogColumn' : 'CustomField' );
+            const source_id = ( this.columnId ? this.columnId : this.fieldId );
 
-            this.newObject = new newObject(source_class, source_id);
-        }
-        else if (this.apiRoute === 'column') {
+            this.newObject = new NewObject(source_class, source_id);
+        } else if (this.apiRoute === 'column') {
             this.objectTitle = 'Column';
             this.includeType = true;
-            this.newObject = new newObject(undefined, undefined, undefined, this.fieldId, null);
+            this.newObject = new NewObject(undefined, undefined, undefined, this.fieldId, null);
         }
 
     }

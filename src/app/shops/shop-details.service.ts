@@ -10,7 +10,7 @@ export class ShopDetailsResolver implements Resolve<any> {
     constructor(private _shopService: ShopService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        let shop_id = +route.params['shop_id'];
+        const shop_id = +route.params['shop_id'];
         return this._shopService.show(shop_id);
     }
 }
@@ -19,7 +19,7 @@ export class ShopDetailsResolver implements Resolve<any> {
 export  class ShopDetailsGuard implements CanDeactivate<ShopDetailsComponent> {
     canDeactivate(component: ShopDetailsComponent): boolean {
         if (component.shopForm.dirty) {
-            let shopName = component.shop['shop_name'];
+            const shopName = component.shop['shop_name'];
             return confirm(`Navigate away and lose all changes to ${shopName}?`);
         }
         return true;

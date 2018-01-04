@@ -17,8 +17,8 @@ export class UserService {
 
     index(): Observable<any> {
         const url = `${this.baseUrl}`;
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         return this._http.get(url, options)
             .do(data => this.userList = data['data'])
@@ -26,8 +26,8 @@ export class UserService {
     }
 
     save(body: any, component: string = ''): Observable<any> {
-        let headers = new HttpHeaders({ 'Accept': 'application/json' });
-        let options = { headers: headers };
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
 
         if (body.id === 0) {
             return this.store(body, options);

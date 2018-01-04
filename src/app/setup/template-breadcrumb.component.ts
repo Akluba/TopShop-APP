@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-declare var $ :any;
+declare var $: any;
 
-class breadCrumb {
+class BreadCrumb {
     active: boolean;
     title: string;
     link: string;
@@ -19,7 +19,7 @@ class breadCrumb {
     selector: 'setup-breadcrumb',
     templateUrl: 'template-breadcrumb.component.html'
 })
-export class BreadcrumbComponent implements OnInit{
+export class BreadcrumbComponent implements OnInit {
     @Input() data;
 
     ancestor;
@@ -39,7 +39,7 @@ export class BreadcrumbComponent implements OnInit{
     constructor(private _route: ActivatedRoute) {}
 
     ngOnInit(): void {
-        let data = this.data.response.data;
+        const data = this.data.response.data;
 
         this.ancestor = data.ancestor;
         this.parent   = data.parent;
@@ -47,8 +47,8 @@ export class BreadcrumbComponent implements OnInit{
         this.children = data.children;
 
         this.apiRoute = this.data.apiRoute;
-        if (this.apiRoute == undefined) {
-            this.apiRoute = ($.inArray(data.primary.type, ['log','notes']) != -1) ? 'column' : 'option';
+        if (this.apiRoute === undefined) {
+            this.apiRoute = ($.inArray(data.primary.type, ['log', 'notes']) !== -1) ? 'column' : 'option';
         }
 
         this._route.params.subscribe(params => {
@@ -65,32 +65,33 @@ export class BreadcrumbComponent implements OnInit{
     configBreadCrumbs(): void {
         if (this.apiRoute === 'category') {
             this.breadCrumbs = [
-                new breadCrumb(true, 'Categories', null)
+                new BreadCrumb(true, 'Categories', null)
             ];
-        }
-        else if (this.apiRoute === 'field') {
+        } else if (this.apiRoute === 'field') {
             this.breadCrumbs = [
-                new breadCrumb(false, `Category: ${this.primary.title}`, [ '/setup', this.sourceClass ]),
-                new breadCrumb(true, 'Fields', null)
+                new BreadCrumb(false, `Category: ${this.primary.title}`, [ '/setup', this.sourceClass ]),
+                new BreadCrumb(true, 'Fields', null)
             ];
-        }
-        else if (this.apiRoute === 'option') {
+        } else if (this.apiRoute === 'option') {
             this.breadCrumbs = [
-                new breadCrumb(false, `Category: ${this.primary.title}`, ['/setup', this.sourceClass]),
-                new breadCrumb(false, `Field: ${this.parent.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
-                new breadCrumb(true, 'Options', null)
+                new BreadCrumb(false, `Category: ${this.primary.title}`, ['/setup', this.sourceClass]),
+                new BreadCrumb(false, `Field: ${this.parent.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
+                new BreadCrumb(true, 'Options', null)
             ];
 
             if (this.columnId) {
-                let column = new breadCrumb(false, `Column: ${this.primary.title}`, ['/setup', this.sourceClass, this.categoryId, this.fieldId ]);
+                const column = new BreadCrumb(
+                    false,
+                    `Column: ${this.primary.title}`,
+                    ['/setup', this.sourceClass, this.categoryId, this.fieldId ]
+                );
                 this.breadCrumbs.splice(2, 0, column);
             }
-        }
-        else if (this.apiRoute === 'column') {
+        } else if (this.apiRoute === 'column') {
             this.breadCrumbs = [
-                new breadCrumb(false, `Category: ${this.parent.title}`, ['/setup', this.sourceClass]),
-                new breadCrumb(false, `Field: ${this.primary.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
-                new breadCrumb(true, 'Columns', null)
+                new BreadCrumb(false, `Category: ${this.parent.title}`, ['/setup', this.sourceClass]),
+                new BreadCrumb(false, `Field: ${this.primary.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
+                new BreadCrumb(true, 'Columns', null)
             ];
         }
     }

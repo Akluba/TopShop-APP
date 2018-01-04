@@ -20,11 +20,11 @@ import { AuthService } from './core/auth.service';
 </ng-template>
 `
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   constructor(private _authService: AuthService) {}
 
   ngOnInit(): void {
-    if (this._authService.isAuthenticated()){
+    if (this._authService.isAuthenticated()) {
       this._authService.getCurrentUser().subscribe();
     }
 

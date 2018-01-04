@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { ShopService } from './shop.service';
 
-declare let $ : any;
+declare let $: any;
 
 class Shop {
-    id              : number = 0;        
-    shop_name       : string = null;
+    id = 0;
+    shop_name: string = null;
 }
 
 @Component({
@@ -23,7 +23,7 @@ export class ShopCreateComponent implements OnInit {
     }
 
     initiateModal(): void {
-        // temp-fix: check to see if a create modal already exists. 
+        // temp-fix: check to see if a create modal already exists.
         // if so, remove the previous element.
         if ($('.shop-create').length > 1) {
             $('.shop-create').slice(1).remove();

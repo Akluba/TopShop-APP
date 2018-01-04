@@ -19,4 +19,4 @@ import { DashComponent } from './dash.component';
 
     ]
 })
-export class DashModule {};
+export class DashModule {}

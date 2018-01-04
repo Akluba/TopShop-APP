@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { ManagerService } from './manager.service';
 
-declare let $ : any;
+declare let $: any;
 
 class Manager {
-    id           : number = 0;
-    manager_name : string = null;
+    id = 0;
+    manager_name: string = null;
 }
 
 @Component({

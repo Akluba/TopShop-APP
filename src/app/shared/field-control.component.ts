@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-declare let $ : any;
+declare let $: any;
 
 @Component({
     selector: 'field-control',
@@ -55,7 +55,7 @@ declare let $ : any;
 </div>
 `
 })
-export class FieldControlTemplate implements AfterViewInit{
+export class FieldControlTemplate implements AfterViewInit {
     @Input()
     public formGroup: FormGroup;
 

@@ -68,9 +68,9 @@ export class NoteFeedTemplate {
     constructor(private _router: Router) {}
 
     metaRecordExist(columns, note): boolean {
-        for(let i=0; i< columns.length; i++) {
+        for (let i = 0; i < columns.length; i++) {
             if (!columns[i]['system'] && note[columns[i]['column_name']]) {
-                return true
+                return true;
             }
         }
 
@@ -82,9 +82,9 @@ export class NoteFeedTemplate {
     }
 
     linkText(column, note): string {
-        let linkName = (column.type === 'manager_link') ? 'manager_name' : 'shop_name';
-        let value = note[column.column_name];
-        let options = column.options;
+        const linkName = (column.type === 'manager_link') ? 'manager_name' : 'shop_name';
+        const value = note[column.column_name];
+        const options = column.options;
 
         return options[options.indexOf(options.find(x => x.id === +value))][linkName];
     }

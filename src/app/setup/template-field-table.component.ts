@@ -1,16 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
 import { SetupService } from './setup.service';
 
-declare var $ :any;
+declare var $: any;
 
 @Component({
     selector: 'setup-field-table',
     templateUrl: 'template-field-table.component.html'
 })
-export class FieldTableComponent {
+export class FieldTableComponent implements OnInit {
     @Input() data;
 
     children;
@@ -18,22 +18,22 @@ export class FieldTableComponent {
     navigateText: string;
     message: {};
 
-    constructor(private _route: ActivatedRoute, private _router: Router, private _setupService: SetupService,) {}
+    constructor(private _route: ActivatedRoute, private _router: Router, private _setupService: SetupService, ) {}
 
     ngOnInit(): void {
-        let data = this.data.response.data;
+        const data = this.data.response.data;
         this.children = data.children;
 
         this.apiRoute = this.data.apiRoute;
-        if (this.apiRoute == undefined) {
-            this.apiRoute = ($.inArray(data.primary.type, ['log','notes']) != -1) ? 'column' : 'option';
+        if (this.apiRoute === undefined) {
+            this.apiRoute = ($.inArray(data.primary.type, ['log', 'notes']) !== -1) ? 'column' : 'option';
         }
 
         this.navigateText = (this.apiRoute === 'category' ? 'Edit Fields' : 'Edit Field');
     }
 
     delete(child): void {
-        if(confirm(`Are you sure you want to delete: ${child.title}?`)) {
+        if (confirm(`Are you sure you want to delete: ${child.title}?`)) {
             this._setupService.destroy(child.id, this.apiRoute)
                 .subscribe(
                     res => this.onSaveComplete(res),
@@ -47,7 +47,7 @@ export class FieldTableComponent {
             .subscribe(
                 res => this.onSaveComplete(res),
                 (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
-            )
+            );
     }
 
     onSaveComplete(res: any): void {
@@ -60,12 +60,12 @@ export class FieldTableComponent {
         this.message = message;
 
         $('.message')
-        .transition('fade up',1000)
-        .transition('fade up',1000);
+        .transition('fade up', 1000)
+        .transition('fade up', 1000);
     }
 
     canNavigate(child_type): boolean {
-        if (this.apiRoute == 'category' || ($.inArray(child_type, ['select', 'select_multiple','log','notes']) != -1)) {
+        if (this.apiRoute === 'category' || ($.inArray(child_type, ['select', 'select_multiple', 'log', 'notes']) !== -1)) {
             return true;
         }
 
