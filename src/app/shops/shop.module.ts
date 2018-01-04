@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShopRoutingModule } from './shop-routing.module';
 
 // Feature Components
@@ -17,6 +17,7 @@ import { ShopFilterPipe } from './shop-filter.pipe';
 @NgModule({
     imports: [
         SharedModule,
+        FormsModule,
         ReactiveFormsModule,
         ShopRoutingModule
     ],

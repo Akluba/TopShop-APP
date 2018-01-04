@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 import { SetupRoutingModule } from './setup-routing.module';
 
 import { SetupComponent } from './setup.component';
@@ -11,7 +12,11 @@ import { SetupService } from './setup.service';
 import { SetupResolver } from './setup-resolver.service';
 
 @NgModule({
-    imports: [ SharedModule, SetupRoutingModule ],
+    imports: [
+        SharedModule,
+        FormsModule,
+        SetupRoutingModule
+    ],
     declarations: [
         SetupComponent,
         CreateComponent,

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { NoteFeedTemplate } from './note-feed.component';
@@ -20,7 +20,6 @@ import { FieldControlTemplate } from './field-control.component';
     ],
     exports: [
         CommonModule,
-        FormsModule,
         NoteFeedTemplate,
         LoggingFieldTemplate,
         FieldControlTemplate
