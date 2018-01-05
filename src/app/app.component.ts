@@ -6,7 +6,7 @@ import { AuthService } from './core/auth.service';
   selector: 'app-root',
   template:
 `
-<div *ngIf="_authService.isAuthenticated() && _authService.currentUser; then authenticatedUI else login"></div>
+<div *ngIf="authService.isAuthenticated() && authService.currentUser; then authenticatedUI else login"></div>
 
 <ng-template #login>
   <router-outlet></router-outlet>
@@ -21,11 +21,11 @@ import { AuthService } from './core/auth.service';
 `
 })
 export class AppComponent implements OnInit {
-  constructor(private _authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
-    if (this._authService.isAuthenticated()) {
-      this._authService.getCurrentUser().subscribe();
+    if (this.authService.isAuthenticated()) {
+      this.authService.getCurrentUser().subscribe();
     }
 
   }

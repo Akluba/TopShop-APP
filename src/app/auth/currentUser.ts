@@ -3,4 +3,5 @@ export interface ICurrentUser {
     name: string;
     email: string;
     profile: string;
+    active: boolean;
 }

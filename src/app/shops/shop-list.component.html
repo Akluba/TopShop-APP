@@ -17,7 +17,7 @@
     <div class="ui secondary segment">
         <!-- Shop List -->
         <div class="ui divided items">
-            <div class="item" *ngFor="let shop of _shopService.shopList | shopFilter:listFilter">
+            <div class="item" *ngFor="let shop of shopService.shopList | shopFilter:listFilter">
                 <div class="ui grid middle aligned content">
                     <a [routerLink]="['/shops', shop.id]">{{shop.shop_name}}</a>
                 </div>

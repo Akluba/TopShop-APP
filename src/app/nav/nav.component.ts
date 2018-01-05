@@ -7,10 +7,10 @@ import { AuthService } from '../core/auth.service';
     templateUrl: 'nav.component.html'
 })
 export class NavComponent {
-    constructor(private _authService: AuthService, private _router: Router) {}
+    constructor(public authService: AuthService, private _router: Router) {}
 
     logout(): void {
-        this._authService.logout()
+        this.authService.logout()
             .subscribe(
                 () => this._router.navigate(['/login'])
             );

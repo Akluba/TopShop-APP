@@ -7,5 +7,5 @@ import { ManagerService } from './manager.service';
 })
 export class ManagerListComponent {
     listFilter: string;
-    constructor(private _managerService: ManagerService) {}
+    constructor(public managerService: ManagerService) {}
 }

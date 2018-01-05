@@ -10,8 +10,8 @@ import 'rxjs/add/observable/of';
 
 @Injectable()
 export class SetupService {
+    children = [];
     private baseUrl = 'http://localhost:8888/api';
-    private children = [];
 
     constructor(private _http: HttpClient) {}
 

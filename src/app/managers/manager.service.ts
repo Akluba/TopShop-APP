@@ -10,8 +10,8 @@ import 'rxjs/add/observable/of';
 
 @Injectable()
 export class ManagerService {
+    managerList = [];
     private baseUrl = 'http://localhost:8888/api/managers';
-    private managerList = [];
 
     constructor(private _http: HttpClient) {}
 

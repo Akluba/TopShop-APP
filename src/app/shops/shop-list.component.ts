@@ -11,7 +11,7 @@ export class ShopListComponent implements OnInit, OnDestroy {
     listFilter: string;
     shops: any[];
     private sub: Subscription;
-    constructor (private _route: ActivatedRoute, private _shopService: ShopService) {}
+    constructor (private _route: ActivatedRoute, public shopService: ShopService) {}
 
     ngOnInit(): void {
         this.sub = this._route.data.subscribe(data => {

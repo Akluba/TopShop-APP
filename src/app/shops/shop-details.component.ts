@@ -40,7 +40,7 @@ export class LogEntry {
     templateUrl: 'shop-details.component.html'
 })
 export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
-    shop: {};
+    shop;
     formElements;
     shopForm: FormGroup;
     message: {};

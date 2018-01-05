@@ -14,7 +14,7 @@ class Shop {
     templateUrl : 'shop-create.component.html'
 })
 export class ShopCreateComponent implements OnInit {
-    newShop: {};
+    newShop;
 
     constructor(private _shopService: ShopService) {}
 

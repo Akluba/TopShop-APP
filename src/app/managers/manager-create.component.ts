@@ -14,7 +14,7 @@ class Manager {
     templateUrl : 'manager-create.component.html'
 })
 export class ManagerCreateComponent implements OnInit {
-    newManager: {};
+    newManager;
 
     constructor(private _managerService: ManagerService) {}
 

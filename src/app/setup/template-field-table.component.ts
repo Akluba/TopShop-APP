@@ -18,7 +18,7 @@ export class FieldTableComponent implements OnInit {
     navigateText: string;
     message: {};
 
-    constructor(private _route: ActivatedRoute, private _router: Router, private _setupService: SetupService, ) {}
+    constructor(private _route: ActivatedRoute, private _router: Router, public setupService: SetupService, ) {}
 
     ngOnInit(): void {
         const data = this.data.response.data;
@@ -34,7 +34,7 @@ export class FieldTableComponent implements OnInit {
 
     delete(child): void {
         if (confirm(`Are you sure you want to delete: ${child.title}?`)) {
-            this._setupService.destroy(child.id, this.apiRoute)
+            this.setupService.destroy(child.id, this.apiRoute)
                 .subscribe(
                     res => this.onSaveComplete(res),
                     (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
@@ -43,7 +43,7 @@ export class FieldTableComponent implements OnInit {
     }
 
     save(child): void {
-        this._setupService.save(child, this.apiRoute)
+        this.setupService.save(child, this.apiRoute)
             .subscribe(
                 res => this.onSaveComplete(res),
                 (error: any) => this.flashMessage({text: <any>error, status: 'negative'})

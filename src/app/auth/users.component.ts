@@ -30,7 +30,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     newUser: ICurrentUser;
     userProfiles = ['admin', 'employee'];
 
-    constructor(private _userService: UserService, private _route: ActivatedRoute) {}
+    constructor(public userService: UserService, private _route: ActivatedRoute) {}
 
     ngOnInit(): void {
         this.sub = this._route.data.subscribe(data => {
@@ -62,7 +62,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
         const body = Object.assign({}, user, userForm.value);
 
         if (userForm.control.dirty && userForm.control.valid) {
-            this._userService.save(body, 'manage')
+            this.userService.save(body, 'manage')
                 .subscribe(
                     response => {
                         if (body.id === 0) {

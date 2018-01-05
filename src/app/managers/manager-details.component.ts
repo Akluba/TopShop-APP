@@ -40,7 +40,7 @@ export class LogEntry {
     templateUrl: 'manager-details.component.html'
 })
 export class ManagerDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
-    manager: {};
+    manager;
     formElements;
     managerForm: FormGroup;
     message: {};

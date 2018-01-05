@@ -17,7 +17,7 @@
     <div class="ui secondary segment">
         <!-- Manager List -->
         <div class="ui divided items">
-            <div class="item" *ngFor="let manager of _managerService.managerList | managerFilter:listFilter">
+            <div class="item" *ngFor="let manager of managerService.managerList | managerFilter:listFilter">
                 <div class="ui grid middle aligned content">
                     <a [routerLink]="['/managers', manager.id]">{{manager.manager_name}}</a>
                 </div>
