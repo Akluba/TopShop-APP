@@ -74,8 +74,8 @@ export class BreadcrumbComponent implements OnInit {
             ];
         } else if (this.apiRoute === 'option') {
             this.breadCrumbs = [
-                new BreadCrumb(false, `Category: ${this.primary.title}`, ['/setup', this.sourceClass]),
-                new BreadCrumb(false, `Field: ${this.parent.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
+                new BreadCrumb(false, `Category: ${this.parent.title}`, ['/setup', this.sourceClass]),
+                new BreadCrumb(false, `Field: ${this.primary.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
                 new BreadCrumb(true, 'Options', null)
             ];
 

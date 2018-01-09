@@ -10,7 +10,7 @@ import { ICurrentUser } from '../auth/currentUser';
 
 @Injectable()
 export class AuthService {
-    private baseUrl = 'http://localhost:8888/api/auth';
+    private baseUrl = 'http://www.api.topshop-inc.com/api/auth';
     currentUser: ICurrentUser;
     constructor(private _http: HttpClient) { }
 
@@ -62,7 +62,7 @@ export class AuthService {
     }
 
     // refresh(): Observable<any> {
-    //     let apiUrl = 'http://localhost:8888/api/auth/refresh';
+    //     let apiUrl = 'http://www.api.topshop-inc.com/api/auth/refresh';
     //     return this._http.post<any>(apiUrl, null, {
     //         headers: new HttpHeaders({
     //             'content-type': 'application/x-www-form-urlencoded',

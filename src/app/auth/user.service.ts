@@ -10,7 +10,7 @@ import { ICurrentUser } from './currentUser';
 
 @Injectable()
 export class UserService {
-    private baseUrl = 'http://localhost:8888/api/users';
+    private baseUrl = 'http://www.api.topshop-inc.com/api/users';
     currentUser: ICurrentUser;
     userList: ICurrentUser[];
     constructor(private _http: HttpClient) {}

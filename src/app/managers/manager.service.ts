@@ -11,7 +11,7 @@ import 'rxjs/add/observable/of';
 @Injectable()
 export class ManagerService {
     managerList = [];
-    private baseUrl = 'http://localhost:8888/api/managers';
+    private baseUrl = 'http://www.api.topshop-inc.com/api/managers';
 
     constructor(private _http: HttpClient) {}
 

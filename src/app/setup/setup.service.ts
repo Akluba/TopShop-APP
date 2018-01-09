@@ -11,7 +11,7 @@ import 'rxjs/add/observable/of';
 @Injectable()
 export class SetupService {
     children = [];
-    private baseUrl = 'http://localhost:8888/api';
+    private baseUrl = 'http://www.api.topshop-inc.com/api';
 
     constructor(private _http: HttpClient) {}
 
