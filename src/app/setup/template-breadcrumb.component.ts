@@ -73,19 +73,19 @@ export class BreadcrumbComponent implements OnInit {
                 new BreadCrumb(true, 'Fields', null)
             ];
         } else if (this.apiRoute === 'option') {
-            this.breadCrumbs = [
-                new BreadCrumb(false, `Category: ${this.parent.title}`, ['/setup', this.sourceClass]),
-                new BreadCrumb(false, `Field: ${this.primary.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
-                new BreadCrumb(true, 'Options', null)
-            ];
-
             if (this.columnId) {
-                const column = new BreadCrumb(
-                    false,
-                    `Column: ${this.primary.title}`,
-                    ['/setup', this.sourceClass, this.categoryId, this.fieldId ]
-                );
-                this.breadCrumbs.splice(2, 0, column);
+                this.breadCrumbs = [
+                    new BreadCrumb(false, `Category: ${this.ancestor.title}`, ['/setup', this.sourceClass]),
+                    new BreadCrumb(false, `Field: ${this.parent.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
+                    new BreadCrumb(false, `Column: ${this.primary.title}`, ['/setup', this.sourceClass, this.categoryId, this.fieldId ]),
+                    new BreadCrumb(true, 'Options', null)
+                ];
+            } else {
+                this.breadCrumbs = [
+                    new BreadCrumb(false, `Category: ${this.parent.title}`, ['/setup', this.sourceClass]),
+                    new BreadCrumb(false, `Field: ${this.primary.title}`, [ '/setup', this.sourceClass, this.categoryId ]),
+                    new BreadCrumb(true, 'Options', null)
+                ];
             }
         } else if (this.apiRoute === 'column') {
             this.breadCrumbs = [
