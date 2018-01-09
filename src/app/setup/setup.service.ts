@@ -74,9 +74,9 @@ export class SetupService {
 
     private update(body: any, options: any, route: string): Observable<any> {
         const url = `${this.baseUrl}/${route}/${body.id}`;
+        body._method = 'PUT';
 
-        return this._http.put(url, body, options)
-            .do(data => data['method'] = 'update')
+        return this._http.post(url, body, options)
             .catch(this.handleError);
     }
 

@@ -45,8 +45,8 @@ export class UserService {
     private update(body: any, options: any, component: string): Observable<any> {
         const url = `${this.baseUrl}/${body.id}`;
         body.component = component;
-        return this._http.put(url, body, options)
-            .do(res => console.log(res))
+        body._method = 'PUT';
+        return this._http.post(url, body, options)
             .catch(this.handleError);
     }
 

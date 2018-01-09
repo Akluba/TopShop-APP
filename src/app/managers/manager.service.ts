@@ -54,8 +54,8 @@ export class ManagerService {
 
     private update(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}/${body.id}`;
-        return this._http.put(url, body, options)
-            .do(res => console.log(res))
+        body._method = 'PUT';
+        return this._http.post(url, body, options)
             .catch(this.handleError);
     }
 
