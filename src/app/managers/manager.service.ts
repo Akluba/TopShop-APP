@@ -31,7 +31,18 @@ export class ManagerService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            // .do(data => console.log(data))
+            .catch(this.handleError);
+    }
+
+    destroy(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.delete(url, options)
+            .do(data =>
+                this.managerList = this.managerList.filter(obj => obj.id !== data['data']['id'])
+            )
             .catch(this.handleError);
     }
 

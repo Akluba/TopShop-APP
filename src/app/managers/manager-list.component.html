@@ -19,6 +19,7 @@
         <div class="ui divided items">
             <div class="item" *ngFor="let manager of managerService.managerList | managerFilter:listFilter">
                 <div class="ui grid middle aligned content">
+                    <i class="middle aligned red large minus link icon" (click)="delete(manager)"></i>
                     <a [routerLink]="['/managers', manager.id]">{{manager.manager_name}}</a>
                 </div>
             </div>
