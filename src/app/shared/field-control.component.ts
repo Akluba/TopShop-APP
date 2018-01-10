@@ -20,6 +20,7 @@ declare let $: any;
     <!-- Select -->
     <select *ngSwitchCase="'select'" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
+        <option value="">Select an Option</option>
         <option *ngFor="let option of control.options"
             value="{{ option.id }}">{{ option.title }}
         </option>
@@ -39,6 +40,7 @@ declare let $: any;
     <!-- Manager Link -->
     <select *ngSwitchCase="'manager_link'" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
+        <option value="">Select a Manager</option>
         <option *ngFor="let option of control.options"
             value="{{ option.id }}">{{ option.manager_name }}
         </option>
@@ -47,6 +49,7 @@ declare let $: any;
     <!-- Shop Link -->
     <select *ngSwitchCase="'shop_link'" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
+        <option value="">Select a Shop</option>
         <option *ngFor="let option of control.options"
             value="{{ option.id }}">{{ option.shop_name }}
         </option>
