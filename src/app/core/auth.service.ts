@@ -6,11 +6,12 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 
+import { environment } from '../../environments/environment';
 import { ICurrentUser } from '../auth/currentUser';
 
 @Injectable()
 export class AuthService {
-    private baseUrl = 'http://www.api.topshop-inc.com/api/auth';
+    private baseUrl = `${environment.url}/auth`;
     currentUser: ICurrentUser;
     constructor(private _http: HttpClient) { }
 
