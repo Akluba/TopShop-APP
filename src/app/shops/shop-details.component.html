@@ -1,16 +1,20 @@
-<h2 class="ui header">{{ shop.shop_name }}</h2>
-
-<!-- Shop Categories Secondary menu -->
-<div class="ui pointing secondary menu">
-    <a class="item" *ngFor="let element of formElements; let tab_i=index"
-        [ngClass]="{'active': tab_i == 0}"
-        attr.data-tab="{{ tab_i }}">{{ element.title }}</a>
-</div>
-
 <form class="ui form"
     novalidate
     (ngSubmit)="save()"
     [formGroup]="shopForm">
+
+    <div class="ui massive input" [ngClass]="{'transparent': shopNameField}">
+        <input type="text" formControlName="shop_name"
+            (blur)="shopNameField = true"
+            (focus)="shopNameField = false" />
+    </div>
+
+    <!-- Shop Categories Secondary menu -->
+    <div class="ui pointing secondary menu">
+        <a class="item" *ngFor="let element of formElements; let tab_i=index"
+            [ngClass]="{'active': tab_i == 0}"
+            attr.data-tab="{{ tab_i }}">{{ element.title }}</a>
+    </div>
 
     <!-- Form Actions -->
     <div class="ui grid middle aligned content" style="min-height: 75px;">

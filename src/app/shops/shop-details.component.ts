@@ -41,6 +41,7 @@ export class LogEntry {
 })
 export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     shop;
+    shopNameField = true;
     formElements;
     shopForm: FormGroup;
     message: {};
@@ -82,6 +83,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
+        field_controls['shop_name'] = null;
+
         // Build the shopForm controls.
         this.shopForm = this._fb.group(field_controls);
     }
@@ -111,6 +114,8 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
         });
+
+        field_values['shop_name'] = this.shop.shop_name;
 
         // Populate shopForm with data.
         this.shopForm.patchValue(field_values);

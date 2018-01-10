@@ -41,6 +41,7 @@ export class LogEntry {
 })
 export class ManagerDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     manager;
+    managerNameField = true;
     formElements;
     managerForm: FormGroup;
     message: {};
@@ -82,6 +83,8 @@ export class ManagerDetailsComponent implements OnInit, AfterViewInit, OnDestroy
             });
         });
 
+        field_controls['manager_name'] = null;
+
         // Build the shopForm controls.
         this.managerForm = this._fb.group(field_controls);
     }
@@ -111,6 +114,8 @@ export class ManagerDetailsComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
         });
+
+        field_values['manager_name'] = this.manager.manager_name;
 
         // Populate shopForm with data.
         this.managerForm.patchValue(field_values);
