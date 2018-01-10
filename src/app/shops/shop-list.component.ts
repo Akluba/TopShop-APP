@@ -22,4 +22,11 @@ export class ShopListComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
+
+    delete(shop): void {
+        if (confirm(`Are you sure you want to delete: ${shop.shop_name}?`)) {
+            this.shopService.destroy(shop.id)
+                .subscribe();
+        }
+    }
 }

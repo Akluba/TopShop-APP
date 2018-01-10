@@ -19,6 +19,9 @@
         <div class="ui divided items">
             <div class="item" *ngFor="let shop of shopService.shopList | shopFilter:listFilter">
                 <div class="ui grid middle aligned content">
+                    <i class="middle aligned red large minus link icon"
+                        (click)="delete(shop)">
+                    </i>
                     <a [routerLink]="['/shops', shop.id]">{{shop.shop_name}}</a>
                 </div>
             </div>
