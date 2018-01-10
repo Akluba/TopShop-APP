@@ -17,7 +17,7 @@
     <div class="ui secondary segment">
         <!-- Shop List -->
         <div class="ui divided items">
-            <div class="item" *ngFor="let shop of shopService.shopList | shopFilter:listFilter">
+            <div class="item" *ngFor="let shop of shopService.shopList | shopSort | shopFilter:listFilter">
                 <div class="ui grid middle aligned content">
                     <i class="middle aligned red large minus link icon"
                         (click)="delete(shop)">

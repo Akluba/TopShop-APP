@@ -12,7 +12,8 @@ import { ShopDetailsComponent } from './shop-details.component';
 import { ShopService } from './shop.service';
 import { ShopListResolver } from './shop-list-resolver.service';
 import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
-import { ShopFilterPipe } from './shop-filter.pipe';
+import { ShopFilterPipe } from './shop.pipe';
+import { ShopSortPipe } from './shop.pipe';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { ShopFilterPipe } from './shop-filter.pipe';
         ShopListComponent,
         ShopCreateComponent,
         ShopDetailsComponent,
-        ShopFilterPipe
+        ShopFilterPipe,
+        ShopSortPipe
     ],
     providers: [
         ShopService,
