@@ -37,6 +37,16 @@ declare let $: any;
     <!-- Textarea -->
     <textarea *ngSwitchCase="'textarea'" rows="2" formControlName="{{ control.column_name }}"></textarea>
 
+    <!-- Note Text -->
+    <div *ngSwitchCase="'note_text'">
+        <textarea formControlName="{{ control.column_name }}"
+            rows="2"
+            placeholder="Enter a new note.."
+            style="border: none; resize: none;">
+        </textarea>
+        <div class="ui divider"></div>
+    </div>
+
     <!-- Manager Link -->
     <select *ngSwitchCase="'manager_link'" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">

@@ -1,53 +1,57 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
+declare let $: any;
+
 @Component({
     selector: 'note-feed',
+    styles: [`
+    .ui.feed .event { background: #fff; margin-bottom: 10px; }
+    `],
     template:
 `
-<div class="ui feed">
-
-    <!-- Create New Note -->
-    <div class="ui secondary segment">
+<!-- Create New Note -->
+<div class="ui segment">
+    <div *ngFor="let note of notes.controls | slice:0:1">
         <div *ngFor="let column of field.columns">
-            <div class="ui grid middle aligned content"
-                *ngIf="!column.system || column.column_name === 'log_field3'">
-                <div class="right aligned three wide column">
-                    <label>{{ column.title }}</label>
-                </div>
-                <div class="twelve wide column"
-                    *ngFor="let note of newNote.controls">
-                    <field-control
-                        [formGroup]="note"
-                        [control]="column">
-                    </field-control>
-                </div>
+            <div *ngIf="!column.system || column.column_name === 'log_field3'">
+                <field-control
+                    [formGroup]="note"
+                    [control]="column">
+                </field-control>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Existing Notes -->
-    <div class="event" *ngFor="let note of existingNotes">
-        <div class="label"></div>
+<!-- Existing Note Feed -->
+<div class="ui feed">
+    <div class="ui segment event" *ngFor="let note of notes.controls | slice:1; let i=index"
+        attr.data-note="{{ field.id }}-{{i}}">
+        <div class="label">
+            <i class="middle aligned red large minus link icon"
+                (click)="deleteNote(i, note)">
+            </i>
+        </div>
         <div class="content">
             <div class="summary">
-                <div class="user">{{ note.log_field1 }}</div>
-                <div class="date">{{ note.log_field2 }}</div>
+                <div class="user">{{ note.get('log_field1').value }}</div>
+                <div class="date">{{ note.get('log_field2').value }}</div>
             </div>
-            <div class="extra text">{{ note.log_field3 }}</div>
+            <div class="extra text">
+                {{ note.get('log_field3').value }}
+            </div>
             <div class="meta" *ngIf="metaRecordExist(field.columns, note)">
                 <span *ngFor="let column of metaColumns(field.columns, note)" [ngSwitch]="column.type">
 
-                    <!-- Manager Link -->
                     <a *ngSwitchCase="'manager_link'"
-                        [routerLink]="['/managers', note[column.column_name]]">
+                        [routerLink]="['/managers', note.value[column.column_name]]">
                         <i class="blue linkify icon"></i>
                         {{ linkText(column, note) }}
                     </a>
 
-                    <!-- Shop Link -->
                     <a *ngSwitchCase="'shop_link'"
-                        [routerLink]="['/shops', note[column.column_name]]">
+                        [routerLink]="['/shops', note.value[column.column_name]]">
                         <i class="blue linkify icon"></i>
                         {{ linkText(column, note) }}
                     </a>
@@ -56,20 +60,17 @@ import { Router } from '@angular/router';
             </div>
         </div>
     </div>
-
 </div>
 `
 })
 export class NoteFeedTemplate {
     @Input() field;
-    @Input() existingNotes;
-    @Input() newNote;
-
+    @Input() notes;
     constructor(private _router: Router) {}
 
     metaRecordExist(columns, note): boolean {
         for (let i = 0; i < columns.length; i++) {
-            if (!columns[i]['system'] && note[columns[i]['column_name']]) {
+            if (!columns[i]['system'] && note.value[columns[i]['column_name']]) {
                 return true;
             }
         }
@@ -83,10 +84,25 @@ export class NoteFeedTemplate {
 
     linkText(column, note): string {
         const linkName = (column.type === 'manager_link') ? 'manager_name' : 'shop_name';
-        const value = note[column.column_name];
+        const value = note.value[column.column_name];
         const options = column.options;
 
         return options[options.indexOf(options.find(x => x.id === +value))][linkName];
+    }
+
+    deleteNote(i, note): void {
+        console.log(i);
+        // confirm the user wishes to delete the item.
+        if (confirm(`Are you sure you wish to remove this note from ${this.field.title}`)) {
+            // add disabled classes.
+            $(`div[data-note='${this.field.id}-${i}']`).addClass('disabled');
+
+            // add key to form group to signify marked to delete.
+            note.patchValue({deleted: true});
+
+            // mark log entry as dirty so changes can be saved.
+            note.markAsDirty();
+        }
     }
 
 }

@@ -17,7 +17,7 @@ declare let $: any;
         </thead>
         <tbody>
             <tr *ngFor="let log_entry of logEntries.controls; let i=index"
-                attr.data-logentry="{{ field.id}}-{{i}}">
+                attr.data-logentry="{{ field.id }}-{{i}}">
                 <td><i class="red large minus link icon" *ngIf="i!==0"
                     (click)="deleteLogEntry(i, log_entry)"></i></td>
                 <td *ngFor="let column of field.columns">
