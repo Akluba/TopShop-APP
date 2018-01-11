@@ -3,7 +3,7 @@
     (ngSubmit)="save()"
     [formGroup]="shopForm">
 
-    <div class="ui massive input" [ngClass]="{'transparent': shopNameField}">
+    <div class="ui fluid massive input" [ngClass]="{'transparent': shopNameField}">
         <input type="text" formControlName="shop_name"
             (blur)="shopNameField = true"
             (focus)="shopNameField = false" />

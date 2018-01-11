@@ -3,7 +3,7 @@
     (ngSubmit)="save()"
     [formGroup]="managerForm">
 
-    <div class="ui massive input" [ngClass]="{'transparent': managerNameField}">
+    <div class="ui fluid massive input" [ngClass]="{'transparent': managerNameField}">
         <input type="text" formControlName="manager_name"
             (blur)="managerNameField = true"
             (focus)="managerNameField = false" />
