@@ -42,21 +42,20 @@
         <ng-template #noteTemplate>
             <div class="ui grid">
                 <div class="four wide column left floated">
-                    <div class="ui vertical pointing notes tiny menu">
+                    <div class="ui fluid vertical pointing menu notes">
                         <a class="item" *ngFor="let field of element.fields; let note_i=index"
                         [ngClass]="{'active': note_i == 0}"
                         attr.data-tab="{{ tab_i }}/{{ note_i }}">{{ field.title }}</a>
                     </div>
                 </div>
                 <div class="twelve wide column right floated">
-                    <div class="ui tab segment" *ngFor="let field of element.fields; let note_i=index" style="margin: 0;"
+                    <div class="ui tab secondary segment" *ngFor="let field of element.fields; let note_i=index" style="margin: 0;"
                         [ngClass]="{'active': note_i == 0}"
                         attr.data-tab="{{ tab_i }}/{{ note_i }}">
                         <note-feed
                             formArrayName="{{ field.column_name }}"
                             [field]="field"
-                            [existingNotes]="shop[field.column_name]"
-                            [newNote]="shopForm.get(field.column_name)">
+                            [notes]="shopForm.get(field.column_name)">
                         </note-feed>
                     </div>
                 </div>

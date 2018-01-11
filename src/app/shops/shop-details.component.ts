@@ -104,13 +104,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if (field.type !== 'log' && field.type !== 'notes') {
-                    field_values[field.column_name] = this.formatInputValues(field.type, this.shop[field.column_name]);
-                } else if (field.type === 'notes') {
-                    this.addLogEntry(field);
-                } else {
+                if (this._noteOrLogField(field.type)) {
                     this.setExistingLogEntries(field);
                     this.addLogEntry(field);
+                } else {
+                    field_values[field.column_name] = this.formatInputValues(field.type, this.shop[field.column_name]);
                 }
             });
         });
@@ -211,11 +209,11 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     updateLoggingFields(): void {
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if (field.type === 'log' && (!this.logEntryPristine(field.column_name) || this.logEntryDeleted(field.column_name))) {
+                if (
+                    this._noteOrLogField(field.type)
+                    && (!this.logEntryPristine(field.column_name) || this.logEntryDeleted(field.column_name))
+                ) {
                     this.setExistingLogEntries(field);
-                    this.addLogEntry(field);
-                } else if (field.type === 'notes') {
-                    this.shopForm.setControl(field.column_name, this._fb.array([]));
                     this.addLogEntry(field);
                 }
             });
@@ -235,7 +233,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     formatBody(body): void {
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if ($.inArray(field.type, ['log', 'notes']) !== -1 && this.logEntryPristine(field.column_name)) {
+                if (this._noteOrLogField(field.type) && this.logEntryPristine(field.column_name)) {
                     body[field.column_name].splice(0, 1);
                 } else if (field.type === 'select_multiple' && body[field.column_name] != null) {
                     body[field.column_name] = JSON.stringify(body[field.column_name]);
@@ -258,6 +256,10 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
                     (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
                 );
         }
+    }
+
+    private _noteOrLogField(type): boolean {
+        return $.inArray(type, ['log', 'notes']) !== -1;
     }
 
 }
