@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { CalendarModule } from 'primeng/primeng';
+
 import { NoteFeedTemplate } from './note-feed.component';
 import { LoggingFieldTemplate } from './logging-field.component';
 import { FieldControlTemplate } from './field-control.component';
@@ -11,6 +13,7 @@ import { FieldControlTemplate } from './field-control.component';
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        CalendarModule,
         RouterModule
     ],
     declarations: [

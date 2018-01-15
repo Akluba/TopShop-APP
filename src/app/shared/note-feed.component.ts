@@ -44,17 +44,22 @@ declare let $: any;
             <div class="meta" *ngIf="metaRecordExist(field.columns, note)">
                 <span *ngFor="let column of metaColumns(field.columns, note)" [ngSwitch]="column.type">
 
-                    <a *ngSwitchCase="'manager_link'"
+                    <a *ngSwitchCase="'manager_link'" class="ui label"
                         [routerLink]="['/managers', note.value[column.column_name]]">
                         <i class="blue linkify icon"></i>
                         {{ linkText(column, note) }}
                     </a>
 
-                    <a *ngSwitchCase="'shop_link'"
+                    <a *ngSwitchCase="'shop_link'" class="ui label"
                         [routerLink]="['/shops', note.value[column.column_name]]">
                         <i class="blue linkify icon"></i>
                         {{ linkText(column, note) }}
                     </a>
+
+                    <div *ngSwitchCase="'reminder_date'" class="ui label">
+                        <i class="blue calendar icon"></i>
+                        <div class="detail">{{ note.value[column.column_name] }}</div>
+                    </div>
 
                 </span>
             </div>
