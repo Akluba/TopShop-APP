@@ -152,7 +152,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Position the new log entry control in index 0.
         if (field.type === 'notes') {
-            const user = this._authService.currentUser.name;
+            const user = this._authService.currentUser.id;
             const today = new Date();
             const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
             newLogEntry = new LogEntry(this.shop['id'], fieldId, user, date);
