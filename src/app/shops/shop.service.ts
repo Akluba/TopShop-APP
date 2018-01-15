@@ -21,7 +21,7 @@ export class ShopService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(data => this.shopList = data['data'])
+            .do(res => this.shopList = res['data']['shop_list'])
             .catch(this.handleError);
     }
 

@@ -1,30 +1,71 @@
 <h2 class="ui header">Shop List</h2>
 <div class="ui segments">
-    <div class="ui segment">
-        <div class="ui grid middle aligned content">
-            <div class="eight wide column">
-                <!-- Shop Filter -->
-                <div class="ui fluid input">
-                    <input [(ngModel)]="listFilter" placeholder="Filter Shops.."/>
-                </div>
+    <div class="ui horizontal segments">
+        <div class="ui center aligned segment">
+            <div class="ui top attached label">
+                <i class="toggle on icon"></i>
+                Toggle Columns
             </div>
-            <div class="eight wide column">
-                <!-- Create New Shop Modal -->
+            <div>
+                <p-multiSelect [options]="columnOptions" [(ngModel)]="cols"></p-multiSelect>
+            </div>
+        </div>
+        <div class="ui center aligned segment">
+            <div class="ui top attached label">
+                <i class="filter icon"></i>
+                Filter
+            </div>
+            <div class="ui input">
+                <input #gb type="text" placeholder="all fields..">
+            </div>
+        </div>
+        <div class="ui center aligned segment">
+            <div class="ui top attached label">
+                <i class="file excel outline icon"></i>
+                Export
+            </div>
+            <div class="ui buttons">
+                <button class="ui primary button" (click)="dt.exportCSV({selectionOnly:true})"
+                    [disabled]="!selectedShops || selectedShops?.length==0">
+                    Selected
+                </button>
+                <div class="or"></div>
+                <button class="ui primary button" (click)="dt.exportCSV()">
+                    All
+                </button>
+            </div>
+        </div>
+        <div class="ui center aligned segment">
+            <div class="ui top attached label">
+                <i class="plus icon"></i>
+                Create
+            </div>
+            <div>
                 <shop-create></shop-create>
             </div>
         </div>
     </div>
     <div class="ui secondary segment">
-        <!-- Shop List -->
-        <div class="ui divided items">
-            <div class="item" *ngFor="let shop of shopService.shopList | shopSort | shopFilter:listFilter">
-                <div class="ui grid middle aligned content">
-                    <i class="middle aligned red large minus link icon"
-                        (click)="delete(shop)">
-                    </i>
-                    <a [routerLink]="['/shops', shop.id]">{{shop.shop_name}}</a>
-                </div>
-            </div>
-        </div>
+        <p-dataTable #dt [value]="shopService.shopList"
+            [scrollable]="true" scrollWidth="100%"
+            [globalFilter]="gb"
+            sortField="shop_name" [sortOrder]="1"
+            exportFilename="shop_list" selectionMode="multiple" [(selection)]="selectedShops"
+            expandableRows="true">
+            <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+            <p-column expander="true" [style]="{'width':'38px'}" styleClass="col-icon"></p-column>
+            <p-column field="shop_name" header="Shop Name" [filter]="true" [sortable]="true" [style]="{'width':'250px'}" ></p-column>
+            <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [filter]="true" filterMatchMode="contains" [sortable]="true" [style]="{'width':'250px'}"></p-column>
+            <ng-template let-shop pTemplate="rowexpansion">
+                <button class="ui primary icon button"
+                    [routerLink]="['/shops', shop.id]">
+                    <i class="info icon"></i>
+                </button>
+                <button class="negative ui icon button"
+                    (click)="delete(shop)">
+                    <i class="remove icon"></i>
+                </button>
+            </ng-template>
+        </p-dataTable>
     </div>
 </div>

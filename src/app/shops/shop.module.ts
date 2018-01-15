@@ -3,6 +3,8 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShopRoutingModule } from './shop-routing.module';
 
+import { DataTableModule, MultiSelectModule, SharedModule as PrimeShared } from 'primeng/primeng';
+
 // Feature Components
 import { ShopListComponent } from './shop-list.component';
 import { ShopCreateComponent } from './shop-create.component';
@@ -12,22 +14,21 @@ import { ShopDetailsComponent } from './shop-details.component';
 import { ShopService } from './shop.service';
 import { ShopListResolver } from './shop-list-resolver.service';
 import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
-import { ShopFilterPipe } from './shop.pipe';
-import { ShopSortPipe } from './shop.pipe';
 
 @NgModule({
     imports: [
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
-        ShopRoutingModule
+        ShopRoutingModule,
+        DataTableModule,
+        MultiSelectModule,
+        PrimeShared
     ],
     declarations: [
         ShopListComponent,
         ShopCreateComponent,
-        ShopDetailsComponent,
-        ShopFilterPipe,
-        ShopSortPipe
+        ShopDetailsComponent
     ],
     providers: [
         ShopService,
