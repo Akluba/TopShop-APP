@@ -87,7 +87,6 @@ export class ManagerDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 
         // Build the shopForm controls.
         this.managerForm = this._fb.group(field_controls);
-        console.log(this.managerForm);
     }
 
     formatInputValues(type, value): any {
@@ -153,7 +152,7 @@ export class ManagerDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 
         // Position the new log entry control in index 0.
         if (field.type === 'notes') {
-            const user = this._authService.currentUser.name;
+            const user = this._authService.currentUser.id;
             const today = new Date();
             const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
             newLogEntry = new LogEntry(this.manager['id'], fieldId, user, date);
