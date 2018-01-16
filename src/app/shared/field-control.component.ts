@@ -68,7 +68,8 @@ declare let $: any;
     <!-- Reminder Date -->
     <div *ngSwitchCase="'reminder_date'" class="ui fluid input">
         <p-calendar formControlName="{{ control.column_name }}"
-            dateFormat="yy.m.d"
+            dateFormat="yy-m-d"
+            dataType="string"
             placeholder="Select a Reminder Date"
             [style]="{'width':'100%'}"
             style="width: 100%">
