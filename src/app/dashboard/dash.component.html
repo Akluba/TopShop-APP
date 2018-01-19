@@ -1,0 +1,76 @@
+<h2 class="ui header">Dash Board</h2>
+
+<div class="ui secondary pointing menu">
+    <a class="item" *ngFor="let filter of filters; let filter_i=index"
+        [ngClass]="{'active': filter_i == 0}"
+        attr.data-tab="{{ filter_i }}"
+        (click)="changeFilter(filter.primary, null)">
+        {{ filter.title }}
+    </a>
+</div>
+<div class="ui secondary tab segment" *ngFor="let filter of filters; let filter_i=index"
+    [ngClass]="{'active': filter_i == 0}"
+    attr.data-tab="{{ filter_i }}">
+    <div class="ui text menu">
+        <div class="header item">Sub Filter By:</div>
+        <a class="item"
+            *ngIf="filter.primary"
+            [ngClass]="{'active': !selectedFilter.field}"
+            (click)="changeFilter(filter.primary, null)">
+            All
+        </a>
+        <a class="item" *ngFor="let sub of filter.sub"
+            [ngClass]="{'active': sub.field_id === selectedFilter.field}"
+            (click)="changeFilter(null, sub.field_id)">
+            {{ sub.title }}
+        </a>
+    </div>
+</div>
+
+<div class="ui feed">
+    <div class="event" *ngFor="let note of notes | noteFilter:selectedFilter">
+        <div class="label"></div>
+        <div class="content">
+            <div class="summary">
+                <div class="user">{{ note.created_by }}</div>
+                created a note for
+                <div class="user" [ngSwitch]="note.created_for.class">
+                    <a *ngSwitchCase="'Manager'"
+                        [routerLink]="['/managers', note.created_for.id]">
+                        {{ note.created_for.text }}
+                    </a>
+                    <a *ngSwitchCase="'Shop'"
+                        [routerLink]="['/shops', note.created_for.id]">
+                        {{ note.created_for.text }}
+                    </a>
+                </div>
+                <div class="date">{{ note.created_date }}</div>
+            </div>
+            <div class="extra text">
+                {{ note.note_text }}
+            </div>
+            <div class="meta" *ngIf="note.tags">
+                <span *ngFor="let tag of note.tags" [ngSwitch]="tag.type">
+
+                    <a *ngSwitchCase="'manager_link'" class="ui label"
+                        [routerLink]="['/managers', tag.id]">
+                        <i class="blue linkify icon"></i>
+                        <div class="detail">{{ tag.value }}</div>
+                    </a>
+
+                    <a *ngSwitchCase="'shop_link'" class="ui label"
+                        [routerLink]="['/shops', tag.id]">
+                        <i class="blue linkify icon"></i>
+                        <div class="detail">{{ tag.value }}</div>
+                    </a>
+
+                    <div *ngSwitchCase="'reminder_date'" class="ui label">
+                        <i class="blue calendar icon"></i>
+                        <div class="detail">{{ tag.value }}</div>
+                    </div>
+
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
