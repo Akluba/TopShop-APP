@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { CalendarModule } from 'primeng/primeng';
 
 import { NoteFeedTemplate } from './note-feed.component';
+import { ExistingNoteComponent } from './existing-note.component';
 import { LoggingFieldTemplate } from './logging-field.component';
 import { FieldControlTemplate } from './field-control.component';
 
@@ -18,6 +19,7 @@ import { FieldControlTemplate } from './field-control.component';
     ],
     declarations: [
         NoteFeedTemplate,
+        ExistingNoteComponent,
         LoggingFieldTemplate,
         FieldControlTemplate
     ],

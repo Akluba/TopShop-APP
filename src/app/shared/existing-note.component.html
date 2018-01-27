@@ -1,0 +1,65 @@
+<div class="label hidden"></div>
+
+<div class="content">
+    <div class="summary">
+        <div class="user">{{ note.get('log_field1').value }}</div>
+        <div class="date">{{ note.get('log_field2').value }}</div>
+
+        <div class="ui basic icon right floated action button"><i class="ellipsis horizontal icon"></i></div>
+        <div class="ui popup transition hidden">
+            <div class="ui link list">
+                <a class="item"
+                    (click)="edit()">
+                    <i class="edit icon"></i> Edit Note
+                </a>
+                <a class="item"
+                    (click)="delete()">
+                    <i class="trash icon"></i> Delete Note
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="editting; then editState else staticState"></div>
+
+    <ng-template #staticState>
+        <div class="extra text">
+            {{ note.get('log_field3').value }}
+        </div>
+        <div id="meta_tags" class="meta" *ngIf="metaData()">
+            <span *ngFor="let column of metaTags()" [ngSwitch]="column.type">
+                <a *ngSwitchCase="'manager_link'" class="ui label"
+                    [routerLink]="['/managers', note.value[column.column_name]]">
+                    <i class="blue linkify icon"></i>
+                    {{ linkText(column) }}
+                </a>
+
+                <a *ngSwitchCase="'shop_link'" class="ui label"
+                    [routerLink]="['/shops', note.value[column.column_name]]">
+                    <i class="blue linkify icon"></i>
+                    {{ linkText(column) }}
+                </a>
+
+                <div *ngSwitchCase="'reminder_date'" class="ui label">
+                    <i class="blue calendar icon"></i>
+                    <div class="detail">{{ note.value[column.column_name] }}</div>
+                </div>
+
+            </span>
+        </div>
+    </ng-template>
+
+    <ng-template #editState>
+        <div class="ui segment">
+            <div *ngFor="let column of field.columns">
+                <div *ngIf="!column.system || column.column_name === 'log_field3'">
+                    <field-control
+                        [formGroup]="note"
+                        [control]="column">
+                    </field-control>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+</div>

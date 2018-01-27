@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 declare let $: any;
@@ -26,20 +26,60 @@ declare let $: any;
 
 <!-- Existing Note Feed -->
 <div class="ui feed">
+    <app-existing-note class="ui segment event"
+        *ngFor="let note of notes.controls | slice:1; let i=index"
+        attr.data-note="{{ field.id }}-{{ i }}"
+        [note]="note"
+        [index]="i"
+        [field]="field">
+    </app-existing-note>
+</div>
+
+<!-- Existing Note Feed -->
+<!-- div class="ui feed">
     <div class="ui segment event" *ngFor="let note of notes.controls | slice:1; let i=index"
         attr.data-note="{{ field.id }}-{{i}}">
-        <div class="label">
-            <i class="middle aligned red large minus link icon"
-                (click)="deleteNote(i, note)">
-            </i>
-        </div>
+        <div class="label"></div>
         <div class="content">
             <div class="summary">
                 <div class="user">{{ note.get('log_field1').value }}</div>
                 <div class="date">{{ note.get('log_field2').value }}</div>
+
+                <div class="ui basic icon right floated action button"><i class="ellipsis horizontal icon"></i></div>
+                <div class="ui popup transition hidden">
+                    <div class="ui link list">
+                        <a class="item"
+                            (click)="editNote(i)">
+                            <i class="edit icon"></i> Edit Note
+                        </a>
+                        <a class="item"
+                            (click)="deleteNote(i, note)">
+                            <i class="trash icon"></i> Delete Note
+                        </a>
+                    </div>
+                </div>
+
             </div>
             <div class="extra text">
-                {{ note.get('log_field3').value }}
+                <div class="static text transition">{{ note.get('log_field3').value }}</div>
+                <div class="text field transition hidden">
+                    <textarea value="{{ note.get('log_field3').value }}"
+                        rows="2"
+                        style="resize: none;">
+                    </textarea>
+                    <div class="ui small right floated buttons">
+                        <div class="ui button"
+                            (click)="editNote(i)">
+                            Cancel
+                        </div>
+                        <div class="or"></div>
+                        <div class="ui positive button"
+                            (click)="editNote(i, note)">
+                            Keep Changes
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
             </div>
             <div class="meta" *ngIf="metaRecordExist(field.columns, note)">
                 <span *ngFor="let column of metaColumns(field.columns, note)" [ngSwitch]="column.type">
@@ -65,49 +105,21 @@ declare let $: any;
             </div>
         </div>
     </div>
-</div>
+</div> -->
 `
 })
-export class NoteFeedTemplate {
+export class NoteFeedTemplate implements AfterViewInit {
     @Input() field;
     @Input() notes;
     constructor(private _router: Router) {}
 
-    metaRecordExist(columns, note): boolean {
-        for (let i = 0; i < columns.length; i++) {
-            if (!columns[i]['system'] && note.value[columns[i]['column_name']]) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    metaColumns(columns, note) {
-        return columns.filter(column => column.system !== 1 && note[column.column_name] !== null);
-    }
-
-    linkText(column, note): string {
-        const linkName = (column.type === 'manager_link') ? 'manager_name' : 'shop_name';
-        const value = note.value[column.column_name];
-        const options = column.options;
-
-        return options[options.indexOf(options.find(x => x.id === +value))][linkName];
-    }
-
-    deleteNote(i, note): void {
-        console.log(i);
-        // confirm the user wishes to delete the item.
-        if (confirm(`Are you sure you wish to remove this note from ${this.field.title}`)) {
-            // add disabled classes.
-            $(`div[data-note='${this.field.id}-${i}']`).addClass('disabled');
-
-            // add key to form group to signify marked to delete.
-            note.patchValue({deleted: true});
-
-            // mark log entry as dirty so changes can be saved.
-            note.markAsDirty();
-        }
+    ngAfterViewInit(): void {
+        $('.action.button')
+            .popup({
+                position: 'left center',
+                inline: true,
+                on: 'click'
+            });
     }
 
 }
