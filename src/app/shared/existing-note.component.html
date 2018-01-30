@@ -1,28 +1,35 @@
-<div class="label hidden"></div>
+ <ng-container *ngIf="!editting else editState">
+    <div class="label"></div>
 
-<div class="content">
-    <div class="summary">
-        <div class="user">{{ note.get('log_field1').value }}</div>
-        <div class="date">{{ note.get('log_field2').value }}</div>
+    <div class="content">
+        <div class="summary">
+            <div class="user">{{ note.get('log_field1').value }}</div>
+            <div class="date">{{ note.get('log_field2').value }}</div>
 
-        <div class="ui basic icon right floated action button"><i class="ellipsis horizontal icon"></i></div>
-        <div class="ui popup transition hidden">
-            <div class="ui link list">
-                <a class="item"
-                    (click)="edit()">
-                    <i class="edit icon"></i> Edit Note
-                </a>
-                <a class="item"
-                    (click)="delete()">
-                    <i class="trash icon"></i> Delete Note
-                </a>
+            <!-- <div class="ui basic icon right floated action button"
+                data-tooltip=""
+                data-position="left center"
+                data-html="testing">
+                <i class="ellipsis horizontal icon"></i>
+            </div> -->
+
+            <div class="ui basic icon right floated action button">
+                <i class="ellipsis horizontal icon"></i>
             </div>
+            <div class="ui popup transition hidden">
+                <div class="ui link list">
+                    <a class="item"
+                        (click)="edit()">
+                        <i class="edit icon"></i> Edit Note
+                    </a>
+                    <a class="item"
+                        (click)="delete()">
+                        <i class="trash icon"></i> Delete Note
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </div>
-
-    <div *ngIf="editting; then editState else staticState"></div>
-
-    <ng-template #staticState>
         <div class="extra text">
             {{ note.get('log_field3').value }}
         </div>
@@ -47,19 +54,27 @@
 
             </span>
         </div>
-    </ng-template>
+    </div>
+</ng-container>
 
-    <ng-template #editState>
-        <div class="ui segment">
-            <div *ngFor="let column of field.columns">
-                <div *ngIf="!column.system || column.column_name === 'log_field3'">
-                    <field-control
-                        [formGroup]="note"
-                        [control]="column">
-                    </field-control>
-                </div>
+<ng-template #editState>
+    <div class="ui edit segment">
+        <div *ngFor="let column of field.columns">
+            <div *ngIf="!column.system || column.column_name === 'log_field3'">
+                <field-control
+                    [formGroup]="editNote"
+                    [control]="column">
+                </field-control>
             </div>
         </div>
-    </ng-template>
-
-</div>
+        <div class="ui right floated buttons">
+            <div class="ui button" (click)="edit('discard')">Discard</div>
+            <div class="or"></div>
+            <div class="ui primary disabled button"
+                (click)="edit('save')"
+                [ngClass]="{'disabled': !editNote.dirty}">
+                Keep Changes
+            </div>
+        </div>
+    </div>
+</ng-template>

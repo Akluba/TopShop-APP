@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 declare let $: any;
 
@@ -7,16 +8,25 @@ declare let $: any;
     templateUrl: './existing-note.component.html',
     styles: [
         `
-            .content > #meta_tags.meta { margin: .8em 0 0 }
+            .content > #meta_tags.meta { margin: .8em 0 0; }
+            .edit.segment { width: 100%; }
         `
     ],
 })
-export class ExistingNoteComponent {
+export class ExistingNoteComponent implements OnInit {
     @Input() note;
     @Input() index;
     @Input() field;
 
     editting = false;
+    editNote: FormGroup;
+    originalNote: {};
+
+    constructor(private _fb: FormBuilder) {}
+
+    ngOnInit(): void {
+        this.originalNote = this.note.value;
+    }
 
     metaData(): boolean {
         const columns = this.field.columns;
@@ -43,8 +53,29 @@ export class ExistingNoteComponent {
         return options[options.indexOf(options.find(x => x.id === +value))][linkName];
     }
 
-    edit(): void {
-        this.editting = this.editting ? false : true;
+    edit(action?: string): void {
+        // toggle edit state.
+        this.editting = !this.editting;
+
+        if (!action) {
+            this.createEditNote();
+        } else if (action === 'save') {
+            const editNoteVals = this.editNote.value;
+            this.note.patchValue(editNoteVals);
+            this.note.markAsDirty();
+        }
+    }
+
+    createEditNote(): void {
+        const noteValues = this.note.value;
+        const editControls = {};
+
+        for (const control of Object.keys(this.note.controls)) {
+            editControls[control] = null;
+        }
+
+        this.editNote = this._fb.group(editControls);
+        this.editNote.patchValue(noteValues);
     }
 
     delete(): void {
