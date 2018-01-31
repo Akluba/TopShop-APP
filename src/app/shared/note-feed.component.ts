@@ -1,5 +1,4 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
 
 declare let $: any;
 
@@ -8,6 +7,7 @@ declare let $: any;
     styles: [
         `
             .ui.feed .event { background: #fff; margin-bottom: 10px; }
+            .ui.segment.event { padding: 0px; }
         `
     ],
     template:
@@ -38,18 +38,7 @@ declare let $: any;
 </div>
 `
 })
-export class NoteFeedTemplate implements AfterViewInit {
+export class NoteFeedTemplate {
     @Input() field;
     @Input() notes;
-    constructor(private _router: Router) {}
-
-    ngAfterViewInit(): void {
-        $('.action.button')
-            .popup({
-                position: 'left center',
-                inline: true,
-                on: 'click'
-            });
-    }
-
 }

@@ -5,15 +5,7 @@
         <div class="summary">
             <div class="user">{{ note.get('log_field1').value }}</div>
             <div class="date">{{ note.get('log_field2').value }}</div>
-
-            <!-- <div class="ui basic icon right floated action button"
-                data-tooltip=""
-                data-position="left center"
-                data-html="testing">
-                <i class="ellipsis horizontal icon"></i>
-            </div> -->
-
-            <div class="ui basic icon right floated action button">
+            <div class="ui basic icon right floated popup-btn button">
                 <i class="ellipsis horizontal icon"></i>
             </div>
             <div class="ui popup transition hidden">
@@ -28,7 +20,6 @@
                     </a>
                 </div>
             </div>
-
         </div>
         <div class="extra text">
             {{ note.get('log_field3').value }}
@@ -67,7 +58,7 @@
                 </field-control>
             </div>
         </div>
-        <div class="ui right floated buttons">
+        <div class="ui right floated buttons edit-btn-group">
             <div class="ui button" (click)="edit('discard')">Discard</div>
             <div class="or"></div>
             <div class="ui primary disabled button"

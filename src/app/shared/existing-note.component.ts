@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 declare let $: any;
@@ -9,23 +9,34 @@ declare let $: any;
     styles: [
         `
             .content > #meta_tags.meta { margin: .8em 0 0; }
-            .edit.segment { width: 100%; }
+            .ui.edit.segment { width: 100%; margin: 0px; }
+            .edit-btn-group { margin-top: 14px; }
         `
     ],
 })
-export class ExistingNoteComponent implements OnInit {
+export class ExistingNoteComponent implements AfterViewInit {
     @Input() note;
     @Input() index;
     @Input() field;
 
     editting = false;
     editNote: FormGroup;
-    originalNote: {};
+    noteSelector;
 
     constructor(private _fb: FormBuilder) {}
 
-    ngOnInit(): void {
-        this.originalNote = this.note.value;
+    ngAfterViewInit(): void {
+        this.noteSelector = $(`app-existing-note[data-note='${this.field.id}-${this.index}']`);
+        this.initPopup();
+    }
+
+    initPopup(): void {
+        this.noteSelector.find('.popup-btn')
+            .popup({
+                position: 'left center',
+                inline: true,
+                on: 'click'
+            });
     }
 
     metaData(): boolean {
@@ -59,10 +70,19 @@ export class ExistingNoteComponent implements OnInit {
 
         if (!action) {
             this.createEditNote();
-        } else if (action === 'save') {
-            const editNoteVals = this.editNote.value;
-            this.note.patchValue(editNoteVals);
-            this.note.markAsDirty();
+        } else {
+            if (action === 'save') {
+                const editNoteVals = this.editNote.value;
+                this.note.patchValue(editNoteVals);
+                this.note.markAsDirty();
+            }
+
+            // hacky, but it works for now..
+            const _this = this;
+            setTimeout(function() {
+                _this.initPopup();
+            }, 1000);
+
         }
     }
 
@@ -82,8 +102,7 @@ export class ExistingNoteComponent implements OnInit {
         // confirm the user wishes to delete the item.
         if (confirm(`Are you sure you wish to remove this note from ${this.field.title}`)) {
             // add disabled classes.
-            const note = $(`app-existing-note[data-note='${this.field.id}-${this.index}']`);
-            $(note).addClass('disabled');
+            $(this.noteSelector).addClass('disabled');
 
             // add key to form group to signify marked to delete.
             this.note.patchValue({deleted: true});
