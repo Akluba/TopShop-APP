@@ -11,6 +11,7 @@ declare let $: any;
             .content > #meta_tags.meta { margin: .8em 0 0; }
             .ui.edit.segment { width: 100%; margin: 0px; }
             .edit-btn-group { margin-top: 14px; }
+            .ui.button.popup-btn { margin-right: 5px;}
         `
     ],
 })
