@@ -1,0 +1,38 @@
+<p-table [columns]="columns" [value]="setupService.children">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 38px"></th>
+            <th *ngFor="let col of columns">{{ col.header }}</th>
+            <th>Fields</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td>
+                <i class="middle aligned red large minus link icon"
+                    *ngIf="!rowData.system">
+                </i>
+            </td>
+            <ng-container *ngFor="let col of columns">
+                <td pEditableColumn *ngIf="col.edit && !rowData.system else nonEdit">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input type="text" [(ngModel)]="rowData[col.field]">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                                <p class="edit-text">{{ rowData[col.field] }}</p>
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <ng-template #nonEdit>
+                    <td class="non-edit-text">{{ rowData[col.field] }}</td>
+                </ng-template>
+            </ng-container>
+            <td>
+                <a class="ui fluid primary button">
+                    Edit Fields
+                </a>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
