@@ -6,10 +6,8 @@ import { SetupRoutingModule } from './setup-routing.module';
 import { TableModule } from 'primeng/table';
 
 import { SetupComponent } from './setup.component';
-import { CreateComponent } from './create.component';
-import { SetupTableComponent } from './setup-table.component';
 import { BreadcrumbComponent } from './template-breadcrumb.component';
-import { FieldTableComponent } from './template-field-table.component';
+import { SetupTableComponent } from './setup-table.component';
 
 import { SetupService } from './setup.service';
 import { SetupResolver } from './setup-resolver.service';
@@ -23,10 +21,8 @@ import { SetupResolver } from './setup-resolver.service';
     ],
     declarations: [
         SetupComponent,
-        CreateComponent,
-        SetupTableComponent,
         BreadcrumbComponent,
-        FieldTableComponent
+        SetupTableComponent
     ],
     providers: [
         SetupService,

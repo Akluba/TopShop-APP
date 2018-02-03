@@ -1,31 +1,22 @@
 <h2 class="ui header">{{ pageTitle }}</h2>
-<div class="ui segments">
-    <div class="ui segment">
-        <div class="ui grid middle aligned content">
-            <div class="thirteen wide column">
-                <!-- BreadCrumbs -->
-                <setup-breadcrumb
-                    [data]="data">
-                </setup-breadcrumb>
-            </div>
-            <div class="three wide column">
-                <!-- Create Modal -->
-                <setup-create
-                    [data]="data">
-                </setup-create>
-            </div>
-        </div>
-    </div>
-    <div class="ui secondary segment">
-        <div class="ui divided items">
-            <!-- Field Table -->
-            <setup-field-table
+
+<div class="ui segment">
+    <div class="ui grid middle aligned content">
+        <div class="thirteen wide column">
+            <setup-breadcrumb
                 [data]="data">
-            </setup-field-table>
+            </setup-breadcrumb>
+        </div>
+        <div class="three wide column">
+            <!-- <setup-create
+                [data]="data">
+            </setup-create> -->
         </div>
     </div>
 </div>
 
 <app-setup-table
-    [data]="data">
+    [apiRoute]="apiRoute"
+    [routeParams]="routeParams"
+    [primary]="primary">
 </app-setup-table>

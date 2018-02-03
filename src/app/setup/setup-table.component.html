@@ -1,23 +1,58 @@
-<p-table [columns]="columns" [value]="setupService.children">
+<p-table class="ui table" [columns]="columns" [value]="setupService.children">
     <ng-template pTemplate="header">
         <tr>
             <th style="width: 38px"></th>
             <th *ngFor="let col of columns">{{ col.header }}</th>
             <th>Fields</th>
         </tr>
+        <tr class="active">
+            <th></th>
+            <th *ngFor="let col of columns">
+                <ng-container [ngSwitch]="col.type">
+
+                    <div *ngSwitchCase="'text'" class="ui fluid input">
+                        <input type="text" [(ngModel)]="newElement[col.field]" />
+                    </div>
+
+                    <div *ngSwitchCase="'select'" class="ui fluid selection dropdown new user">
+                        <select required [(ngModel)]="newElement[col.field]" name="profile" #profile>
+                            <option *ngFor="let option of typeOptions"
+                                value="{{ option.value }}">{{ option.title }}</option>
+                        </select>
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select Type</div>
+                        <div class="menu">
+                            <div class="item" *ngFor="let option of typeOptions"
+                                [attr.data-value]="option.value">{{ option.title }}
+                            </div>
+                        </div>
+                    </div>
+
+                </ng-container>
+            </th>
+            <th>
+                <a class="ui fluid positive button"
+                    (click)="create()">
+                    Create
+                </a>
+            </th>
+        </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
+        <tr attr.data-id="{{ rowData.id }}">
             <td>
                 <i class="middle aligned red large minus link icon"
-                    *ngIf="!rowData.system">
+                    *ngIf="!rowData.system"
+                    (click)="delete(rowData.id, rowData.title)">
                 </i>
             </td>
             <ng-container *ngFor="let col of columns">
-                <td pEditableColumn *ngIf="col.edit && !rowData.system else nonEdit">
+                <td pEditableColumn *ngIf="col.editable else nonEdit">
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input type="text" [(ngModel)]="rowData[col.field]">
+                            <div class="ui input">
+                                <input type="text" required [(ngModel)]="rowData[col.field]" #input="ngModel" (keydown.enter)="save(input, rowData)">
+                            </div>
                         </ng-template>
                         <ng-template pTemplate="output">
                                 <p class="edit-text">{{ rowData[col.field] }}</p>
@@ -29,7 +64,9 @@
                 </ng-template>
             </ng-container>
             <td>
-                <a class="ui fluid primary button">
+                <a class="ui fluid primary button"
+                    *ngIf="canNavigate(rowData.type)"
+                    (click)="navigateTo(rowData.id)">
                     Edit Fields
                 </a>
             </td>

@@ -17,15 +17,19 @@ export class SetupResolver implements Resolve<any> {
         if (!isNaN(category_id)) {
             if (!isNaN(field_id) || !isNaN(column_id)) {
                 if (!isNaN(column_id)) {
+                    // resolve column options list.
                     return this._setupService.show(column_id, 'column');
                 }
 
+                // resolve field options / columns list.
                 return this._setupService.show(field_id, 'field');
             }
 
+            // resolve category field list.
             return this._setupService.show(category_id, 'category');
         }
 
+        // resolve catergoy list.
         return this._setupService.index(source_class, 'category');
     }
 }
