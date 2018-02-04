@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SetupRoutingModule } from './setup-routing.module';
 
 import { TableModule } from 'primeng/table';
+import { OrderListModule } from 'primeng/orderlist';
 
 import { SetupComponent } from './setup.component';
 import { BreadcrumbComponent } from './template-breadcrumb.component';
@@ -17,6 +18,7 @@ import { SetupResolver } from './setup-resolver.service';
         SharedModule,
         FormsModule,
         TableModule,
+        OrderListModule,
         SetupRoutingModule
     ],
     declarations: [

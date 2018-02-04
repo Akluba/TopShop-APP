@@ -6,7 +6,6 @@ import { SetupService } from './setup.service';
 
 declare var $: any;
 
-
 @Component({
     selector: 'app-setup-table',
     templateUrl: 'setup-table.component.html',
@@ -45,7 +44,7 @@ export class SetupTableComponent implements OnInit, AfterViewInit {
     setColumns(): void {
         this.columns = [
             new Column('title', 'Title', 'text', true),
-            new Column('sort_order', 'Sort Order', 'text', true)
+            // new Column('sort_order', 'Sort Order', 'text', true)
         ];
 
         if (this.apiRoute === 'field' || this.apiRoute === 'column') {

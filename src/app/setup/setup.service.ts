@@ -57,7 +57,7 @@ export class SetupService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        if (body.id === 0) {
+        if (body.id === 0 && body.mass !== true) {
             return this.store(body, options, route);
         }
         return this.update(body, options, route);

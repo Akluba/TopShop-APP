@@ -1,22 +1,36 @@
-<h2 class="ui header">{{ pageTitle }}</h2>
+<div class="ui clearing segment">
+    <h2 class="ui left floated header">{{ pageTitle }}</h2>
 
-<div class="ui segment">
-    <div class="ui grid middle aligned content">
-        <div class="thirteen wide column">
-            <setup-breadcrumb
-                [data]="data">
-            </setup-breadcrumb>
-        </div>
-        <div class="three wide column">
-            <!-- <setup-create
-                [data]="data">
-            </setup-create> -->
-        </div>
-    </div>
+    <button class="ui icon right floated button"
+        (click)="toggleSortState()"
+        [ngClass]="{'active': sorting}">
+        <i class="ordered list icon"></i>
+    </button>
 </div>
 
-<app-setup-table
-    [apiRoute]="apiRoute"
-    [routeParams]="routeParams"
-    [primary]="primary">
-</app-setup-table>
+<div class="ui segments">
+    <div class="ui segment">
+        <setup-breadcrumb
+            [data]="data">
+        </setup-breadcrumb>
+    </div>
+    <div class="ui secondary segment">
+
+        <div *ngIf="sorting">
+            <p-orderList [value]="setupService.children" [responsive]="true" (onReorder)="updateSortOrder()">
+                <ng-template let-rowData pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                        {{ rowData.title }}
+                    </div>
+                </ng-template>
+            </p-orderList>
+        </div>
+
+        <app-setup-table *ngIf="!sorting"
+            [apiRoute]="apiRoute"
+            [routeParams]="routeParams"
+            [primary]="primary">
+        </app-setup-table>
+
+    </div>
+</div>
