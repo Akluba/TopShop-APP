@@ -11,7 +11,7 @@
 
     <!-- Shop Categories Secondary menu -->
     <div class="ui pointing secondary menu">
-        <a class="item" *ngFor="let element of formElements; let tab_i=index"
+        <a class="item" *ngFor="let element of formElements | sortOrder; let tab_i=index"
             [ngClass]="{'active': tab_i == 0}"
             attr.data-tab="{{ tab_i }}">{{ element.title }}</a>
     </div>
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Shop Category segments -->
-    <div class="ui tab segment" *ngFor="let element of formElements; let tab_i=index"
+    <div class="ui tab segment" *ngFor="let element of formElements | sortOrder; let tab_i=index"
         [ngClass]="{'active': tab_i == 0}"
         attr.data-tab="{{ tab_i }}">
 
@@ -43,13 +43,13 @@
             <div class="ui grid">
                 <div class="four wide column left floated">
                     <div class="ui fluid vertical pointing menu notes">
-                        <a class="item" *ngFor="let field of element.fields; let note_i=index"
+                        <a class="item" *ngFor="let field of element.fields | sortOrder; let note_i=index"
                         [ngClass]="{'active': note_i == 0}"
                         attr.data-tab="{{ tab_i }}/{{ note_i }}">{{ field.title }}</a>
                     </div>
                 </div>
                 <div class="twelve wide column right floated">
-                    <div class="ui tab secondary segment" *ngFor="let field of element.fields; let note_i=index" style="margin: 0;"
+                    <div class="ui tab secondary segment" *ngFor="let field of element.fields | sortOrder; let note_i=index" style="margin: 0;"
                         [ngClass]="{'active': note_i == 0}"
                         attr.data-tab="{{ tab_i }}/{{ note_i }}">
                         <note-feed
@@ -64,7 +64,7 @@
 
         <!-- Inputs / Logging Fields Segment -->
         <ng-template #inputLogTemplate>
-            <div class="field" *ngFor="let field of element.fields">
+            <div class="field" *ngFor="let field of element.fields | sortOrder">
 
                 <div *ngIf="field.type === 'log'; then loggingFieldTemplate else inputTemplate"></div>
 

@@ -9,6 +9,7 @@ import { NoteFeedTemplate } from './note-feed.component';
 import { ExistingNoteComponent } from './existing-note.component';
 import { LoggingFieldTemplate } from './logging-field.component';
 import { FieldControlTemplate } from './field-control.component';
+import { SortOrderPipe } from './order-by.pipe';
 
 @NgModule({
     imports: [
@@ -21,13 +22,15 @@ import { FieldControlTemplate } from './field-control.component';
         NoteFeedTemplate,
         ExistingNoteComponent,
         LoggingFieldTemplate,
-        FieldControlTemplate
+        FieldControlTemplate,
+        SortOrderPipe
     ],
     exports: [
         CommonModule,
         NoteFeedTemplate,
         LoggingFieldTemplate,
-        FieldControlTemplate
+        FieldControlTemplate,
+        SortOrderPipe
     ]
 })
 export class SharedModule {}
