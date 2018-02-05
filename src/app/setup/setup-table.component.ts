@@ -43,12 +43,11 @@ export class SetupTableComponent implements OnInit, AfterViewInit {
 
     setColumns(): void {
         this.columns = [
-            new Column('title', 'Title', 'text', true),
-            // new Column('sort_order', 'Sort Order', 'text', true)
+            new Column('title', 'Title', 'text', true)
         ];
 
         if (this.apiRoute === 'field' || this.apiRoute === 'column') {
-            this.columns.splice(1, 0, new Column('type', 'Type', 'select', false));
+            this.columns.push(new Column('type', 'Type', 'select', false));
         }
     }
 

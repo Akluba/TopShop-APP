@@ -23,9 +23,7 @@ export class SetupService {
         const options = { headers: headers, params: params };
 
         return this._http.get(url, options)
-            .do(data => {
-                this.children = data['data']['children'];
-            })
+            .do(data => this.children = data['data']['children'])
             .catch(this.handleError);
     }
 
@@ -35,9 +33,7 @@ export class SetupService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(data => {
-                this.children = data['data']['children'];
-            })
+            .do(data => this.children = data['data']['children'])
             .catch(this.handleError);
     }
 
