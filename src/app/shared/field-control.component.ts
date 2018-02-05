@@ -21,7 +21,7 @@ declare let $: any;
     <select *ngSwitchCase="'select'" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
         <option value="">Select an Option</option>
-        <option *ngFor="let option of control.options"
+        <option *ngFor="let option of control.options | sortOrder"
             value="{{ option.id }}">{{ option.title }}
         </option>
     </select>
@@ -29,7 +29,7 @@ declare let $: any;
     <!-- Select Multiple -->
     <select *ngSwitchCase="'select_multiple'" multiple="" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
-        <option *ngFor="let option of control.options"
+        <option *ngFor="let option of control.options | sortOrder"
             value="{{ option.id }}">{{ option.title }}
         </option>
     </select>
