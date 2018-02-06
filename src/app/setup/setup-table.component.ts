@@ -53,7 +53,7 @@ export class SetupTableComponent implements OnInit, AfterViewInit {
     }
 
     initNewSetupElement(): void {
-        const sort_order = this.setupService.children.length + 1;
+        const sort_order = this.setupService.children.length;
 
         switch (this.apiRoute) {
             case 'category':
