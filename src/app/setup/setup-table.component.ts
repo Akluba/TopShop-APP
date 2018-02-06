@@ -1,8 +1,10 @@
-import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import 'rxjs/add/operator/pairwise';
 
 import { Column, SetupElement } from './SetupClasses';
 import { SetupService } from './setup.service';
+import { SimpleChange } from '@angular/core/src/change_detection/change_detection_util';
 
 declare var $: any;
 
@@ -18,7 +20,7 @@ declare var $: any;
         `
     ]
 })
-export class SetupTableComponent implements OnInit, AfterViewInit {
+export class SetupTableComponent implements OnInit, OnChanges, AfterViewInit {
     @Input() apiRoute;
     @Input() routeParams;
     @Input() primary;
@@ -27,6 +29,12 @@ export class SetupTableComponent implements OnInit, AfterViewInit {
     typeOptions: any[];
 
     constructor(public setupService: SetupService, private _route: ActivatedRoute, private _router: Router) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.routeParams.isFirstChange() === false) {
+            this.ngOnInit();
+        }
+    }
 
     ngOnInit(): void {
         if (this.apiRoute === undefined) {
