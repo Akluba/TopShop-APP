@@ -12,7 +12,7 @@ declare let $: any;
         <thead>
             <tr>
                 <th class="one wide"></th>
-                <th *ngFor="let column of field.columns">{{ column.title }}</th>
+                <th *ngFor="let column of field.columns | sortOrder">{{ column.title }}</th>
             </tr>
         </thead>
         <tbody>
@@ -20,7 +20,7 @@ declare let $: any;
                 attr.data-logentry="{{ field.id }}-{{i}}">
                 <td><i class="red large minus link icon" *ngIf="i!==0"
                     (click)="deleteLogEntry(i, log_entry)"></i></td>
-                <td *ngFor="let column of field.columns">
+                <td *ngFor="let column of field.columns | sortOrder">
                     <field-control
                         [formGroup]="log_entry"
                         [control]="column">
