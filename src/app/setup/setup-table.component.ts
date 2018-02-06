@@ -61,7 +61,7 @@ export class SetupTableComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     initNewSetupElement(): void {
-        const sort_order = this.setupService.children.length + 1;
+        const sort_order = this.setupService.children.length;
 
         switch (this.apiRoute) {
             case 'category':
@@ -96,9 +96,9 @@ export class SetupTableComponent implements OnInit, OnChanges, AfterViewInit {
                 this.typeOptions = [
                     { value: 'text', title: 'Text' },
                     { value: 'checkbox', title: 'Checkbox' },
-                    { value: 'select_multiple', title: 'Select' },
-                    { value: 'textarea', title: 'Select Multiple' },
-                    { value: 'notes', title: 'Text Area' }
+                    { value: 'select', title: 'Select' },
+                    { value: 'select_multiple', title: 'Select Multiple' },
+                    { value: 'textarea', title: 'Text Area' }
                 ];
 
                 if (this.apiRoute === 'field') {
