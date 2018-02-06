@@ -88,9 +88,9 @@ export class SetupTableComponent implements OnInit, AfterViewInit {
                 this.typeOptions = [
                     { value: 'text', title: 'Text' },
                     { value: 'checkbox', title: 'Checkbox' },
-                    { value: 'select_multiple', title: 'Select' },
-                    { value: 'textarea', title: 'Select Multiple' },
-                    { value: 'notes', title: 'Text Area' }
+                    { value: 'select', title: 'Select' },
+                    { value: 'select_multiple', title: 'Select Multiple' },
+                    { value: 'textarea', title: 'Text Area' }
                 ];
 
                 if (this.apiRoute === 'field') {
