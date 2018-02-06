@@ -14,6 +14,7 @@ declare var $: any;
             .ui.table { border: none; }
             .non-edit-text { font-style: oblique; }
             .edit-text { border-bottom: 1px dotted #00F; }
+            .ui.table td:last-child, .ui.table th:last-child { border-right: none; }
         `
     ]
 })

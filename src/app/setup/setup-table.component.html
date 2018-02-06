@@ -1,9 +1,9 @@
-<p-table class="ui table" [columns]="columns" [value]="setupService.children" sortField="sort_order">
+<p-table class="ui celled striped table" [columns]="columns" [value]="setupService.children" sortField="sort_order">
     <ng-template pTemplate="header">
         <tr>
             <th style="width: 38px"></th>
             <th *ngFor="let col of columns">{{ col.header }}</th>
-            <th>Fields</th>
+            <th style="width: 10em"></th>
         </tr>
         <tr class="active">
             <th></th>
@@ -39,7 +39,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr attr.data-id="{{ rowData.id }}">
+        <tr attr.data-id="{{ rowData.id }}" style="height: 43px">
             <td>
                 <i class="middle aligned red large minus link icon"
                     *ngIf="!rowData.system"

@@ -15,6 +15,7 @@ export class SetupComponent implements OnInit {
     routeParams: {};
     primary;
     sorting = false;
+    updatedSortOrder = false;
 
     constructor(private _route: ActivatedRoute, public setupService: SetupService) {}
 
@@ -39,13 +40,18 @@ export class SetupComponent implements OnInit {
     }
 
     toggleSortState(): void {
+        if (this.sorting && this.updatedSortOrder) {
+            this.updateSortOrder();
+            this.updatedSortOrder = false;
+        }
+
         this.sorting = !this.sorting;
     }
 
     updateSortOrder(): void {
         const children = this.setupService.children;
         for (let i = 0; i < children.length; i++) {
-            children[i].sort_order = i + 1;
+            children[i].sort_order = i;
         }
 
         const body = {

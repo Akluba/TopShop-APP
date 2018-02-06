@@ -3,7 +3,7 @@
 
     <button class="ui icon right floated button"
         (click)="toggleSortState()"
-        [ngClass]="{'active': sorting}">
+        [ngClass]="{'active': sorting, 'positive': updatedSortOrder}">
         <i class="ordered list icon"></i>
     </button>
 </div>
@@ -16,9 +16,9 @@
     </div>
     <div class="ui secondary segment">
 
-        <div *ngIf="sorting">
-            <p-orderList [value]="setupService.children" [responsive]="true" (onReorder)="updateSortOrder()">
-                <ng-template let-rowData pTemplate="item">
+        <div class="ui segment" *ngIf="sorting">
+            <p-orderList [value]="setupService.children" [responsive]="true" (onReorder)="updatedSortOrder = true">
+                <ng-template pTemplate="item" let-rowData>
                     <div class="ui-helper-clearfix">
                         {{ rowData.title }}
                     </div>
