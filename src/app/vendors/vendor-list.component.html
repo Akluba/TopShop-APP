@@ -1,0 +1,36 @@
+<h1>Vendors</h1>
+
+<div class="ui segment">
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th>Vendor</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="active">
+                <td class="ui fluid input">
+                    <input type="text" required placeholder="Create New Vendor"
+                        [(ngModel)]="newVendor.name" #name="ngModel"/>
+                </td>
+                <td>
+                    <button class="ui positive fluid button"
+                        [disabled]="!name.valid"
+                        (click)="save()">
+                        Save
+                    </button>
+                </td>
+            </tr>
+            <tr *ngFor="let vendor of vendorService.vendors">
+                <td>{{ vendor.name }}</td>
+                <td>
+                    <button class="ui primary fluid button"
+                        [routerLink]="['/vendors', vendor.id]">
+                        Info
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
