@@ -87,6 +87,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Build the shopForm controls.
         this.shopForm = this._fb.group(field_controls);
+        console.log(this.shopForm);
     }
 
     formatInputValues(type, value): any {

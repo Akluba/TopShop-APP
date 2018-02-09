@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { CalendarModule } from 'primeng/primeng';
 
+import { DetailsFormComponent } from './details-form.component';
 import { NoteFeedTemplate } from './note-feed.component';
 import { ExistingNoteComponent } from './existing-note.component';
 import { LoggingFieldTemplate } from './logging-field.component';
@@ -19,6 +20,7 @@ import { SortOrderPipe } from './order-by.pipe';
         RouterModule
     ],
     declarations: [
+        DetailsFormComponent,
         NoteFeedTemplate,
         ExistingNoteComponent,
         LoggingFieldTemplate,
@@ -27,6 +29,7 @@ import { SortOrderPipe } from './order-by.pipe';
     ],
     exports: [
         CommonModule,
+        DetailsFormComponent,
         NoteFeedTemplate,
         LoggingFieldTemplate,
         FieldControlTemplate,

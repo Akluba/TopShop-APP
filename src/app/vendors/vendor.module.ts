@@ -5,10 +5,11 @@ import { VendorRoutingModule } from './vendor-routing.module';
 
 // Feature Components
 import { VendorListComponent } from './vendor-list.component';
+import { VendorDetailsComponent } from './vendor-details.component';
 
 // Services
 import { VendorService } from './vendor.service';
-import { VendorListResolver } from './vendor-resolve.service';
+import { VendorListResolver, VendorDetailsResolver } from './vendor-resolve.service';
 
 import { TableModule } from 'primeng/table';
 
@@ -20,11 +21,13 @@ import { TableModule } from 'primeng/table';
         VendorRoutingModule
     ],
     declarations: [
-        VendorListComponent
+        VendorListComponent,
+        VendorDetailsComponent
     ],
     providers: [
         VendorService,
-        VendorListResolver
+        VendorListResolver,
+        VendorDetailsResolver
     ]
 })
 export class VendorModule {}

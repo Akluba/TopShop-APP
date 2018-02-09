@@ -25,6 +25,15 @@ export class VendorService {
             .catch(this.handleError);
     }
 
+    show(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options)
+            .catch(this.handleError);
+    }
+
     save(body: any): Observable<any> {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
