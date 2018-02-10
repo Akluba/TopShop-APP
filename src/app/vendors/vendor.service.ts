@@ -41,13 +41,20 @@ export class VendorService {
         if (body.id === 0) {
             return this.store(body, options);
         }
-        // return this.update(body, options);
+        return this.update(body, options);
     }
 
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)
             .do(data => this.vendors.push(data['data']))
+            .catch(this.handleError);
+    }
+
+    private update(body: any, options: any): Observable<any> {
+        const url = `${this.baseUrl}/${body.id}`;
+        body._method = 'PUT';
+        return this._http.post(url, body, options)
             .catch(this.handleError);
     }
 

@@ -20,12 +20,12 @@ novalidate
 <div class="ui grid middle aligned content" style="min-height: 75px;">
     <div class="left floated thirteen wide column">
         <div class="ui hidden message transition">
-            <div class="header" *ngIf="message">{{ message.text }}</div>
+            <div class="header" *ngIf="saveMessage">{{ saveMessage }}</div>
         </div>
     </div>
     <div class="right floated three wide column">
         <button class="ui fluid positive button"
-                [disabled]="!form.valid || !form.dirty">
+            [disabled]="!form.valid || !form.dirty">
             Save
         </button>
     </div>

@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from '../core/auth.service';
 
@@ -7,7 +8,7 @@ declare let $: any;
 
 class LogEntry {
     id = 0;
-    source_class = 'Shop';
+    source_class = 'Vendor';
     source_id: number;
     field_id: number;
     log_field1: string = null;
@@ -33,9 +34,11 @@ class LogEntry {
     selector: 'app-details-form',
     templateUrl: './details-form.component.html'
 })
-export class DetailsFormComponent implements OnInit {
+export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() formValues: {};
     @Input() formElements: any[];
+    @Input() saveMessage: string;
+    @Output() formSaved = new EventEmitter<any>();
 
     form: FormGroup;
     nameField = false;
@@ -53,6 +56,13 @@ export class DetailsFormComponent implements OnInit {
     ngAfterViewInit(): void {
         $('.secondary.menu .item').tab({context: 'parent'});
         $('.notes.menu .item').tab();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes.formValues.firstChange) {
+            this.updateLogAndNotes();
+            this.form.markAsPristine();
+        }
     }
 
     buildReactiveForm(): void {
@@ -117,6 +127,41 @@ export class DetailsFormComponent implements OnInit {
         this.form.setControl(control, formArray);
     }
 
+    save(): void {
+        if (this.form.dirty && this.form.valid) {
+            let body = Object.assign({}, this.formValues, this.form.value);
+            body = this.formatBody(body);
+            this.formSaved.emit(body);
+        }
+    }
+
+    private formatBody(body): void {
+        this.formElements.forEach(category => {
+            category.fields.forEach(field => {
+                if (this.logOrNotes(field.type)) {
+                    // Discard pristine log entries at index 0.
+                    if (this.newLogEntryPristine(field.column_name)) {
+                        body[field.column_name].splice(0, 1);
+                    }
+                    // Stringify log entry select multiple column array.
+                    field.columns.forEach(column => {
+                        if (column.type === 'select_multiple') {
+                            for (let i = 0; i < body[field.column_name].length; i++) {
+                                const selectString = JSON.stringify(body[field.column_name][i][column.column_name]);
+                                body[field.column_name][i][column.column_name] = selectString;
+                            }
+                        }
+                    });
+                } else if (field.type === 'select_multiple' && body[field.column_name] != null) {
+                    // Stringify select multiple array.
+                    body[field.column_name] = JSON.stringify(body[field.column_name]);
+                }
+            });
+        });
+
+        return body;
+    }
+
     private formatFormGroup(field, logEntry): FormGroup {
         field.columns.forEach(column => {
             logEntry[column.column_name] = this.formatInputValues(column.type, logEntry[column.column_name]);
@@ -135,6 +180,47 @@ export class DetailsFormComponent implements OnInit {
         } else {
             return value;
         }
+    }
+
+    private updateLogAndNotes(): void {
+        this.formElements.forEach(category => {
+            category.fields.forEach(field => {
+                if (this.logOrNotes(field.type)) {
+                    // Rebuild Form Arrays when new log entry create or log entry deleted.
+                    if (!this.newLogEntryPristine(field.column_name) || this.logEntryDeleted(field.column_name)) {
+                        this.buildFormArrays(field);
+                    }
+                }
+            });
+        });
+    }
+
+    private logEntryDeleted(control): boolean {
+        const logEntryFA = this.getLogEntryFA(control);
+        if (logEntryFA.pristine) {
+            return false;
+        }
+
+        const logEntryFGs = logEntryFA.value;
+
+        for (let i = 0; i < logEntryFGs.length; i++) {
+            if (logEntryFGs[i]['deleted'] === true) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private newLogEntryPristine(control): boolean {
+        const logEntryFA = this.getLogEntryFA(control);
+        const newLogEntry = logEntryFA.controls[0];
+
+        return newLogEntry.pristine;
+    }
+
+    private getLogEntryFA(control): FormArray {
+        return this.form.get(control) as FormArray;
     }
 
     private logOrNotes(type): boolean {
