@@ -3,12 +3,13 @@ import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from '../core/auth.service';
+import { log } from 'util';
 
 declare let $: any;
 
 class LogEntry {
     id = 0;
-    source_class = 'Vendor';
+    source_class: string;
     source_id: number;
     field_id: number;
     log_field1: string = null;
@@ -22,11 +23,12 @@ class LogEntry {
     log_field9: string = null;
     log_field10: string = null;
 
-    constructor(source_id, field_id, log_field1?, log_field2?) {
-        this.source_id  = source_id;
-        this.field_id   = field_id;
-        this.log_field1 = log_field1;
-        this.log_field2 = log_field2;
+    constructor(source_class, source_id, field_id, log_field1?, log_field2?) {
+        this.source_class = source_class;
+        this.source_id    = source_id;
+        this.field_id     = field_id;
+        this.log_field1   = log_field1;
+        this.log_field2   = log_field2;
     }
 }
 
@@ -35,6 +37,7 @@ class LogEntry {
     templateUrl: './details-form.component.html'
 })
 export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
+    @Input() sourceClass: string;
     @Input() formValues: {};
     @Input() formElements: any[];
     @Input() saveMessage: string;
@@ -108,9 +111,9 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
             const user = this._authService.currentUser.id;
             const today = new Date();
             const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-            newLogEntry = new LogEntry(this.formValues['id'], fieldId, user, date);
+            newLogEntry = new LogEntry(this.sourceClass, this.formValues['id'], fieldId, user, date);
         } else {
-            newLogEntry = new LogEntry(this.formValues['id'], fieldId);
+            newLogEntry = new LogEntry(this.sourceClass, this.formValues['id'], fieldId);
         }
 
         // Push new LogEntry to FormGroup array.
@@ -119,7 +122,8 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
         // Set existing Log Entries.
         if (this.formValues[control]) {
             this.formValues[control].map(logEntry => {
-                formGroups.push(this.formatFormGroup(field, logEntry));
+                const formGroup = this.formatFormGroup(field, logEntry);
+                formGroups.push(formGroup);
             });
         }
 
@@ -129,47 +133,73 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
 
     save(): void {
         if (this.form.dirty && this.form.valid) {
-            let body = Object.assign({}, this.formValues, this.form.value);
-            body = this.formatBody(body);
+            const body = this.extractUpdatedFields();
             this.formSaved.emit(body);
         }
     }
 
-    private formatBody(body): void {
+    private extractUpdatedFields() {
+        const updatedValues = <any>{};
+
+        updatedValues.id = this.formValues['id'];
+
+        if (!this.form.get('name').pristine) {
+            updatedValues.name = this.form.get('name').value;
+        }
+
         this.formElements.forEach(category => {
             category.fields.forEach(field => {
-                if (this.logOrNotes(field.type)) {
-                    // Discard pristine log entries at index 0.
-                    if (this.newLogEntryPristine(field.column_name)) {
-                        body[field.column_name].splice(0, 1);
-                    }
-                    // Stringify log entry select multiple column array.
-                    field.columns.forEach(column => {
-                        if (column.type === 'select_multiple') {
-                            for (let i = 0; i < body[field.column_name].length; i++) {
-                                const selectString = JSON.stringify(body[field.column_name][i][column.column_name]);
-                                body[field.column_name][i][column.column_name] = selectString;
+                const formControl = this.form.get(field.column_name);
+                // Only add updated custom_fields to updatedValues array.
+                if (!formControl.pristine) {
+                    if (this.logOrNotes(field.type)) {
+                        const formArray = this.getLogEntryFA(field.column_name);
+                        const logArray = [];
+
+                        for (let i = 0; i < formArray.controls.length; i++) {
+                            // Only Update log entries that are not pristine.
+                            if (!formArray.controls[i].pristine) {
+                                const logEntry = formArray.controls[i].value;
+
+                                if (field.type === 'log') {
+                                    field.columns.forEach(column => {
+                                        if (column.type === 'select_multiple') {
+                                            logEntry[column.column_name] = JSON.stringify(logEntry[column.column_name]);
+                                        }
+                                    });
+                                }
+
+                                logArray.push(logEntry);
                             }
                         }
-                    });
-                } else if (field.type === 'select_multiple' && body[field.column_name] != null) {
-                    // Stringify select multiple array.
-                    body[field.column_name] = JSON.stringify(body[field.column_name]);
+
+                        updatedValues[field.column_name] = logArray;
+                    } else if (field.type === 'select_multiple') {
+                        // Stringify select multiple array.
+                        updatedValues[field.column_name] = JSON.stringify(formControl.value);
+                    } else {
+                        updatedValues[field.column_name] = formControl.value;
+                    }
                 }
             });
         });
 
-        return body;
+        return updatedValues;
     }
 
     private formatFormGroup(field, logEntry): FormGroup {
+        const patchValues = [];
         field.columns.forEach(column => {
-            logEntry[column.column_name] = this.formatInputValues(column.type, logEntry[column.column_name]);
+            patchValues[column.column_name] = this.formatInputValues(column.type, logEntry[column.column_name]);
+            logEntry[column.column_name] = null;
         });
 
         logEntry['deleted'] = null;
 
-        return this._fb.group(logEntry);
+        const formGroup = this._fb.group(logEntry);
+        formGroup.patchValue(patchValues);
+
+        return formGroup;
     }
 
     private formatInputValues(type, value): any {

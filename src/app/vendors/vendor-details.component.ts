@@ -11,6 +11,7 @@ declare let $: any;
 `
 <app-details-form
     (formSaved)="saveForm($event)"
+    [sourceClass]="sourceClass"
     [formValues]="formValues"
     [formElements]="formElements"
     [saveMessage]="saveMessage">
@@ -18,6 +19,7 @@ declare let $: any;
 `
 })
 export class VendorDetailsComponent implements OnInit, OnDestroy {
+    sourceClass: string;
     formValues: {};
     formElements: any[];
     saveMessage: string;
@@ -28,6 +30,7 @@ export class VendorDetailsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         // Read the data from the resolver.
         this.sub = this._route.data.subscribe(data => {
+            this.sourceClass = data.source_class;
             this.formValues = data.response.data.vendor;
             this.formElements = data.response.data.form_elements;
         });

@@ -14,7 +14,8 @@ import { VendorDetailsResolver } from './vendor-resolve.service';
             {
                 path: ':vendor_id',
                 component: VendorDetailsComponent,
-                resolve: { response: VendorDetailsResolver }
+                resolve: { response: VendorDetailsResolver },
+                data: { source_class: 'Vendor' }
             }
         ])
     ],
