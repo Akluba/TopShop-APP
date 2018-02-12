@@ -13,7 +13,7 @@ class Vendor {
     templateUrl: './vendor-list.component.html'
 })
 export class VendorListComponent implements OnInit, OnDestroy {
-    newVendor: {};
+    newVendor: Vendor;
     private sub: Subscription;
     constructor(public vendorService: VendorService, private route: ActivatedRoute) {}
 
