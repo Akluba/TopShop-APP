@@ -28,7 +28,7 @@
 </div>
 
 <div class="ui feed">
-    <div class="event" *ngFor="let note of notes | noteFilter:selectedFilter">
+    <div class="event" *ngFor="let note of notes | noteSort | noteFilter:selectedFilter">
         <div class="label"></div>
         <div class="content">
             <div class="summary">
@@ -41,6 +41,10 @@
                     </a>
                     <a *ngSwitchCase="'Shop'"
                         [routerLink]="['/shops', note.created_for.id]">
+                        {{ note.created_for.text }}
+                    </a>
+                    <a *ngSwitchCase="'Vendor'"
+                        [routerLink]="['/vendors', note.created_for.id]">
                         {{ note.created_for.text }}
                     </a>
                 </div>
