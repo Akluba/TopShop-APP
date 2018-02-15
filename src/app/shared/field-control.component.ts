@@ -52,7 +52,7 @@ declare let $: any;
         formControlName="{{ control.column_name }}">
         <option value="">Select a Manager</option>
         <option *ngFor="let option of control.options"
-            value="{{ option.id }}">{{ option.manager_name }}
+            value="{{ option.id }}">{{ option.name }}
         </option>
     </select>
 
@@ -61,7 +61,7 @@ declare let $: any;
         formControlName="{{ control.column_name }}">
         <option value="">Select a Shop</option>
         <option *ngFor="let option of control.options"
-            value="{{ option.id }}">{{ option.shop_name }}
+            value="{{ option.id }}">{{ option.name }}
         </option>
     </select>
 

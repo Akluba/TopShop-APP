@@ -19,7 +19,7 @@ export class ShopDetailsResolver implements Resolve<any> {
 export  class ShopDetailsGuard implements CanDeactivate<ShopDetailsComponent> {
     canDeactivate(component: ShopDetailsComponent): boolean {
         if (component.shopForm.dirty) {
-            const shopName = component.shop['shop_name'];
+            const shopName = component.shop['name'];
             return confirm(`Navigate away and lose all changes to ${shopName}?`);
         }
         return true;

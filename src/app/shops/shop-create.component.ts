@@ -6,7 +6,7 @@ declare let $: any;
 
 class Shop {
     id = 0;
-    shop_name: string = null;
+    name: string = null;
 }
 
 @Component({

@@ -45,7 +45,7 @@ export class ShopListComponent implements OnInit, OnDestroy {
     }
 
     delete(shop): void {
-        if (confirm(`Are you sure you want to delete: ${shop.shop_name}?`)) {
+        if (confirm(`Are you sure you want to delete: ${shop.name}?`)) {
             this.shopService.destroy(shop.id)
                 .subscribe();
         }

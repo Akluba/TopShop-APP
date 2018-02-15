@@ -10,7 +10,7 @@ export class ManagerListComponent {
     constructor(public managerService: ManagerService) {}
 
     delete(manager): void {
-        if (confirm(`Are you sure you want to delete: ${manager.manager_name}?`)) {
+        if (confirm(`Are you sure you want to delete: ${manager.name}?`)) {
             this.managerService.destroy(manager.id)
                 .subscribe();
         }

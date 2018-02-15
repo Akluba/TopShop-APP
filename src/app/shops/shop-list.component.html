@@ -49,12 +49,12 @@
         <p-dataTable #dt [value]="shopService.shopList"
             [scrollable]="true" scrollWidth="100%"
             [globalFilter]="gb"
-            sortField="shop_name" [sortOrder]="1"
+            sortField="name" [sortOrder]="1"
             exportFilename="shop_list" selectionMode="multiple" [(selection)]="selectedShops"
             expandableRows="true">
             <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
             <p-column expander="true" [style]="{'width':'38px'}" styleClass="col-icon"></p-column>
-            <p-column field="shop_name" header="Shop Name" [filter]="true" [sortable]="true" [style]="{'width':'250px'}" ></p-column>
+            <p-column field="name" header="Shop Name" [filter]="true" [sortable]="true" [style]="{'width':'250px'}" ></p-column>
             <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [filter]="true" filterMatchMode="contains" [sortable]="true" [style]="{'width':'250px'}"></p-column>
             <ng-template let-shop pTemplate="rowexpansion">
                 <button class="ui primary icon button"

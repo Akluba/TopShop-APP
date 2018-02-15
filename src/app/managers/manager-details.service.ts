@@ -19,7 +19,7 @@ export class ManagerDetailsResolver implements Resolve<any> {
 export  class ManagerDetailsGuard implements CanDeactivate<ManagerDetailsComponent> {
     canDeactivate(component: ManagerDetailsComponent): boolean {
         if (component.managerForm.dirty) {
-            const managerName = component.manager['manager_name'];
+            const managerName = component.manager['name'];
             return confirm(`Navigate away and lose all changes to ${managerName}?`);
         }
         return true;

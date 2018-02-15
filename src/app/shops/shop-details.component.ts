@@ -83,7 +83,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        field_controls['shop_name'] = null;
+        field_controls['name'] = null;
 
         // Build the shopForm controls.
         this.shopForm = this._fb.group(field_controls);
@@ -114,7 +114,7 @@ export class ShopDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        field_values['shop_name'] = this.shop.shop_name;
+        field_values['name'] = this.shop.name;
 
         // Populate shopForm with data.
         this.shopForm.patchValue(field_values);

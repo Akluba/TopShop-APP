@@ -58,11 +58,10 @@ export class ExistingNoteComponent implements AfterViewInit {
     }
 
     linkText(column): string {
-        const linkName = (column.type === 'manager_link') ? 'manager_name' : 'shop_name';
         const value = this.note.value[column.column_name];
         const options = column.options;
 
-        return options[options.indexOf(options.find(x => x.id === +value))][linkName];
+        return options[options.indexOf(options.find(x => x.id === +value))]['name'];
     }
 
     edit(action?: string): void {

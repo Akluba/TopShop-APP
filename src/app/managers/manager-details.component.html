@@ -4,7 +4,7 @@
     [formGroup]="managerForm">
 
     <div class="ui fluid massive input" [ngClass]="{'transparent': managerNameField}">
-        <input type="text" formControlName="manager_name"
+        <input type="text" formControlName="name"
             (blur)="managerNameField = true"
             (focus)="managerNameField = false" />
     </div>

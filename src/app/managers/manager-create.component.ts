@@ -6,7 +6,7 @@ declare let $: any;
 
 class Manager {
     id = 0;
-    manager_name: string = null;
+    name: string = null;
 }
 
 @Component({
