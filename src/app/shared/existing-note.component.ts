@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 declare let $: any;
@@ -15,16 +15,21 @@ declare let $: any;
         `
     ],
 })
-export class ExistingNoteComponent implements AfterViewInit {
+export class ExistingNoteComponent implements OnInit, AfterViewInit {
     @Input() note;
     @Input() index;
     @Input() field;
 
+    metaTags = [];
     editting = false;
     editNote: FormGroup;
     noteSelector;
 
     constructor(private _fb: FormBuilder) {}
+
+    ngOnInit(): void {
+        this.extractMetaTags();
+    }
 
     ngAfterViewInit(): void {
         this.noteSelector = $(`app-existing-note[data-note='${this.field.id}-${this.index}']`);
@@ -40,21 +45,12 @@ export class ExistingNoteComponent implements AfterViewInit {
             });
     }
 
-    metaData(): boolean {
+    extractMetaTags(): void {
         const columns = this.field.columns;
 
-        for (let i = 0; i < columns.length; i++) {
-            if (!columns[i]['system'] && this.note.value[columns[i]['column_name']]) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    metaTags() {
-        const columns = this.field.columns;
-        return columns.filter(column => column.system !== 1 && this.note[column.column_name] !== null);
+        this.metaTags = columns.filter(column => {
+            return column.system !== 1 && this.note.value[column.column_name] !== null;
+        });
     }
 
     linkText(column): string {
