@@ -24,8 +24,8 @@
         <div class="extra text">
             {{ note.get('log_field3').value }}
         </div>
-        <div id="meta_tags" class="meta" *ngIf="metaData()">
-            <span *ngFor="let column of metaTags()" [ngSwitch]="column.type">
+        <div id="meta_tags" class="meta" *ngIf="metaTags.length > 0">
+            <span *ngFor="let column of metaTags" [ngSwitch]="column.type">
                 <a *ngSwitchCase="'manager_link'" class="ui label"
                     [routerLink]="['/managers', note.value[column.column_name]]">
                     <i class="blue linkify icon"></i>

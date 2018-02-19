@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NoteFilterPipe implements PipeTransform {
     transform(notes: any[], filter: any): any[] {
+        console.log(filter);
         if (!notes || (!filter.class && !filter.field)) {
             return notes;
         }
@@ -27,8 +28,8 @@ export class NoteSortPipe implements PipeTransform {
     }
 
     compare(a, b): number {
-        const sortA = a.created_date;
-        const sortB = b.created_date;
+        const sortA = Number(new Date(a.created_date));
+        const sortB = Number(new Date(b.created_date));
 
         let comparison = 0;
 

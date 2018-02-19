@@ -21,7 +21,6 @@ export class DashService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(res => console.log(res))
             .catch(this.handleError);
     }
 
