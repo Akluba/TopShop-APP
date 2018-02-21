@@ -1,13 +1,21 @@
-<div class="ui left vertical inverted labeled visible sidebar menu">
-    <div class="item">
-        <div class="header">Welcome, {{ authService.currentUser.name }}</div>
+<div class="ui left visible inverted vertical sidebar labeled menu">
+    <div class="ui dropdown item">
+        <div class="header">
+            Welcome, {{ authService.currentUser.name }}
+            <i class="dropdown icon"></i>
+        </div>
         <div class="menu">
-            <a class="item" [routerLink]="['/dash']" routerLinkActive="active">Dash Board</a>
-            <a class="item" [routerLink]="['/account']" routerLinkActive="active">Account Settings</a>
-            <a *ngIf="authService.currentUser.profile === 'admin'" class="item" [routerLink]="['/users']" routerLinkActive="active">Manage Users</a>
-            <a class="item" (click)="logout()">Logout</a>
+            <a class="item" (click)="logout()"><i class="sign out alternate icon"></i> Logout</a>
+            <a class="item" [routerLink]="['/account']" routerLinkActive="active"><i class="cogs icon"></i> Account Settings</a>
+            <a class="item" *ngIf="authService.currentUser.profile === 'admin'"
+                [routerLink]="['/users']"
+                routerLinkActive="active">
+                <i class="users icon"></i>
+                Manage Users
+            </a>
         </div>
     </div>
+    <a class="item" [routerLink]="['/dash']" routerLinkActive="active">Dash Board</a>
     <div class="item">
         <div class="header">Shops</div>
         <div class="menu">
