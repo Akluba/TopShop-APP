@@ -2,7 +2,7 @@
     <div class="ui dropdown item">
         <div class="header">
             Welcome, {{ authService.currentUser.name }}
-            <i class="dropdown icon"></i>
+            <i class="right aligned caret right icon"></i>
         </div>
         <div class="menu">
             <a class="item" (click)="logout()"><i class="sign out alternate icon"></i> Logout</a>
@@ -35,6 +35,13 @@
         <div class="menu">
             <a class="item" [routerLink]="['/vendors']" routerLinkActive="active">Vendor List</a>
             <a class="item" [routerLink]="['/setup/vendor']" routerLinkActive="active">Setup</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">CPR</div>
+        <div class="menu">
+            <a class="item" [routerLink]="['/cpr']" routerLinkActive="active">Contact List</a>
+            <a class="item" [routerLink]="['/setup/cpr']" routerLinkActive="active">Setup</a>
         </div>
     </div>
 </div>

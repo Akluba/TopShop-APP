@@ -12,6 +12,7 @@ export const routes: Routes = [
     { path: 'shops', canLoad: [ AuthGuard ], loadChildren: 'app/shops/shop.module#ShopModule' },
     { path: 'managers', canLoad: [ AuthGuard ], loadChildren: 'app/managers/manager.module#ManagerModule' },
     { path: 'vendors', canLoad: [ AuthGuard ], loadChildren: 'app/vendors/vendor.module#VendorModule' },
+    { path: 'cpr', canLoad: [ AuthGuard ], loadChildren: 'app/cpr/cpr.module#CPRModule' },
     { path: 'unauthorized', component: UnauthorizedComponent },
     { path: '', redirectTo: 'dash', pathMatch: 'full'},
     { path: '**', component: PageNotFoundComponent }

@@ -1,0 +1,36 @@
+<h2 class="ui header">CPR Contact List</h2>
+
+<div class="ui segment">
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th class="thirteen wide">Contact Name</th>
+                <th class="three wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="active">
+                <td class="ui fluid input">
+                    <input type="text" required placeholder="Create New CPR Contact"
+                        [(ngModel)]="newCPR.name" #name="ngModel"/>
+                </td>
+                <td>
+                    <button class="ui positive fluid button"
+                        [disabled]="!name.valid"
+                        (click)="save()">
+                        Save
+                    </button>
+                </td>
+            </tr>
+            <tr *ngFor="let cpr of cprService.cprList">
+                <td>{{ cpr.name }}</td>
+                <td>
+                    <button class="ui primary fluid button"
+                        [routerLink]="['/cpr', cpr.id]">
+                        Info
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
