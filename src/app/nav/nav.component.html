@@ -6,10 +6,10 @@
         </div>
         <div class="menu">
             <a class="item" (click)="logout()"><i class="sign out alternate icon"></i> Logout</a>
-            <a class="item" [routerLink]="['/account']" routerLinkActive="active"><i class="cogs icon"></i> Account Settings</a>
+            <a class="item" [routerLink]="['/account']" routerLinkActive="active selected"><i class="cogs icon"></i> Account Settings</a>
             <a class="item" *ngIf="authService.currentUser.profile === 'admin'"
                 [routerLink]="['/users']"
-                routerLinkActive="active">
+                routerLinkActive="active selected">
                 <i class="users icon"></i>
                 Manage Users
             </a>
