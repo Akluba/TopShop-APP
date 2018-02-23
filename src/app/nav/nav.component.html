@@ -1,13 +1,14 @@
 <div class="ui left visible inverted vertical sidebar labeled menu">
+    <!-- User Options Submenu -->
     <div class="ui dropdown item">
         <div class="header">
-            Welcome, {{ authService.currentUser.name }}
+            Welcome, {{ user.name }}
             <i class="right aligned caret right icon"></i>
         </div>
         <div class="menu">
             <a class="item" (click)="logout()"><i class="sign out alternate icon"></i> Logout</a>
             <a class="item" [routerLink]="['/account']" routerLinkActive="active selected"><i class="cogs icon"></i> Account Settings</a>
-            <a class="item" *ngIf="authService.currentUser.profile === 'admin'"
+            <a class="item" *ngIf="user.profile === 'admin'"
                 [routerLink]="['/users']"
                 routerLinkActive="active selected">
                 <i class="users icon"></i>
@@ -15,33 +16,19 @@
             </a>
         </div>
     </div>
+    <!-- Dash Board Link -->
     <a class="item" [routerLink]="['/dash']" routerLinkActive="active">Dash Board</a>
-    <div class="item">
-        <div class="header">Shops</div>
-        <div class="menu">
-            <a class="item" [routerLink]="['/shops']" routerLinkActive="active">Shop List</a>
-            <a class="item" [routerLink]="['/setup/shop']" routerLinkActive="active">Setup</a>
+    <!-- User Menu Items -->
+    <ng-container *ngFor="let item of userMenuItems">
+        <div class="item" *ngIf="item.profilePermission">
+            <div class="header">{{ item.header }}</div>
+            <div class="menu">
+                <a class="item" *ngFor="let link of item.links"
+                    [routerLink]=link.href
+                    routerLinkActive="active">
+                    {{ link.text }}
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="item">
-        <div class="header">Insurance Companies</div>
-        <div class="menu">
-            <a class="item" [routerLink]="['/managers']" routerLinkActive="active">Manager List</a>
-            <a class="item" [routerLink]="['/setup/manager']" routerLinkActive="active">Setup</a>
-        </div>
-    </div>
-    <div class="item">
-        <div class="header">Vendors</div>
-        <div class="menu">
-            <a class="item" [routerLink]="['/vendors']" routerLinkActive="active">Vendor List</a>
-            <a class="item" [routerLink]="['/setup/vendor']" routerLinkActive="active">Setup</a>
-        </div>
-    </div>
-    <div class="item">
-        <div class="header">CPR</div>
-        <div class="menu">
-            <a class="item" [routerLink]="['/cpr']" routerLinkActive="active">Contact List</a>
-            <a class="item" [routerLink]="['/setup/cpr']" routerLinkActive="active">Setup</a>
-        </div>
-    </div>
+    </ng-container>
 </div>

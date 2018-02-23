@@ -5,7 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NoteFilterPipe implements PipeTransform {
     transform(notes: any[], filter: any): any[] {
-        console.log(filter);
         if (!notes || (!filter.class && !filter.field)) {
             return notes;
         }

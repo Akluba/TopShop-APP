@@ -28,7 +28,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     message: {};
     userList: ICurrentUser[];
     newUser: ICurrentUser;
-    userProfiles = ['admin', 'employee'];
+    userProfiles = ['admin', 'employee', 'cpr'];
 
     constructor(public userService: UserService, private _route: ActivatedRoute) {}
 
