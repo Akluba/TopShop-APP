@@ -1,5 +1,5 @@
 <h2 class="ui header">Shop List</h2>
-<div class="ui segments">
+<!-- <div class="ui segments">
     <div class="ui horizontal segments">
         <div class="ui center aligned segment">
             <div class="ui top attached label">
@@ -44,8 +44,12 @@
                 <shop-create></shop-create>
             </div>
         </div>
-    </div>
-    <div class="ui secondary segment">
+    </div> -->
+    <app-data-table
+        [fields]='fields'
+        [data]='shops'>
+    </app-data-table>
+    <!-- <div class="ui secondary segment">
         <p-dataTable #dt [value]="shopService.shopList"
             [scrollable]="true" scrollWidth="100%"
             [globalFilter]="gb"
@@ -67,5 +71,5 @@
                 </button>
             </ng-template>
         </p-dataTable>
-    </div>
-</div>
+    </div> -->
+<!-- </div> -->
