@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { Column } from './Column';
+import { Element, Column } from './Classes';
 
 @Component({
     selector: 'app-data-table',
@@ -9,16 +9,24 @@ import { Column } from './Column';
 export class DataTableComponent implements OnInit {
     @Input() fields: any[];
     @Input() data: any[];
+    @Input() type: string;
+    @Output() elementCreated = new EventEmitter<any>();
+    @Output() elementRemoved = new EventEmitter<any>();
     tableColumns = [];
-    toggleColumns = [];
+    selectedColumns = [];
+    newElement: Element;
+    newPlaceholder: string;
     selectedData: any[];
 
     ngOnInit(): void {
         this.setTableColumns();
-        this.setToggleColumns();
+        this.newElement = new Element();
+        this.newPlaceholder = `Enter a New ${this.type} Name`;
     }
 
     setTableColumns(): void {
+        this.tableColumns.push(new Column('name', 'Name', 'text', undefined));
+
         for (const field of Object.keys(this.fields)) {
             this.tableColumns.push( new Column(
                 field,
@@ -27,15 +35,20 @@ export class DataTableComponent implements OnInit {
                 this.fields[field]['options'],
             ));
         }
+
+        this.selectedColumns = this.tableColumns;
     }
 
-    setToggleColumns(): void {
-        for (let i = 0; i < this.tableColumns.length; i++) {
-            this.toggleColumns.push({label: this.tableColumns[i].header, value: this.tableColumns[i]});
+    create(): void {
+        if (this.newElement.name) {
+            this.elementCreated.emit(this.newElement);
+            this.newElement = new Element();
         }
     }
 
-    testing(value): void {
-        console.log(value);
+    remove(data): void {
+        if (confirm(`Are you sure you want to delete: ${data.name}?`)) {
+            this.elementRemoved.emit(data.id);
+        }
     }
 }

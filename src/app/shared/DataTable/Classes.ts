@@ -1,3 +1,8 @@
+export class Element {
+    id = 0;
+    name: string = null;
+}
+
 export class Column {
     field: string;
     header: string;

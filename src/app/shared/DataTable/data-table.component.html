@@ -1,28 +1,25 @@
 <div class="ui segments">
     <div class="ui horizontal segments">
         <div class="ui center aligned segment">
-            <div class="ui top attached label">
-                <i class="toggle on icon"></i>
-                Toggle Columns
-            </div>
-            <div>
-                <p-multiSelect [options]="toggleColumns" [(ngModel)]="tableColumns"></p-multiSelect>
-            </div>
-        </div>
-        <div class="ui center aligned segment">
-            <div class="ui top attached label">
-                <i class="filter icon"></i>
-                Filter
-            </div>
+            <div class="ui top attached label"><i class="plus icon"></i>Create</div>
             <div class="ui input">
-                <input type="text" pInputText placeholder="all fields.." (input)="dt.filterGlobal($event.target.value, 'contains')">
+                <input type="text" required placeholder="{{ newPlaceholder }}"
+                    [(ngModel)]="newElement.name" #name="ngModel"
+                    (keydown.enter)="create()" />
             </div>
         </div>
         <div class="ui center aligned segment">
-            <div class="ui top attached label">
-                <i class="file excel outline icon"></i>
-                Export
+            <div class="ui top attached label"><i class="toggle on icon"></i>Toggle Columns</div>
+            <div>
+                <p-multiSelect [options]="tableColumns" [(ngModel)]="selectedColumns"
+                    optionLabel="header"
+                    selectedItemsLabel="{0} columns selected"
+                    defaultLabel="Choose Columns">
+                </p-multiSelect>
             </div>
+        </div>
+        <div class="ui center aligned segment">
+            <div class="ui top attached label"><i class="file excel outline icon"></i>Export</div>
             <div class="ui buttons">
                 <button class="ui primary button" (click)="dt.exportCSV({selectionOnly:true})"
                     [disabled]="!selectedData || selectedData?.length==0">
@@ -34,54 +31,43 @@
                 </button>
             </div>
         </div>
-        <div class="ui center aligned segment">
-            <div class="ui top attached label">
-                <i class="plus icon"></i>
-                Create
-            </div>
-            <div>
-                <!-- <shop-create></shop-create> -->
-            </div>
-        </div>
     </div>
     <div class="ui secondary segment">
         <p-table #dt
-            [columns]='tableColumns'
+            [columns]='selectedColumns'
             [value]="data"
             [sortField]="'name'"
             [(selection)]="selectedData"
             [scrollable]="true"
-            [style]="{width:'100%'}">
-            <!-- Scrollable Table Settings -->
+            [style]="{width:'100%'}"
+            dataKey="id">
+            <!--
+                Scrollable Table Settings
+            -->
             <ng-template pTemplate="colgroup" let-columns>
                 <colgroup>
                     <col style="width:2.25em">
-                    <col style="width:250px">
+                    <col style="width:2.25em">
                     <col *ngFor="let col of columns" style="width:250px">
                 </colgroup>
             </ng-template>
-
-            <!-- Column Functionality -->
+            <!--
+                Column Functionality
+            -->
             <ng-template pTemplate="header" let-columns>
-                <!-- Sortable Columns -->
-                <tr>
+                <tr> <!-- Sortable Columns -->
+                    <th style="width: 2.25em"></th>
                     <th style="width: 2.25em">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th>
-                    <th [pSortableColumn]="'name'">Name
-                        <p-sortIcon [field]="'name'"></p-sortIcon>
                     </th>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                         {{ col.header }}
                         <p-sortIcon [field]="col.field"></p-sortIcon>
                     </th>
                 </tr>
-                <!-- Field Filters -->
-                <tr>
+                <tr> <!-- Field Filters -->
                     <th></th>
-                    <th class="ui fluid input">
-                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'name')" />
-                    </th>
+                    <th></th>
                     <th *ngFor="let col of columns" [ngSwitch]='col.type'>
                         <div class="ui fluid input" *ngSwitchCase="'text'">
                             <input type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"/>
@@ -97,23 +83,28 @@
                     </th>
                 </tr>
             </ng-template>
-
-            <!-- Row Data -->
-            <ng-template pTemplate="body" let-data>
-                <!-- Selectable Row -->
-                <tr [pSelectableRow]="data">
+            <!--
+                Row Data
+            -->
+            <ng-template pTemplate="body" let-data let-columns="columns">
+                <tr [pSelectableRow]="data"> <!-- Selectable Row -->
+                    <td><i class="red minus link icon" (click)="remove(data)"></i></td>
                     <td><p-tableCheckbox [value]="data"></p-tableCheckbox></td>
-                    <td>{{ data.name }}</td>
-                    <td *ngFor="let col of tableColumns">
-                        {{ data[col.field] }}
+                    <td *ngFor="let col of columns">
+                        <ng-container *ngIf="col.field === 'name'; then nameLink; else rawData"></ng-container>
+                        <ng-template #nameLink>
+                            <a [routerLink]="[data.id]">{{ data.name }}</a>
+                        </ng-template>
+                        <ng-template #rawData>{{ data[col.field] }}</ng-template>
                     </td>
                 </tr>
             </ng-template>
-
-            <!-- Empty Results Message -->
-            <ng-template pTemplate="emptymessage" let-data>
+            <!--
+                Empty Results Message
+            -->
+            <ng-template pTemplate="emptymessage" let-columns>
                 <tr>
-                    <td attr.colspan="{{ data.length + 2 }}">No Matches Found</td>
+                    <td attr.colspan="{{ columns.length + 2 }}">No Matches Found</td>
                 </tr>
             </ng-template>
         </p-table>
