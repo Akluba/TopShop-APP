@@ -69,17 +69,12 @@
                     <th></th>
                     <th></th>
                     <th *ngFor="let col of columns" [ngSwitch]='col.type'>
-                        <div class="ui fluid input" *ngSwitchCase="'text'">
+                        <div class="ui mini fluid input" *ngSwitchCase="'text'">
                             <input type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"/>
                         </div>
-                        <p-dropdown *ngSwitchCase="'select'" [options]="col.options" appendTo="body" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
-                        <p-multiSelect *ngSwitchCase="'select_multiple'" [options]="col.options" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
-
-                        <div *ngSwitchCase="'checkbox'">
-                            {{ custom_5Filter }}
-                            <p-checkbox binary="true" value="{{ custom_5Filter }}" (onChange)="custom_5Filter=$event; dt.filter($event, col.field, 'equals')"></p-checkbox>
-                            <i class="fa fa-close" (click)="custom_5Filter=null; dt.filter(null, col.field, col.filterMatchMode)" style="cursor:pointer"> Show All</i>
-                        </div>
+                        <p-multiSelect *ngSwitchCase="'select'" [options]="col.options" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                        <p-multiSelect *ngSwitchCase="'select_multiple'" [options]="col.options" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'multi')"></p-multiSelect>
+                        <p-multiSelect *ngSwitchCase="'checkbox'" [options]="boolOptions" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
                     </th>
                 </tr>
             </ng-template>

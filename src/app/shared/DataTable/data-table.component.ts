@@ -14,6 +14,7 @@ export class DataTableComponent implements OnInit {
     @Output() elementRemoved = new EventEmitter<any>();
     tableColumns = [];
     selectedColumns = [];
+    boolOptions: any[];
     newElement: Element;
     newPlaceholder: string;
     selectedData: any[];
@@ -22,6 +23,11 @@ export class DataTableComponent implements OnInit {
         this.setTableColumns();
         this.newElement = new Element();
         this.newPlaceholder = `Enter a New ${this.type} Name`;
+
+        this.boolOptions = [
+            {label: 'True', value: 'true'},
+            {label: 'False', value: 'false'}
+        ];
     }
 
     setTableColumns(): void {
@@ -50,5 +56,10 @@ export class DataTableComponent implements OnInit {
         if (confirm(`Are you sure you want to delete: ${data.name}?`)) {
             this.elementRemoved.emit(data.id);
         }
+    }
+
+    testing(value, field): void {
+        console.log(field);
+        console.log(value);
     }
 }
