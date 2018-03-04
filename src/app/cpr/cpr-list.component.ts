@@ -4,37 +4,47 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { CPRService } from './cpr.service';
 
-class CPR {
-    id = 0;
-    name: string = null;
-}
-
 @Component({
-    templateUrl: './cpr-list.component.html'
+    template:
+`
+<h2 class="ui header">CPR Contact List</h2>
+<app-data-table
+    [fields]='fields'
+    [data]='contacts'
+    type='Contact'
+    (elementCreated)="save($event)"
+    (elementRemoved)="delete($event)">
+</app-data-table>
+`
 })
 export class CPRListComponent implements OnInit, OnDestroy {
-    newCPR: CPR;
+    contacts: any[];
+    fields: any[];
     private sub: Subscription;
-    constructor(public cprService: CPRService, private route: ActivatedRoute) {}
+    constructor (private _route: ActivatedRoute, private _cprService: CPRService) {}
 
     ngOnInit(): void {
-        this.sub = this.route.data.subscribe(data => {
-
+        this.sub = this._route.data.subscribe(data => {
+            this.contacts = data.response.data.contact_list;
+            this.fields = data.response.data.fields;
         });
-
-        this.newCPR = new CPR();
     }
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
 
-    save(): void {
-        if (this.newCPR['name']) {
-            this.cprService.save(this.newCPR)
-                .subscribe(
-                    () => this.newCPR = new CPR()
-                );
-        }
+    save(body): void {
+        this._cprService.save(body)
+            .subscribe(res => {
+                this.contacts.push(res['data']);
+            });
+    }
+
+    delete(body): void {
+        this._cprService.destroy(body)
+            .subscribe(res => {
+                this.contacts = this.contacts.filter(obj => obj.id !== res['data']['id']);
+            });
     }
 }

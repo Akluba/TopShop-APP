@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { FormsModule } from '@angular/forms';
 import { CPRRoutingModule } from './cpr-routing.module';
 
 // Feature Components
@@ -17,7 +16,6 @@ import { TableModule } from 'primeng/table';
     imports: [
         SharedModule,
         TableModule,
-        FormsModule,
         CPRRoutingModule
     ],
     declarations: [

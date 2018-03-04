@@ -4,37 +4,47 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { VendorService } from './vendor.service';
 
-class Vendor {
-    id = 0;
-    name: string = null;
-}
-
 @Component({
-    templateUrl: './vendor-list.component.html'
+    template:
+`
+<h2 class="ui header">Vendor List</h2>
+<app-data-table
+    [fields]='fields'
+    [data]='vendors'
+    type='Vendor'
+    (elementCreated)="save($event)"
+    (elementRemoved)="delete($event)">
+</app-data-table>
+`
 })
 export class VendorListComponent implements OnInit, OnDestroy {
-    newVendor: Vendor;
+    vendors: any[];
+    fields: any[];
     private sub: Subscription;
-    constructor(public vendorService: VendorService, private route: ActivatedRoute) {}
+    constructor (private _route: ActivatedRoute, private _vendorService: VendorService) {}
 
     ngOnInit(): void {
-        this.sub = this.route.data.subscribe(data => {
-
+        this.sub = this._route.data.subscribe(data => {
+            this.vendors = data.response.data.vendor_list;
+            this.fields = data.response.data.fields;
         });
-
-        this.newVendor = new Vendor();
     }
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
 
-    save(): void {
-        if (this.newVendor['name']) {
-            this.vendorService.save(this.newVendor)
-                .subscribe(
-                    () => this.newVendor = new Vendor()
-                );
-        }
+    save(body): void {
+        this._vendorService.save(body)
+            .subscribe(res => {
+                this.vendors.push(res['data']);
+            });
+    }
+
+    delete(body): void {
+        this._vendorService.destroy(body)
+            .subscribe(res => {
+                this.vendors = this.vendors.filter(obj => obj.id !== res['data']['id']);
+            });
     }
 }

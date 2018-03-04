@@ -11,7 +11,6 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ManagerService {
-    managerList = [];
     private baseUrl = `${environment.url}/managers`;
     constructor(private _http: HttpClient) {}
 
@@ -21,7 +20,6 @@ export class ManagerService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(data => this.managerList = data['data'])
             .catch(this.handleError);
     }
 
@@ -40,9 +38,6 @@ export class ManagerService {
         const options = { headers: headers };
 
         return this._http.delete(url, options)
-            .do(data =>
-                this.managerList = this.managerList.filter(obj => obj.id !== data['data']['id'])
-            )
             .catch(this.handleError);
     }
 
@@ -59,7 +54,6 @@ export class ManagerService {
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)
-            .do(data => this.managerList.push(data['data']))
             .catch(this.handleError);
     }
 

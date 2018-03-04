@@ -5,16 +5,14 @@ import { RouterModule } from '@angular/router';
 
 import { CalendarModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
-import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { CheckboxModule } from 'primeng/checkbox';
 
 import { DetailsFormComponent } from './details-form.component';
 import { NoteFeedTemplate } from './note-feed.component';
 import { ExistingNoteComponent } from './existing-note.component';
 import { LoggingFieldTemplate } from './logging-field.component';
 import { FieldControlTemplate } from './field-control.component';
-import { DataTableComponent } from './DataTable/data-table.component';
+import { DataTableComponent } from './ListDataTable/data-table.component';
 
 import { SortOrderPipe } from './order-by.pipe';
 
@@ -25,9 +23,7 @@ import { SortOrderPipe } from './order-by.pipe';
         ReactiveFormsModule,
         CalendarModule,
         TableModule,
-        DropdownModule,
         MultiSelectModule,
-        CheckboxModule,
         RouterModule
     ],
     declarations: [

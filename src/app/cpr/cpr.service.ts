@@ -6,7 +6,6 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class CPRService {
-    cprList = [];
     private baseUrl = `${environment.url}/cpr`;
     constructor(private _http: HttpClient) {}
 
@@ -16,7 +15,6 @@ export class CPRService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(res => this.cprList = res['data']['cpr_list'])
             .catch(this.handleError);
     }
 
@@ -26,6 +24,15 @@ export class CPRService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
+            .catch(this.handleError);
+    }
+
+    destroy(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.delete(url, options)
             .catch(this.handleError);
     }
 
@@ -42,7 +49,6 @@ export class CPRService {
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)
-            .do(data => this.cprList.push(data['data']))
             .catch(this.handleError);
     }
 

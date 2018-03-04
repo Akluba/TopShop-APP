@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/operator/do';
-// import 'rxjs/add/operator/catch';
-// import 'rxjs/add/observable/throw';
-// import 'rxjs/add/operator/map';
-// import 'rxjs/add/observable/of';
 
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class VendorService {
-    vendors = [];
     private baseUrl = `${environment.url}/vendors`;
     constructor(private _http: HttpClient) {}
 
@@ -21,7 +15,6 @@ export class VendorService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(res => this.vendors = res['data']['vendor_list'])
             .catch(this.handleError);
     }
 
@@ -31,6 +24,15 @@ export class VendorService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
+            .catch(this.handleError);
+    }
+
+    destroy(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.delete(url, options)
             .catch(this.handleError);
     }
 
@@ -47,7 +49,6 @@ export class VendorService {
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)
-            .do(data => this.vendors.push(data['data']))
             .catch(this.handleError);
     }
 
