@@ -47,6 +47,10 @@
                         [routerLink]="['/vendors', note.created_for.id]">
                         {{ note.created_for.text }}
                     </a>
+                    <a *ngSwitchCase="'Cpr'"
+                    [routerLink]="['/cpr', note.created_for.id]">
+                    {{ note.created_for.text }}
+                </a>
                 </div>
                 <div class="date">{{ note.created_date }}</div>
             </div>

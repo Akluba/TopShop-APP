@@ -1,33 +1,40 @@
-<div class="ui left vertical inverted labeled visible sidebar menu">
-    <div class="item">
-        <div class="header">Welcome, {{ authService.currentUser.name }}</div>
-        <div class="menu">
-            <a class="item" [routerLink]="['/dash']" routerLinkActive="active">Dash Board</a>
-            <a class="item" [routerLink]="['/account']" routerLinkActive="active">Account Settings</a>
-            <a *ngIf="authService.currentUser.profile === 'admin'" class="item" [routerLink]="['/users']" routerLinkActive="active">Manage Users</a>
-            <a class="item" (click)="logout()">Logout</a>
+<div class="ui left visible inverted vertical sidebar labeled menu">
+    <!-- User Options Submenu -->
+    <div class="ui dropdown item">
+        <div class="header">
+            Welcome, {{ user.name }}
+            <i class="right aligned caret right icon"></i>
         </div>
-    </div>
-    <div class="item">
-        <div class="header">Shops</div>
         <div class="menu">
+<<<<<<< HEAD
             <a class="item" [routerLink]="['/shops']" routerLinkActive="active">Shop List</a>
             <a class="item" [routerLink]="['/search/shop']" routerLinkActive="active">Advanced Search</a>
             <a class="item" [routerLink]="['/setup/shop']" routerLinkActive="active">Setup</a>
+=======
+            <a class="item" (click)="logout()"><i class="sign out alternate icon"></i> Logout</a>
+            <a class="item" [routerLink]="['/account']" routerLinkActive="active selected"><i class="cogs icon"></i> Account Settings</a>
+            <a class="item" *ngIf="user.profile === 'admin'"
+                [routerLink]="['/users']"
+                routerLinkActive="active selected">
+                <i class="users icon"></i>
+                Manage Users
+            </a>
+>>>>>>> origin/enhance_6
         </div>
     </div>
-    <div class="item">
-        <div class="header">Insurance Companies</div>
-        <div class="menu">
-            <a class="item" [routerLink]="['/managers']" routerLinkActive="active">Manager List</a>
-            <a class="item" [routerLink]="['/setup/manager']" routerLinkActive="active">Setup</a>
+    <!-- Dash Board Link -->
+    <a class="item" [routerLink]="['/dash']" routerLinkActive="active">Dash Board</a>
+    <!-- User Menu Items -->
+    <ng-container *ngFor="let item of userMenuItems">
+        <div class="item" *ngIf="item.profilePermission">
+            <div class="header">{{ item.header }}</div>
+            <div class="menu">
+                <a class="item" *ngFor="let link of item.links"
+                    [routerLink]=link.href
+                    routerLinkActive="active">
+                    {{ link.text }}
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="item">
-        <div class="header">Vendors</div>
-        <div class="menu">
-            <a class="item" [routerLink]="['/vendors']" routerLinkActive="active">Vendor List</a>
-            <a class="item" [routerLink]="['/setup/vendor']" routerLinkActive="active">Setup</a>
-        </div>
-    </div>
+    </ng-container>
 </div>

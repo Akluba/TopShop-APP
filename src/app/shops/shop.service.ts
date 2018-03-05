@@ -11,7 +11,6 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ShopService {
-    shopList = [];
     private baseUrl = `${environment.url}/shops`;
     constructor(private _http: HttpClient) {}
 
@@ -21,7 +20,6 @@ export class ShopService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
-            .do(res => this.shopList = res['data']['shop_list'])
             .catch(this.handleError);
     }
 
@@ -40,9 +38,6 @@ export class ShopService {
         const options = { headers: headers };
 
         return this._http.delete(url, options)
-            .do(data =>
-                this.shopList = this.shopList.filter(obj => obj.id !== data['data']['id'])
-            )
             .catch(this.handleError);
     }
 
@@ -59,7 +54,6 @@ export class ShopService {
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)
-            .do(data => this.shopList.push(data['data']))
             .catch(this.handleError);
     }
 

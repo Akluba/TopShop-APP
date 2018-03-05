@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
 
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export class ManagerService {
-    private baseUrl = `${environment.url}/managers`;
+export class CPRService {
+    private baseUrl = `${environment.url}/cpr`;
     constructor(private _http: HttpClient) {}
 
     index(): Observable<any> {
@@ -73,4 +68,5 @@ export class ManagerService {
 
         return Observable.throw(err.error.message);
     }
+
 }

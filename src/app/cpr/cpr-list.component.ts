@@ -2,30 +2,30 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ManagerService } from './manager.service';
+import { CPRService } from './cpr.service';
 
 @Component({
     template:
 `
-<h2 class="ui header">Manager List</h2>
+<h2 class="ui header">CPR Contact List</h2>
 <app-data-table
     [fields]='fields'
-    [data]='managers'
-    type='Manager'
+    [data]='contacts'
+    type='Contact'
     (elementCreated)="save($event)"
     (elementRemoved)="delete($event)">
 </app-data-table>
 `
 })
-export class ManagerListComponent implements OnInit, OnDestroy {
-    managers: any[];
+export class CPRListComponent implements OnInit, OnDestroy {
+    contacts: any[];
     fields: any[];
     private sub: Subscription;
-    constructor (private _route: ActivatedRoute, private _managerService: ManagerService) {}
+    constructor (private _route: ActivatedRoute, private _cprService: CPRService) {}
 
     ngOnInit(): void {
         this.sub = this._route.data.subscribe(data => {
-            this.managers = data.response.data.manager_list;
+            this.contacts = data.response.data.contact_list;
             this.fields = data.response.data.fields;
         });
     }
@@ -35,16 +35,16 @@ export class ManagerListComponent implements OnInit, OnDestroy {
     }
 
     save(body): void {
-        this._managerService.save(body)
+        this._cprService.save(body)
             .subscribe(res => {
-                this.managers.push(res['data']);
+                this.contacts.push(res['data']);
             });
     }
 
     delete(body): void {
-        this._managerService.destroy(body)
+        this._cprService.destroy(body)
             .subscribe(res => {
-                this.managers = this.managers.filter(obj => obj.id !== res['data']['id']);
+                this.contacts = this.contacts.filter(obj => obj.id !== res['data']['id']);
             });
     }
 }

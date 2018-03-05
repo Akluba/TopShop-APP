@@ -5,14 +5,12 @@ import { ManagerRoutingModule } from './manager-routing.module';
 
 // Feature Components
 import { ManagerListComponent } from './manager-list.component';
-import { ManagerCreateComponent } from './manager-create.component';
 import { ManagerDetailsComponent } from './manager-details.component';
 
 // Services
+import { ManagerService } from './manager.service';
 import { ManagerListResolver } from './manager-list-resolver.service';
 import { ManagerDetailsResolver, ManagerDetailsGuard } from './manager-details.service';
-import { ManagerService } from './manager.service';
-import { ManagerFilterPipe } from './manager-filter.pipe';
 
 @NgModule({
     imports: [
@@ -23,9 +21,7 @@ import { ManagerFilterPipe } from './manager-filter.pipe';
     ],
     declarations: [
         ManagerListComponent,
-        ManagerCreateComponent,
-        ManagerDetailsComponent,
-        ManagerFilterPipe
+        ManagerDetailsComponent
     ],
     providers: [
         ManagerListResolver,

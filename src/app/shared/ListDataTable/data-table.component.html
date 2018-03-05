@@ -1,0 +1,107 @@
+<div class="ui segments">
+    <div class="ui horizontal segments">
+        <div class="ui center aligned segment">
+            <div class="ui top attached label"><i class="plus icon"></i>Create</div>
+            <div class="ui input">
+                <input type="text" required placeholder="{{ newPlaceholder }}"
+                    [(ngModel)]="newElement.name" #name="ngModel"
+                    (keydown.enter)="create()" />
+            </div>
+        </div>
+        <div class="ui center aligned segment">
+            <div class="ui top attached label"><i class="toggle on icon"></i>Toggle Columns</div>
+            <div>
+                <p-multiSelect [options]="tableColumns" [(ngModel)]="selectedColumns"
+                    optionLabel="header"
+                    selectedItemsLabel="{0} columns selected"
+                    defaultLabel="Choose Columns">
+                </p-multiSelect>
+            </div>
+        </div>
+        <div class="ui center aligned segment">
+            <div class="ui top attached label"><i class="file excel outline icon"></i>Export</div>
+            <div class="ui buttons">
+                <button class="ui primary button" (click)="dt.exportCSV({selectionOnly:true})"
+                    [disabled]="!selectedData || selectedData?.length==0">
+                    Selected
+                </button>
+                <div class="or"></div>
+                <button class="ui primary button" (click)="dt.exportCSV()">
+                    All
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui secondary segment">
+        <p-table #dt
+            [columns]='selectedColumns'
+            [value]="data"
+            [sortField]="'name'"
+            [(selection)]="selectedData"
+            [scrollable]="true"
+            [style]="{width:'100%'}"
+            dataKey="id">
+            <!--
+                Scrollable Table Settings
+            -->
+            <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                    <col style="width:2.25em">
+                    <col style="width:2.25em">
+                    <col *ngFor="let col of columns" style="width:250px">
+                </colgroup>
+            </ng-template>
+            <!--
+                Column Functionality
+            -->
+            <ng-template pTemplate="header" let-columns>
+                <tr> <!-- Sortable Columns -->
+                    <th style="width: 2.25em"></th>
+                    <th style="width: 2.25em">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+                <tr> <!-- Field Filters -->
+                    <th></th>
+                    <th></th>
+                    <th *ngFor="let col of columns" [ngSwitch]='col.type'>
+                        <div class="ui mini fluid input" *ngSwitchCase="'text'">
+                            <input type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"/>
+                        </div>
+                        <p-multiSelect *ngSwitchCase="'select'" [options]="col.options" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                        <p-multiSelect *ngSwitchCase="'select_multiple'" [options]="col.options" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'multi')"></p-multiSelect>
+                        <p-multiSelect *ngSwitchCase="'checkbox'" [options]="boolOptions" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                    </th>
+                </tr>
+            </ng-template>
+            <!--
+                Row Data
+            -->
+            <ng-template pTemplate="body" let-data let-columns="columns">
+                <tr [pSelectableRow]="data"> <!-- Selectable Row -->
+                    <td><i class="red minus link icon" (click)="remove(data)"></i></td>
+                    <td><p-tableCheckbox [value]="data"></p-tableCheckbox></td>
+                    <td *ngFor="let col of columns">
+                        <ng-container *ngIf="col.field === 'name'; then nameLink; else rawData"></ng-container>
+                        <ng-template #nameLink>
+                            <a [routerLink]="[data.id]">{{ data.name }}</a>
+                        </ng-template>
+                        <ng-template #rawData>{{ data[col.field] }}</ng-template>
+                    </td>
+                </tr>
+            </ng-template>
+            <!--
+                Empty Results Message
+            -->
+            <ng-template pTemplate="emptymessage" let-columns>
+                <tr>
+                    <td attr.colspan="{{ columns.length + 2 }}">No Matches Found</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

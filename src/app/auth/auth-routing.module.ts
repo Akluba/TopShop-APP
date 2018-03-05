@@ -19,7 +19,7 @@ import { UsersResolver } from './users-resolver.service';
                 canActivate: [ AuthGuard, ProfileGuard ],
                 resolve: { response: UsersResolver },
                 component: UsersComponent,
-                data: { authorizedProfile: 'admin' }
+                data: { authorizedProfiles: ['admin'] }
             }
         ])
     ],
