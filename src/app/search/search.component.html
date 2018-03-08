@@ -1,1 +1,65 @@
-<h2>Testing</h2>
+<h2>Advanced Search</h2>
+
+<div class="ui fluid steps">
+    <div class="step"
+        [ngClass]="{'active': searchStep === 1}"
+        (click)="resetSearch()">
+        <i class="check icon"></i>
+        <div class="content">
+            <div class="title">Field Options</div>
+            <div class="description">Select a field to search.</div>
+        </div>
+    </div>
+    <div class="step"
+        [ngClass]="{'active': searchStep === 2, 'disabled': !selectedField}"
+        (click)="buildFieldForm(); searchStep=2">
+        <i class="filter icon"></i>
+        <div class="content">
+            <div class="title">Filter Values</div>
+            <div class="description">Enter values you wish to filter.</div>
+        </div>
+    </div>
+    <div class="step"
+        [ngClass]="{'active': searchStep === 3, 'disabled': !fieldForm}"
+        (click)="save()">
+        <i class="list icon"></i>
+        <div class="content">
+            <div class="title">Results</div>
+        </div>
+    </div>
+</div>
+
+<div class="ui segment" *ngIf="searchStep === 1">
+    <div class="ui two column relaxed equal height divided grid">
+        <div class="column" *ngFor="let group of searchGroups">
+            <h4 class="ui header">{{ group }}</h4>
+            <div class="ui list">
+                <div class="item" *ngFor="let field of searchableFields[group]">
+                    <div class="ui radio checkbox">
+                        <input type="radio" [(ngModel)]="selectedField" [value]="{'group': group, 'field': field}">
+                        <label>{{ field.title }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="fieldForm && searchStep === 2">
+    <form class="ui form"
+        novalidate
+        (ngSubmit)="save()"
+        [formGroup]="fieldForm">
+
+        <logging-field
+            formArrayName="{{ selectedField.field.id }}"
+            [field]="selectedField.field"
+            [logEntries]="fieldForm.get(selectedField.field.id.toString())">
+        </logging-field>
+    </form>
+</div>
+
+<div *ngIf="fieldForm?.valid && searchStep === 3">
+    <div class="ui centered inline loader"
+    [ngClass]="{'active': loading, 'disabled': !loading}"></div>
+</div>

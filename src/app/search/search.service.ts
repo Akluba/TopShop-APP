@@ -16,7 +16,6 @@ export class SearchService {
         const options = { headers: headers, params: params };
 
         return this._http.get(url, options)
-            .do(res => console.log(res))
             .catch(this.handleError);
     }
 

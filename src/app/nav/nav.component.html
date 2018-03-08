@@ -6,11 +6,6 @@
             <i class="right aligned caret right icon"></i>
         </div>
         <div class="menu">
-<<<<<<< HEAD
-            <a class="item" [routerLink]="['/shops']" routerLinkActive="active">Shop List</a>
-            <a class="item" [routerLink]="['/search/shop']" routerLinkActive="active">Advanced Search</a>
-            <a class="item" [routerLink]="['/setup/shop']" routerLinkActive="active">Setup</a>
-=======
             <a class="item" (click)="logout()"><i class="sign out alternate icon"></i> Logout</a>
             <a class="item" [routerLink]="['/account']" routerLinkActive="active selected"><i class="cogs icon"></i> Account Settings</a>
             <a class="item" *ngIf="user.profile === 'admin'"
@@ -19,7 +14,6 @@
                 <i class="users icon"></i>
                 Manage Users
             </a>
->>>>>>> origin/enhance_6
         </div>
     </div>
     <!-- Dash Board Link -->

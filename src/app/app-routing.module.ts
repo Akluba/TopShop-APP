@@ -11,6 +11,12 @@ export const routes: Routes = [
     { path: 'dash', canLoad: [ AuthGuard ], loadChildren: 'app/dashboard/dash.module#DashModule' },
     { path: 'setup', canLoad: [ AuthGuard ], loadChildren: 'app/setup/setup.module#SetupModule' },
     {
+        path: 'search',
+        canLoad: [ AuthGuard, ProfileGuard ],
+        loadChildren: 'app/search/search.module#SearchModule',
+        data: { authorizedProfiles: ['admin', 'employee'] }
+    },
+    {
         path: 'shops',
         canLoad: [ AuthGuard, ProfileGuard ],
         loadChildren: 'app/shops/shop.module#ShopModule',
