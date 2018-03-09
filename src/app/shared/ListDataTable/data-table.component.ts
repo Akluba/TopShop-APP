@@ -57,9 +57,4 @@ export class DataTableComponent implements OnInit {
             this.elementRemoved.emit(data.id);
         }
     }
-
-    testing(value, field): void {
-        console.log(field);
-        console.log(value);
-    }
 }

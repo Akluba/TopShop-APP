@@ -19,6 +19,15 @@ export class SearchService {
             .catch(this.handleError);
     }
 
+    search(body): Observable<any> {
+        const url = `${this.baseUrl}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.post(url, body, options)
+            .catch(this.handleError);
+    }
+
     private handleError(err: HttpErrorResponse) {
         if (err.error instanceof Error) {
             console.log(`An error occurred: ${err.error.message}`);

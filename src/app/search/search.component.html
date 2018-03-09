@@ -62,4 +62,10 @@
 <div *ngIf="fieldForm?.valid && searchStep === 3">
     <div class="ui centered inline loader"
     [ngClass]="{'active': loading, 'disabled': !loading}"></div>
+
+    <app-search-results
+        *ngIf="searchResponse"
+        [sourceClass]="sourceClass"
+        [searchResponse]="searchResponse">
+    </app-search-results>
 </div>
