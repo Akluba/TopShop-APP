@@ -51,7 +51,7 @@ import { Column } from '../shared/ListDataTable/Classes';
                 <td *ngFor="let col of columns">
                     <ng-container *ngIf="col.field === 'name'; then nameLink; else rawData"></ng-container>
                     <ng-template #nameLink>
-                        <a [routerLink]="['/', sourceClass, data.id]">{{ data.name }}</a>
+                        <a [routerLink]="['/', sourceClass, data.source_id]">{{ data.name }}</a>
                     </ng-template>
                     <ng-template #rawData>{{ data[col.field] }}</ng-template>
                 </td>
@@ -69,10 +69,10 @@ import { Column } from '../shared/ListDataTable/Classes';
 `
 })
 export class SearchResultsComponent implements OnInit {
-    @Input() searchResponse: {matches: any[], fields: any[]};
+    @Input() searchResponse: {matches: any[], columns: any[]};
     @Input() sourceClass: string;
     matches: any[];
-    fields: any[];
+    columns: any[];
     tableColumns = [];
     selectedColumns = [];
     boolOptions: any[];
@@ -81,7 +81,7 @@ export class SearchResultsComponent implements OnInit {
     ngOnInit(): void {
         this.sourceClass = (this.sourceClass === 'cpr') ? this.sourceClass : this.sourceClass + 's';
         this.matches = this.searchResponse.matches;
-        this.fields = this.searchResponse.fields;
+        this.columns = this.searchResponse.columns;
         this.setTableColumns();
 
         this.boolOptions = [
@@ -93,12 +93,12 @@ export class SearchResultsComponent implements OnInit {
     setTableColumns(): void {
         this.tableColumns.push(new Column('name', 'Name', 'text', undefined));
 
-        for (const field of Object.keys(this.fields)) {
+        for (const column of Object.keys(this.columns)) {
             this.tableColumns.push( new Column(
-                field,
-                this.fields[field]['title'],
-                this.fields[field]['type'],
-                this.fields[field]['options'],
+                column,
+                this.columns[column]['title'],
+                this.columns[column]['type'],
+                this.columns[column]['options'],
             ));
         }
 
