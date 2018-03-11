@@ -10,7 +10,7 @@ import { SearchService } from './search.service';
 })
 export class SearchComponent implements OnInit, OnDestroy {
     sourceClass: string;
-    searchStep = 1;
+    searchStep: number;
     searchableFields: {};
     searchGroups: any[];
     selectedField: {field: {}, group: string};
@@ -22,19 +22,19 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.sub = this._route.data.subscribe(data => {
+            this.resetSearch(true);
+            this.sourceClass = this._route.snapshot.params['source_class'];
             this.searchableFields = data.response.fields;
             this.searchGroups = Object.keys(this.searchableFields);
         });
-
-        this.sourceClass = this._route.params['value']['source_class'];
     }
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
 
-    resetSearch(): void {
-        if (confirm('Navigating back to this step will reset the search, do you wish to continue?')) {
+    resetSearch(autoRefresh?): void {
+        if (autoRefresh || confirm('Navigating back to this step will reset the search, do you wish to continue?')) {
             delete this.selectedField;
             delete this.fieldForm;
             delete this.searchResponse;
