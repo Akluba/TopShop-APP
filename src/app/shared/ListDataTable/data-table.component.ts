@@ -6,7 +6,7 @@ import { Element, Column } from './Classes';
     selector: 'app-data-table',
     templateUrl: './data-table.component.html'
 })
-export class DataTableComponent implements OnInit {
+export class ListDataTableComponent implements OnInit {
     @Input() fields: any[];
     @Input() data: any[];
     @Input() type: string;

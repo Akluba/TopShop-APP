@@ -7,12 +7,14 @@ import { CalendarModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { MultiSelectModule } from 'primeng/multiselect';
 
-import { DetailsFormComponent } from './details-form.component';
-import { NoteFeedTemplate } from './note-feed.component';
-import { ExistingNoteComponent } from './existing-note.component';
-import { LoggingFieldTemplate } from './logging-field.component';
-import { FieldControlTemplate } from './field-control.component';
-import { DataTableComponent } from './ListDataTable/data-table.component';
+import { ListDataTableComponent } from './ListDataTable/data-table.component';
+
+import { DetailsFormComponent } from './DetailsForm/details-form.component';
+import { NoteFeedTemplate } from './DetailsForm/note-feed.component';
+import { ExistingNoteComponent } from './DetailsForm/existing-note.component';
+
+import { LoggingFieldTemplate } from './FormFields/logging-field.component';
+import { FieldControlTemplate } from './FormFields/field-control.component';
 
 import { SortOrderPipe } from './order-by.pipe';
 
@@ -32,16 +34,14 @@ import { SortOrderPipe } from './order-by.pipe';
         ExistingNoteComponent,
         LoggingFieldTemplate,
         FieldControlTemplate,
-        DataTableComponent,
+        ListDataTableComponent,
         SortOrderPipe
     ],
     exports: [
         CommonModule,
         DetailsFormComponent,
-        NoteFeedTemplate,
         LoggingFieldTemplate,
-        FieldControlTemplate,
-        DataTableComponent,
+        ListDataTableComponent,
         SortOrderPipe
     ]
 })
