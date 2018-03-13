@@ -11,20 +11,22 @@ import { SearchStep } from './search-classes';
 })
 export class SearchComponent implements OnInit, OnDestroy {
     sourceClass: string;
-    searchSteps: SearchStep[];
-    searchStep: number;
     searchableFields: {};
     searchGroups: any[];
-    selectedField: {field: {}, group: string};
+    searchSteps: SearchStep[];
+    searchStep: number;
+    selectedField: number;
+    fieldElements: {};
     fieldForm: FormGroup;
     searchResponse: any[];
+
     private sub: Subscription;
     constructor (private _route: ActivatedRoute, private _fb: FormBuilder, private _searchService: SearchService) {}
 
     ngOnInit(): void {
         this.searchSteps = [
             new SearchStep('resetSearch', 'search icon', 'Field Options', 'Select a field to search.'),
-            new SearchStep('buildFieldForm', 'filter icon', 'Filter Values', 'Enter values you wish to filter.'),
+            new SearchStep('getField', 'filter icon', 'Filter Values', 'Enter values you wish to filter.'),
             new SearchStep('save', 'list icon', 'Results'),
         ];
 
@@ -38,11 +40,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
-    }
-
-    testing(): void {
-        console.log(this.fieldForm.get('81')['controls'][0]);
-        // this.fieldForm.get('81')['controls'][0].reset();
     }
 
     resetSearch(autoRefresh?): void {
@@ -75,9 +72,21 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    buildFieldForm(): void {
-        const field = this.selectedField.field;
-        const group = this.selectedField.group;
+    getField(): void {
+        this.searchSteps[1].toggleLoading();
+
+        const field = this.selectedField;
+        this._searchService.show(field)
+            .subscribe(res => {
+                this.fieldElements = res.field;
+                this.buildFieldForm(res.field);
+
+                this.searchSteps[1].toggleLoading();
+                this.updateStepStatus(1);
+            });
+    }
+
+    buildFieldForm(field): void {
         const controls = [];
 
         // Set field control and build main FormGroup.
@@ -93,8 +102,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         // Set field control to FormArray containing field column controls.
         const formArray = this._fb.array(formGroup);
         this.fieldForm.setControl(control, formArray);
-
-        this.updateStepStatus(1);
     }
 
     buildFormGroup(columns): FormGroup {
@@ -109,7 +116,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     save(): void {
         const step = 2;
-        this.updateStepStatus(step);
         this.searchSteps[step].toggleLoading();
 
         const body = {
@@ -121,7 +127,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             .subscribe(res => {
                 this.searchResponse = res;
                 this.searchSteps[step].toggleLoading();
-                this.updateStepStatus();
+                this.updateStepStatus(step);
             });
     }
 }

@@ -14,6 +14,7 @@
         [description]="step.description">
     </app-adv-search-step>
 </div>
+
 <div class="ui attached segment">
     <div class="ui secondary segment" *ngIf="searchStep === 0">
         <div class="ui two column relaxed equal height divided grid">
@@ -22,7 +23,7 @@
                 <div class="ui list">
                     <div class="item" *ngFor="let field of searchableFields[group]">
                         <div class="ui radio checkbox">
-                            <input type="radio" [(ngModel)]="selectedField" [value]="{'group': group, 'field': field}" (change)="updateStepStatus()">
+                            <input type="radio" [(ngModel)]="selectedField" [value]="field.id" (change)="updateStepStatus()">
                             <label>{{ field.title }}</label>
                         </div>
                     </div>
@@ -34,16 +35,15 @@
     <div *ngIf="searchStep === 1">
         <form class="ui form" novalidate [formGroup]="fieldForm">
             <logging-field
-                formArrayName="{{ selectedField.field.id }}"
-                [field]="selectedField.field"
-                [logEntries]="fieldForm.get(selectedField.field.id.toString())">
+                formArrayName="{{ selectedField }}"
+                [field]="fieldElements"
+                [logEntries]="fieldForm.get(selectedField.toString())">
             </logging-field>
         </form>
     </div>
 
     <div *ngIf="searchStep === 2">
-        <app-search-results
-            *ngIf="searchResponse"
+        <app-search-results *ngIf="searchResponse"
             [sourceClass]="sourceClass"
             [searchResponse]="searchResponse">
         </app-search-results>

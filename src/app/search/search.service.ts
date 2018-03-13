@@ -19,6 +19,15 @@ export class SearchService {
             .catch(this.handleError);
     }
 
+    show(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options)
+            .catch(this.handleError);
+    }
+
     search(body): Observable<any> {
         const url = `${this.baseUrl}`;
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
