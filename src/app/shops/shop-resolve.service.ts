@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, CanDeactivate } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-
-import { DetailsFormComponent } from '../shared/details-form.component';
 
 import { ShopService } from './shop.service';
 

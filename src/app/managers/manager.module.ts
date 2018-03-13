@@ -9,8 +9,7 @@ import { ManagerDetailsComponent } from './manager-details.component';
 
 // Services
 import { ManagerService } from './manager.service';
-import { ManagerListResolver } from './manager-list-resolver.service';
-import { ManagerDetailsResolver, ManagerDetailsGuard } from './manager-details.service';
+import { ManagerListResolver, ManagerDetailsResolver } from './manager-resolve.service';
 
 @NgModule({
     imports: [
@@ -24,10 +23,9 @@ import { ManagerDetailsResolver, ManagerDetailsGuard } from './manager-details.s
         ManagerDetailsComponent
     ],
     providers: [
+        ManagerService,
         ManagerListResolver,
-        ManagerDetailsResolver,
-        ManagerDetailsGuard,
-        ManagerService
+        ManagerDetailsResolver
     ]
 })
 export class ManagerModule {}
