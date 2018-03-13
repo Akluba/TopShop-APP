@@ -9,8 +9,7 @@ import { ShopDetailsComponent } from './shop-details.component';
 
 // Services
 import { ShopService } from './shop.service';
-import { ShopListResolver } from './shop-list-resolver.service';
-import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
+import { ShopListResolver, ShopDetailsResolver } from './shop-resolve.service';
 
 @NgModule({
     imports: [
@@ -26,8 +25,7 @@ import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
     providers: [
         ShopService,
         ShopListResolver,
-        ShopDetailsResolver,
-        ShopDetailsGuard
+        ShopDetailsResolver
     ]
 })
 export class ShopModule {}

@@ -4,8 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ShopListComponent } from './shop-list.component';
 import { ShopDetailsComponent } from './shop-details.component';
 
-import { ShopListResolver } from './shop-list-resolver.service';
-import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
+import { ShopListResolver, ShopDetailsResolver } from './shop-resolve.service';
 
 @NgModule({
     imports: [
@@ -15,7 +14,7 @@ import { ShopDetailsResolver, ShopDetailsGuard } from './shop-details.service';
                 path: ':shop_id',
                 component: ShopDetailsComponent,
                 resolve: { response: ShopDetailsResolver },
-                canDeactivate: [ ShopDetailsGuard ],
+                data: { source_class: 'Shop' }
             }
         ])
     ],
