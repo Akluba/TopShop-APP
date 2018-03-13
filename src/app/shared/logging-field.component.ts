@@ -18,8 +18,19 @@ declare let $: any;
         <tbody>
             <tr *ngFor="let log_entry of logEntries.controls; let i=index"
                 attr.data-logentry="{{ field.id }}-{{i}}">
-                <td><i class="red large minus link icon" *ngIf="i!==0"
-                    (click)="deleteLogEntry(i, log_entry)"></i></td>
+                <td>
+                    <ng-container *ngIf="i===0; else deleteIcon">
+                        <i class="large blue undo link icon"
+                            (click)="resetNewEntry()">
+                        </i>
+                    </ng-container>
+
+                    <ng-template #deleteIcon>
+                        <i class="red large minus link icon"
+                            (click)="deleteLogEntry(i, log_entry)">
+                        </i>
+                    </ng-template>
+                </td>
                 <td *ngFor="let column of field.columns | sortOrder">
                     <field-control
                         [formGroup]="log_entry"
@@ -35,6 +46,24 @@ declare let $: any;
 export class LoggingFieldTemplate {
     @Input() field;
     @Input() logEntries;
+
+    resetNewEntry(): void {
+        const newEntryControls = this.logEntries.controls[0].controls;
+
+        // Hacky way of clearing dropdowns when resetting log entry.
+        const dropdowns = $(`tr[data-logentry='${this.field.id}-0']`).find('.ui.dropdown');
+
+        if (dropdowns.length > 0) {
+            dropdowns.dropdown('clear');
+        }
+
+        // Reset each control that is not pristine.
+        for (const control of Object.keys(newEntryControls)) {
+            if (!newEntryControls[control].pristine) {
+                newEntryControls[control].reset();
+            }
+        }
+    }
 
     deleteLogEntry(i, log_entry): void {
         // confirm the user wishes to delete the item.
