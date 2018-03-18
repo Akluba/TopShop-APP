@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { DashComponent } from './dash.component';
 
 import { DashService, DashResolver } from './dash.service';
-import { NoteFilterPipe, NoteSortPipe } from './note.pipe';
+import { NoteSortPipe } from './note.pipe';
 
 @NgModule({
     imports: [
@@ -21,7 +21,6 @@ import { NoteFilterPipe, NoteSortPipe } from './note.pipe';
     ],
     declarations: [
         DashComponent,
-        NoteFilterPipe,
         NoteSortPipe
     ],
     providers: [
