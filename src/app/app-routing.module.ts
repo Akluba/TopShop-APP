@@ -29,6 +29,12 @@ export const routes: Routes = [
         data: { authorizedProfiles: ['admin', 'employee'] }
     },
     {
+        path: 'companies',
+        canLoad: [ AuthGuard, ProfileGuard ],
+        loadChildren: 'app/companies/company.module#CompanyModule',
+        data: { authorizedProfiles: ['admin', 'employee'] }
+    },
+    {
         path: 'vendors',
         canLoad: [ AuthGuard, ProfileGuard ],
         loadChildren: 'app/vendors/vendor.module#VendorModule',

@@ -41,12 +41,16 @@
                         <div class="user">{{ note.created_by }}</div>
                         created a note for
                         <div class="user" [ngSwitch]="note.created_for.class">
+                            <a *ngSwitchCase="'Shop'"
+                                [routerLink]="['/shops', note.created_for.id]">
+                                {{ note.created_for.text }}
+                            </a>
                             <a *ngSwitchCase="'Manager'"
                                 [routerLink]="['/managers', note.created_for.id]">
                                 {{ note.created_for.text }}
                             </a>
-                            <a *ngSwitchCase="'Shop'"
-                                [routerLink]="['/shops', note.created_for.id]">
+                            <a *ngSwitchCase="'Company'"
+                                [routerLink]="['/companies', note.created_for.id]">
                                 {{ note.created_for.text }}
                             </a>
                             <a *ngSwitchCase="'Vendor'"
