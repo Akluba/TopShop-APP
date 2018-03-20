@@ -7,7 +7,7 @@ import { CompanyService } from './company.service';
 @Component({
     template:
 `
-<h2 class="ui header">Shop List</h2>
+<h2 class="ui header">Insurance Company List</h2>
 <app-data-table
     [fields]='fields'
     [data]='companies'

@@ -6,10 +6,11 @@ import { CompanyRoutingModule } from './company-routing.module';
 // Feature Components
 import { CompanyListComponent } from './company-list.component';
 import { CompanyDetailsComponent } from './company-details.component';
+import { CompanyRequirementsComponent } from './company-requirements.component';
 
 // Services
-import { CompanyService } from './company.service';
-import { CompanyListResolver, CompanyDetailsResolver } from './company-resolve.service';
+import { CompanyService, CompanyRequirementsService } from './company.service';
+import { CompanyListResolver, CompanyDetailsResolver, CompanyRequirementsResolver } from './company-resolve.service';
 
 @NgModule({
     imports: [
@@ -20,12 +21,15 @@ import { CompanyListResolver, CompanyDetailsResolver } from './company-resolve.s
     ],
     declarations: [
         CompanyListComponent,
-        CompanyDetailsComponent
+        CompanyDetailsComponent,
+        CompanyRequirementsComponent
     ],
     providers: [
         CompanyService,
+        CompanyRequirementsService,
         CompanyListResolver,
-        CompanyDetailsResolver
+        CompanyDetailsResolver,
+        CompanyRequirementsResolver
     ]
 })
 export class CompanyModule {}

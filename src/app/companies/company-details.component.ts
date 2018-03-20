@@ -9,6 +9,12 @@ declare let $: any;
 @Component({
     template:
 `
+<button class="ui small basic right floated reqs button"
+    [routerLink]="['./requirements']">
+    <i class="icon file alternate"></i>
+    Requirements
+</button>
+<!-- <div style="clear:both"></div> -->
 <app-details-form
     (formSaved)="saveForm($event)"
     [sourceClass]="sourceClass"
@@ -16,12 +22,17 @@ declare let $: any;
     [formElements]="formElements"
     [saveMessage]="saveMessage">
 </app-details-form>
-`
+`,
+styles:
+[`
+    .ui.button.reqs { position: relative; z-index: 1;}
+`]
 })
 export class CompanyDetailsComponent implements OnInit, OnDestroy {
     sourceClass: string;
     formValues: {};
     formElements: any[];
+    companyId: number;
     saveMessage: string;
     private sub: Subscription;
 
@@ -32,6 +43,7 @@ export class CompanyDetailsComponent implements OnInit, OnDestroy {
         this.sub = this._route.data.subscribe(data => {
             this.sourceClass = data.source_class;
             this.formValues = data.response.data.company;
+            this.companyId = this.formValues['id'];
             this.formElements = data.response.data.form_elements;
         });
     }

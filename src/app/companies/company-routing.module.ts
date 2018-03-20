@@ -3,8 +3,9 @@ import { RouterModule } from '@angular/router';
 
 import { CompanyListComponent } from './company-list.component';
 import { CompanyDetailsComponent } from './company-details.component';
+import { CompanyRequirementsComponent } from './company-requirements.component';
 
-import { CompanyListResolver, CompanyDetailsResolver } from './company-resolve.service';
+import { CompanyListResolver, CompanyDetailsResolver, CompanyRequirementsResolver } from './company-resolve.service';
 
 @NgModule({
     imports: [
@@ -15,6 +16,11 @@ import { CompanyListResolver, CompanyDetailsResolver } from './company-resolve.s
                 component: CompanyDetailsComponent,
                 resolve: { response: CompanyDetailsResolver },
                 data: { source_class: 'Company' }
+            },
+            {
+                path: ':company_id/requirements',
+                component: CompanyRequirementsComponent,
+                resolve: { response: CompanyRequirementsResolver },
             }
         ])
     ],

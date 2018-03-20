@@ -74,3 +74,28 @@ export class CompanyService {
         return Observable.throw(err.error.message);
     }
 }
+
+@Injectable()
+export class CompanyRequirementsService {
+    private baseUrl = `${environment.url}/company/requirements`;
+    constructor(private _http: HttpClient) {}
+
+    show(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options)
+            .catch(this.handleError);
+    }
+
+    private handleError(err: HttpErrorResponse) {
+        if (err.error instanceof Error) {
+            console.log(`An error occurred: ${err.error.message}`);
+        } else {
+            console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
+        }
+
+        return Observable.throw(err.error.message);
+    }
+}
