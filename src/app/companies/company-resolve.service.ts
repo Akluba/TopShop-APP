@@ -29,6 +29,6 @@ export class CompanyRequirementsResolver implements Resolve<any> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         const company_id = +route.params['company_id'];
-        return this._companyService.show(company_id);
+        return this._companyService.index(company_id);
     }
 }

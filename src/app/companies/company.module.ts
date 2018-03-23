@@ -3,6 +3,9 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyRoutingModule } from './company-routing.module';
 
+import { TableModule } from 'primeng/table';
+
+
 // Feature Components
 import { CompanyListComponent } from './company-list.component';
 import { CompanyDetailsComponent } from './company-details.component';
@@ -17,6 +20,7 @@ import { CompanyListResolver, CompanyDetailsResolver, CompanyRequirementsResolve
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
+        TableModule,
         CompanyRoutingModule
     ],
     declarations: [
