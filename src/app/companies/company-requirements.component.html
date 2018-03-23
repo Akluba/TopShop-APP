@@ -10,9 +10,10 @@
             <th>Value</th>
         </tr>
         <tr class="active">
-            <th>
+            <th class="middle center aligned">
                 <button class="ui basic icon button"
-                    [disabled]="!field.valid || !condition.valid">
+                    [disabled]="!field.valid || !condition.valid"
+                    (click)="save()">
                     <i class="green large plus icon"></i>
                 </button>
             </th>
@@ -68,10 +69,11 @@
     </ng-template>
     <ng-template pTemplate="body" let-requirement>
         <tr>
-            <td>
-                <i class="middle aligned red large minus link icon"></i>
+            <td class="middle center aligned">
+                <i class="red large minus link icon"
+                    (click)="delete(requirement.id)"></i>
             </td>
-            <td>{{ requirement.field_title }}</td>
+            <td>{{ requirement.field_id }}</td>
             <td>{{ requirement.condition }}</td>
             <td>{{ requirement.value }}</td>
         </tr>

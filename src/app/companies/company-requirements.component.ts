@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { CompanyService } from './company.service';
+import { CompanyRequirementsService } from './company.service';
 
 import { RequirementField, Requirement } from './company.model';
 
@@ -18,21 +18,25 @@ declare let $: any;
     ]
 })
 export class CompanyRequirementsComponent implements OnInit, AfterViewInit, OnDestroy {
+    companyId: number;
     newRequirement: Requirement;
     fieldOptions: RequirementField[];
     conditionOptions: any[];
     valueFieldType: string;
     valueOptions: any[];
 
-    requirements: Requirement[];
+    requirements: Requirement[] = [];
     private sub: Subscription;
 
-    constructor(private _route: ActivatedRoute) {}
+    constructor(private _route: ActivatedRoute, private _companyService: CompanyRequirementsService) {}
 
     ngOnInit(): void {
         this.sub = this._route.data.subscribe(data => {
-            this.newRequirement = new Requirement;
-            this.fieldOptions = data.response.data;
+            this.companyId = this._route.snapshot.params['company_id'];
+            this.fieldOptions = data.response.data.fields;
+            this.requirements = data.response.data.requirements;
+
+            this.initNewRequirement();
         });
     }
 
@@ -42,6 +46,10 @@ export class CompanyRequirementsComponent implements OnInit, AfterViewInit, OnDe
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
+    }
+
+    initNewRequirement(): void {
+        this.newRequirement = new Requirement(0, this.companyId);
     }
 
     assessSelectedField(): void {
@@ -102,5 +110,20 @@ export class CompanyRequirementsComponent implements OnInit, AfterViewInit, OnDe
         };
 
         this.conditionOptions = conditionTypes[selectedFieldType];
+    }
+
+    delete(id: number): void {
+        this._companyService.destroy(id)
+            .subscribe(res => {
+                this.requirements = this.requirements.filter(obj => obj.id !== res['data']['id']);
+            });
+    }
+
+    save(): void {
+        this._companyService.save(this.newRequirement)
+            .subscribe(res => {
+                this.requirements.push(res['data']);
+                this.newRequirement = new Requirement(0, 1);
+            });
     }
 }

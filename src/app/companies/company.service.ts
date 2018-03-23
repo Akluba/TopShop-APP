@@ -80,10 +80,11 @@ export class CompanyRequirementsService {
     private baseUrl = `${environment.url}/company/requirements`;
     constructor(private _http: HttpClient) {}
 
-    index(): Observable<any> {
+    index(id: string): Observable<any> {
         const url = `${this.baseUrl}`;
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
-        const options = { headers: headers };
+        const params = new HttpParams().set('company_id', id);
+        const options = { headers: headers, params: params };
 
         return this._http.get(url, options)
             .catch(this.handleError);
@@ -95,6 +96,31 @@ export class CompanyRequirementsService {
         const options = { headers: headers };
 
         return this._http.get(url, options)
+            .catch(this.handleError);
+    }
+
+    destroy(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.delete(url, options)
+            .catch(this.handleError);
+    }
+
+    save(body: any): Observable<any> {
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        if (body.id === 0) {
+            return this.store(body, options);
+        }
+        // return this.update(body, options);
+    }
+
+    private store(body: any, options: any): Observable<any> {
+        const url = `${this.baseUrl}`;
+        return this._http.post(url, body, options)
             .catch(this.handleError);
     }
 
