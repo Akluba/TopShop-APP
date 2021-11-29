@@ -16,7 +16,7 @@ import { ExistingNoteComponent } from './DetailsForm/existing-note.component';
 import { LoggingFieldTemplate } from './FormFields/logging-field.component';
 import { FieldControlTemplate } from './FormFields/field-control.component';
 
-import { SortOrderPipe } from './order-by.pipe';
+import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
 
 @NgModule({
     imports: [
@@ -35,14 +35,16 @@ import { SortOrderPipe } from './order-by.pipe';
         LoggingFieldTemplate,
         FieldControlTemplate,
         ListDataTableComponent,
-        SortOrderPipe
+        SortOrderPipe,
+        SortABCPipe
     ],
     exports: [
         CommonModule,
         DetailsFormComponent,
         LoggingFieldTemplate,
         ListDataTableComponent,
-        SortOrderPipe
+        SortOrderPipe,
+        SortABCPipe
     ]
 })
 export class SharedModule {}

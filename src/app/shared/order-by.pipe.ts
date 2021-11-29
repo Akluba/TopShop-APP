@@ -23,3 +23,21 @@ export class SortOrderPipe implements PipeTransform {
         return comparison;
     }
 }
+
+@Pipe({
+    name: 'sortABC'
+})
+export class SortABCPipe implements PipeTransform {
+    transform(array: any, field: string): any[] {
+        array.sort((a: any, b: any) => {
+          if (a['name'] < b['name']) {
+            return -1;
+          } else if (a['name'] > b['name']) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        return array;
+    }
+}
