@@ -51,6 +51,15 @@ export class ShopService {
         return this.update(body, options);
     }
 
+    msnIndex(): Observable<any> {
+        const url = `${environment.url}/msn`;
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options)
+            .catch(this.handleError);
+    }
+
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)

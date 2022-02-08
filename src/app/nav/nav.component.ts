@@ -36,6 +36,7 @@ export class NavComponent implements OnInit, AfterViewInit {
             new MenuItem('Shops', [
                 new NavLink(['/shops'], 'Shop List'),
                 new NavLink(['/search/shop'], 'Advanced Search'),
+                new NavLink(['/shops/multi/notes'], 'Multi Shop Note'),
                 new NavLink(['/setup/shop'], 'Setup'),
             ], this.checkUserPermission(['admin', 'employee'])),
             new MenuItem('Insurance Companies', [

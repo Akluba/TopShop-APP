@@ -23,6 +23,15 @@ export class ShopDetailsResolver implements Resolve<any> {
     }
 }
 
+@Injectable()
+export class MSNResolver implements Resolve<any> {
+    constructor(private _shopService: ShopService) {}
+
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+        return this._shopService.msnIndex();
+    }
+}
+
 // @Injectable()
 // export  class ShopDetailsGuard implements CanDeactivate<DetailsFormComponent> {
 //     canDeactivate(component: DetailsFormComponent): boolean {

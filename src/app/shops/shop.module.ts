@@ -6,10 +6,12 @@ import { ShopRoutingModule } from './shop-routing.module';
 // Feature Components
 import { ShopListComponent } from './shop-list.component';
 import { ShopDetailsComponent } from './shop-details.component';
+import { MSNComponent } from './msn.component';
+import { MSNFormComponent } from './msn-form.component';
 
 // Services
 import { ShopService } from './shop.service';
-import { ShopListResolver, ShopDetailsResolver } from './shop-resolve.service';
+import { ShopListResolver, ShopDetailsResolver, MSNResolver } from './shop-resolve.service';
 
 @NgModule({
     imports: [
@@ -20,12 +22,15 @@ import { ShopListResolver, ShopDetailsResolver } from './shop-resolve.service';
     ],
     declarations: [
         ShopListComponent,
-        ShopDetailsComponent
+        ShopDetailsComponent,
+        MSNComponent,
+        MSNFormComponent
     ],
     providers: [
         ShopService,
         ShopListResolver,
-        ShopDetailsResolver
+        ShopDetailsResolver,
+        MSNResolver
     ]
 })
 export class ShopModule {}
