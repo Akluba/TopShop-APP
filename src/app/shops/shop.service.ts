@@ -60,6 +60,15 @@ export class ShopService {
             .catch(this.handleError);
     }
 
+    msnSave(body: any): Observable<any> {
+        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const options = { headers: headers };
+
+        const url = `${environment.url}/msn`;
+        return this._http.post(url, body, options)
+            .catch(this.handleError);
+    }
+
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
         return this._http.post(url, body, options)

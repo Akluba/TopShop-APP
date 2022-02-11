@@ -1,0 +1,67 @@
+<h1>Multi Shop Note</h1>
+
+<form class="ui form"
+    novalidate
+    (ngSubmit)="save()"
+    [formGroup]="form">
+
+    <!-- Form Actions -->
+    <div class="ui grid middle aligned content" style="min-height: 75px;">
+        <div class="left floated thirteen wide column">
+            <div class="ui hidden message transition">
+                <div class="header" *ngIf="saveMessage">{{ saveMessage }}</div>
+            </div>
+        </div>
+        <div class="right floated three wide column">
+            <button class="ui fluid positive button"
+                [disabled]="!form.valid || !form.dirty">
+                Save
+            </button>
+        </div>
+    </div>
+
+    <!-- Note Segment -->
+    <div class="ui grid">
+        <div class="four wide column left floated">
+            <div class="ui fluid vertical pointing menu notes">
+                <a class="item" *ngFor="let field of formElements | sortOrder; let note_i=index"
+                [ngClass]="{'active': note_i == 0}"
+                attr.data-tab="{{ note_i }}">{{ field.title }}</a>
+            </div>
+        </div>
+        <div class="twelve wide column right floated">
+            <div class="ui tab secondary segment" *ngFor="let field of formElements | sortOrder; let note_i=index" style="margin: 0;"
+                [ngClass]="{'active': note_i == 0}"
+                attr.data-tab="{{ note_i }}">
+
+                <div class="ui segment">
+                    <div *ngFor="let note of form.get(field.column_name).controls | slice:0:1">
+                        <div *ngFor="let column of field.columns">
+                            <div *ngIf="!column.system || column.column_name === 'log_field3'">
+                                <field-control
+                                    [formGroup]="note"
+                                    [control]="column">
+                                </field-control>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Select Multi Shops -->
+        <div class="sixteen wide column right floated">
+            <div class="ui grid middle aligned content">
+                <div class="right aligned four wide column">
+                    <label>{{ shopsField.title }}</label>
+                </div>
+                <div class="ten wide column">
+                    <field-control
+                        [formGroup]="form"
+                        [control]="shopsField">
+                    </field-control>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

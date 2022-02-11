@@ -29,9 +29,20 @@ declare let $: any;
     <!-- Select Multiple -->
     <select *ngSwitchCase="'select_multiple'" multiple="" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
-        <option *ngFor="let option of control.options | sortOrder"
-            value="{{ option.id }}">{{ option.title }}
-        </option>
+
+        <div *ngIf="control.id === 0; then names else titles"></div>
+
+        <ng-template #names>
+            <option *ngFor="let option of control.options | sortABC"
+                value="{{ option.id }}">{{ option.name }}
+            </option>
+        </ng-template>
+
+        <ng-template #titles>
+            <option *ngFor="let option of control.options | sortOrder"
+                value="{{ option.id }}">{{ option.title }}
+            </option>
+        </ng-template>
     </select>
 
     <!-- Textarea -->

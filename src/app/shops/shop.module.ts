@@ -7,7 +7,6 @@ import { ShopRoutingModule } from './shop-routing.module';
 import { ShopListComponent } from './shop-list.component';
 import { ShopDetailsComponent } from './shop-details.component';
 import { MSNComponent } from './msn.component';
-import { MSNFormComponent } from './msn-form.component';
 
 // Services
 import { ShopService } from './shop.service';
@@ -23,8 +22,7 @@ import { ShopListResolver, ShopDetailsResolver, MSNResolver } from './shop-resol
     declarations: [
         ShopListComponent,
         ShopDetailsComponent,
-        MSNComponent,
-        MSNFormComponent
+        MSNComponent
     ],
     providers: [
         ShopService,
