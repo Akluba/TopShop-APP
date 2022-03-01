@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 
 import { AuthService } from '../../core/auth.service';
 
@@ -12,6 +12,7 @@ declare let $: any;
     templateUrl: './msn-form.component.html'
 })
 export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
+    @Input() submitStatus: boolean;
     @Input() formElements: any[];
     @Input() shops: any[];
     @Input() saveMessage: string;
@@ -19,6 +20,7 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
 
     form: FormGroup;
 
+    selectedShops: any[];
     shopsField = {};
 
     constructor(
@@ -28,10 +30,7 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
 
     ngOnInit(): void {
         this.buildReactiveForm();
-
-        this.formElements.forEach(field => {
-            this.buildFormArrays(field);
-        });
+        this.patchFormValues();
 
         this.shopsField = {
             id: 0,
@@ -40,6 +39,8 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
             column_name: 'shops_selection',
             options: this.shops
         };
+
+        this.selectedShops = null;
     }
 
     ngAfterViewInit(): void {
@@ -48,13 +49,18 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        return;
+        if (changes.submitStatus && this.submitStatus === true) {
+            this.form.reset();
+
+            $('.dropdown').dropdown('clear');
+            this.selectedShops = null;
+
+            this.patchFormValues();
+        }
     }
 
     buildReactiveForm(): void {
         const controls = {};
-
-        controls['name'] = null;
 
         this.formElements.forEach(field => {
             controls[field.column_name] = null;
@@ -63,6 +69,16 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
         controls['shops_selection'] = null;
 
         this.form = this._fb.group(controls);
+    }
+
+    patchFormValues(): void {
+        this.formElements.forEach(field => {
+            this.buildFormArrays(field);
+        });
+
+        this.form.patchValue({shops_selection: this.selectedShops});
+
+        this.form.controls['shops_selection'].setValidators([Validators.required]);
     }
 
     buildFormArrays(field): void {

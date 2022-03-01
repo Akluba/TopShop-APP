@@ -11,6 +11,7 @@ declare let $: any;
 `
 <app-msn-form
     (formSaved)="saveForm($event)"
+    [submitStatus]="submitStatus"
     [formElements]="formElements"
     [shops]="shops"
     [saveMessage]="saveMessage">
@@ -19,6 +20,7 @@ declare let $: any;
 })
 export class MSNComponent implements OnInit, OnDestroy {
     private sub: Subscription;
+    submitStatus = null;
     formElements: any[];
     shops: any[];
     saveMessage: string;
@@ -37,12 +39,22 @@ export class MSNComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
+    onSaveComplete(res): void {
+        this.flashMessage({text: res.message, status: 'success'});
+        this.submitStatus = true;
+    }
+
+    onSaveError(error): void {
+        this.flashMessage({text: <any>error, status: 'negative'});
+        this.submitStatus = false;
+    }
+
     saveForm(body): void {
-        console.log(body);
         this._shopService.msnSave(body)
             .subscribe(
-                (res) => this.flashMessage({text: res.message, status: 'success'}),
-                (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
+                (res) => this.onSaveComplete(res),
+                (error: any) => this.onSaveError(error),
+                () => setTimeout(() => this.submitStatus = null, 2000)
             );
     }
 
