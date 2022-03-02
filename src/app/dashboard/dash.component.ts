@@ -29,6 +29,10 @@ export class DashComponent implements OnInit, AfterViewInit, OnDestroy {
             this.filters.push(new Filter('All', null, null));
 
             const filters_res = data.response.filters;
+
+            // removing CPR for now
+            delete filters_res.Cpr;
+
             for (const filter of Object.keys(filters_res)) {
                 this.filters.push( new Filter(filter, filter, filters_res[filter]));
             }

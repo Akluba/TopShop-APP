@@ -48,12 +48,13 @@ export class NavComponent implements OnInit, AfterViewInit {
                 new NavLink(['/vendors'], 'Vendor List'),
                 new NavLink(['/search/vendor'], 'Advanced Search'),
                 new NavLink(['/setup/vendor'], 'Setup'),
-            ], this.checkUserPermission(['admin', 'employee'])),
-            new MenuItem('CPR', [
-                new NavLink(['/cpr'], 'Contact List'),
-                new NavLink(['/search/cpr'], 'Advanced Search'),
-                new NavLink(['/setup/cpr'], 'Setup'),
-            ], this.checkUserPermission(['admin', 'cpr']))
+            ], this.checkUserPermission(['admin', 'employee']))
+            // ,
+            // new MenuItem('Other', [
+            //     new NavLink(['/cpr'], 'Contact List'),
+            //     new NavLink(['/search/cpr'], 'Advanced Search'),
+            //     new NavLink(['/setup/cpr'], 'Setup'),
+            // ], this.checkUserPermission(['admin', 'employee']))
         ];
     }
 
