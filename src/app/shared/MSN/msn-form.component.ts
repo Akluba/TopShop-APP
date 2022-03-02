@@ -21,7 +21,7 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
     form: FormGroup;
 
     selectedShops: any[];
-    shopsField = {};
+    shopsField: Field;
 
     constructor(
         private _fb: FormBuilder,
@@ -32,13 +32,13 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
         this.buildReactiveForm();
         this.patchFormValues();
 
-        this.shopsField = {
-            id: 0,
-            title: 'Select Shops',
-            type: 'select_multiple',
-            column_name: 'shops_selection',
-            options: this.shops
-        };
+        this.shopsField = new Field(
+            0,
+            'Select Shops',
+            'select_multiple',
+            'shops_selection',
+            this.shops
+        );
 
         this.selectedShops = null;
     }
@@ -132,5 +132,21 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
         msn['shops'] = JSON.stringify(shopsFormControl.value);
 
         return msn;
+    }
+}
+
+class Field {
+    id: number;
+    title: string;
+    type: string;
+    column_name: string;
+    options: any[];
+
+    constructor(id, title, type, column_name, options) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.column_name = column_name;
+        this.options = options;
     }
 }
