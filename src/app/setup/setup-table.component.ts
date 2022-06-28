@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Column, SetupElement } from './SetupClasses';
 import { SetupService } from './setup.service';
-import { SimpleChange } from '@angular/core/src/change_detection/change_detection_util';
 
 declare var $: any;
 

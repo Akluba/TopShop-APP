@@ -23,12 +23,15 @@
             "styles": [
               "semantic/out/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
               "src/styles.css"
             ],
             "scripts": [
-              "semantic/out/semantic.min.js"
+              "semantic/out/semantic.min.js",
+              "node_modules/chart.js/dist/Chart.js",
+              "node_modules/quill/dist/quill.js"
             ]
           },
           "configurations": {
