@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import 'rxjs/add/operator/pairwise';
+
 
 import { Column, SetupElement } from './SetupClasses';
 import { SetupService } from './setup.service';

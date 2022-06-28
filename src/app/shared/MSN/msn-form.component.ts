@@ -7,6 +7,22 @@ import { LogEntry } from '../DetailsForm/DetailsFormClasses';
 
 declare let $: any;
 
+class Field {
+    id: number;
+    title: string;
+    type: string;
+    column_name: string;
+    options: any[];
+
+    constructor(id, title, type, column_name, options) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.column_name = column_name;
+        this.options = options;
+    }
+}
+
 @Component({
     selector: 'app-msn-form',
     templateUrl: './msn-form.component.html'
@@ -132,21 +148,5 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
         msn['shops'] = JSON.stringify(shopsFormControl.value);
 
         return msn;
-    }
-}
-
-class Field {
-    id: number;
-    title: string;
-    type: string;
-    column_name: string;
-    options: any[];
-
-    constructor(id, title, type, column_name, options) {
-        this.id = id;
-        this.title = title;
-        this.type = type;
-        this.column_name = column_name;
-        this.options = options;
     }
 }

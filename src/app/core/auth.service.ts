@@ -1,10 +1,13 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { tokenNotExpired } from 'angular2-jwt';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
+// import { tokenNotExpired } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+
+
 
 import { environment } from '../../environments/environment';
 import { ICurrentUser } from '../auth/currentUser';
@@ -22,14 +25,24 @@ export class AuthService {
         const options = { headers: headers };
 
         // Get initial access token from the Passport server.
-        return this._http.post<any>(url, body, options)
-            .do(res => {
+        return this._http.post<any>(url, body, options).pipe(
+            tap(res => {
                 // Set access token in LocalStorage.
                 localStorage.setItem('access_token', res.access_token);
                 // Get the current user.
                 this.getCurrentUser().subscribe();
-            })
-            .catch(this.handleError);
+            }),
+            catchError(this.handleError)
+        );
+
+        // return this._http.post<any>(url, body, options)
+        //     .do(res => {
+        //         // Set access token in LocalStorage.
+        //         localStorage.setItem('access_token', res.access_token);
+        //         // Get the current user.
+        //         this.getCurrentUser().subscribe();
+        //     })
+        //     .catch(this.handleError);
     }
 
     logout(): Observable<any> {
@@ -38,14 +51,24 @@ export class AuthService {
         const options = { headers: headers };
 
         // Revoke the access token from the server.
-        return this._http.post<any>(url, null, options)
-            .do(() => {
+        return this._http.post<any>(url, null, options).pipe(
+            tap(() => {
                 // Remove access_token from LocalStorage.
                 localStorage.removeItem('access_token');
                 // Remove the currentUser.
                 this.currentUser = undefined;
-            })
-            .catch(this.handleError);
+            }),
+            catchError(this.handleError)
+        );
+
+        // return this._http.post<any>(url, null, options)
+        //     .do(() => {
+        //         // Remove access_token from LocalStorage.
+        //         localStorage.removeItem('access_token');
+        //         // Remove the currentUser.
+        //         this.currentUser = undefined;
+        //     })
+        //     .catch(this.handleError);
     }
 
     getCurrentUser(): Observable<ICurrentUser> {
@@ -53,13 +76,22 @@ export class AuthService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        return this._http.get<ICurrentUser>(url, options)
-            .do(currentUser => {
+        return this._http.get<ICurrentUser>(url, options).pipe(
+            tap(currentUser => {
                 if (!!currentUser['id']) {
                     this.currentUser = currentUser;
                 }
-            })
-            .catch(this.handleError);
+            }),
+            catchError(this.handleError)
+        );
+
+        // return this._http.get<ICurrentUser>(url, options)
+        //     .do(currentUser => {
+        //         if (!!currentUser['id']) {
+        //             this.currentUser = currentUser;
+        //         }
+        //     })
+        //     .catch(this.handleError);
     }
 
     // refresh(): Observable<any> {
@@ -79,9 +111,11 @@ export class AuthService {
     }
 
     public isAuthenticated(): boolean {
+        const helper = new JwtHelperService();
         const token = this.retrieveAccessToken();
 
-        return tokenNotExpired(null, token);
+        // return tokenNotExpired(null, token);
+        return token != null && !helper.isTokenExpired(token);
     }
 
     private handleError(err: HttpErrorResponse) {
@@ -91,7 +125,7 @@ export class AuthService {
             console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
 
-        return Observable.throw(err.error.message);
+        return observableThrowError(err.error.message);
     }
 
 }

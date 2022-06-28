@@ -1,6 +1,8 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 
 import { environment } from '../../environments/environment';
 
@@ -15,8 +17,9 @@ export class SearchService {
         const params = new HttpParams().set('source_class', source_class);
         const options = { headers: headers, params: params };
 
-        return this._http.get(url, options)
-            .catch(this.handleError);
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
     }
 
     show(id: number): Observable<any> {
@@ -24,8 +27,9 @@ export class SearchService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        return this._http.get(url, options)
-            .catch(this.handleError);
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
     }
 
     search(body): Observable<any> {
@@ -33,8 +37,9 @@ export class SearchService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        return this._http.post(url, body, options)
-            .catch(this.handleError);
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
     }
 
     private handleError(err: HttpErrorResponse) {
@@ -44,7 +49,7 @@ export class SearchService {
             console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
 
-        return Observable.throw(err.error.message);
+        return observableThrowError(err.error.message);
     }
 
 }

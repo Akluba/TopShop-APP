@@ -56,9 +56,9 @@ export class ExistingNoteComponent implements OnInit, AfterViewInit {
     linkText(column): string {
         const value = this.note.value[column.column_name];
         const options = column.options;
-        const linkObj = options[options.indexOf(options.find(x => x.id === +value))]
-        const name = (linkObj === undefined) ? "Error" : linkObj['name'];
-        
+        const linkObj = options[options.indexOf(options.find(x => x.id === +value))];
+        const name = (linkObj === undefined) ? 'Error' : linkObj['name'];
+
         return name;
     }
 

@@ -1,9 +1,11 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
+
+
+
 
 import { environment } from '../../environments/environment';
 import { ICurrentUser } from './currentUser';
@@ -20,9 +22,14 @@ export class UserService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        return this._http.get(url, options)
-            .do(data => this.userList = data['data'])
-            .catch(this.handleError);
+        return this._http.get(url, options).pipe(
+            tap(data => this.userList = data['data']),
+            catchError(this.handleError)
+        );
+
+        // return this._http.get(url, options)
+        //     .do(data => this.userList = data['data'])
+        //     .catchError(this.handleError);
     }
 
     save(body: any, component: string = ''): Observable<any> {
@@ -37,17 +44,28 @@ export class UserService {
 
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
-        return this._http.post(url, body, options)
-            .do(data => this.userList.push(data['data']))
-            .catch(this.handleError);
+
+        return this._http.post(url, body, options).pipe(
+            tap(data => this.userList.push(data['data'])),
+            catchError(this.handleError)
+        );
+
+        // return this._http.post(url, body, options)
+        //     .do(data => this.userList.push(data['data']))
+        //     .catch(this.handleError);
     }
 
     private update(body: any, options: any, component: string): Observable<any> {
         const url = `${this.baseUrl}/${body.id}`;
         body.component = component;
         body._method = 'PUT';
-        return this._http.post(url, body, options)
-            .catch(this.handleError);
+
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+
+        // return this._http.post(url, body, options)
+        //     .catch(this.handleError);
     }
 
     private handleError(err: HttpErrorResponse) {
@@ -57,7 +75,7 @@ export class UserService {
             console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
 
-        return Observable.throw(err.error.message);
+        return observableThrowError(err.error.message);
     }
 
 }

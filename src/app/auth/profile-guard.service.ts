@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router, CanLoad, CanActivate, Route, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+
 
 import { AuthService } from '../core/auth.service';
 
@@ -28,14 +29,21 @@ export class ProfileGuard implements CanLoad, CanActivate {
     determineProfileAndCheck(): Observable<boolean> {
         if (this._authService.currentUser) {
             this.profile = this._authService.currentUser.profile;
-            return Observable.of(this.checkProfile());
+            return of(this.checkProfile());
         }
 
-        return this._authService.getCurrentUser()
-            .map(() => {
+        return this._authService.getCurrentUser().pipe(
+            map(() => {
                 this.profile = this._authService.currentUser.profile;
                 return this.checkProfile();
-            });
+            })
+        );
+
+        // return this._authService.getCurrentUser()
+        //     .map(() => {
+        //         this.profile = this._authService.currentUser.profile;
+        //         return this.checkProfile();
+        //     });
     }
 
     checkProfile(): boolean {

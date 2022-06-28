@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
+import { throwError as observableThrowError,  Observable} from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -19,8 +15,9 @@ export class ManagerService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        return this._http.get(url, options)
-            .catch(this.handleError);
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
     }
 
     show(id: number): Observable<any> {
@@ -28,8 +25,9 @@ export class ManagerService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        return this._http.get(url, options)
-            .catch(this.handleError);
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
     }
 
     destroy(id: number): Observable<any> {
@@ -37,8 +35,9 @@ export class ManagerService {
         const headers = new HttpHeaders({ 'Accept': 'application/json' });
         const options = { headers: headers };
 
-        return this._http.delete(url, options)
-            .catch(this.handleError);
+        return this._http.delete(url, options).pipe(
+            catchError(this.handleError)
+        );
     }
 
     save(body: any): Observable<any> {
@@ -53,15 +52,25 @@ export class ManagerService {
 
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
-        return this._http.post(url, body, options)
-            .catch(this.handleError);
+
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+
+        // return this._http.post(url, body, options)
+        //     .catch(this.handleError);
     }
 
     private update(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}/${body.id}`;
         body._method = 'PUT';
-        return this._http.post(url, body, options)
-            .catch(this.handleError);
+
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+
+        // return this._http.post(url, body, options)
+        //     .catch(this.handleError);
     }
 
     private handleError(err: HttpErrorResponse) {
@@ -71,6 +80,8 @@ export class ManagerService {
             console.log(`Backend returned code ${err.status}, body was: ${err.error.message}`);
         }
 
-        return Observable.throw(err.error.message);
+        return observableThrowError(err.error.message);
+
+        // return Observable.throw(err.error.message);
     }
 }
