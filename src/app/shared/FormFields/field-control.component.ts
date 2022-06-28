@@ -7,6 +7,8 @@ declare let $: any;
     selector: 'field-control',
     template:
 `
+<style>.one_p_field{width:100%;}</style>
+
 <div [ngSwitch]="control.type" [formGroup]="formGroup">
 
     <!-- Text Input -->
@@ -77,13 +79,14 @@ declare let $: any;
     </select>
 
     <!-- Reminder Date -->
-    <div *ngSwitchCase="'reminder_date'" class="ui fluid input">
-        <p-calendar formControlName="{{ control.column_name }}"
+    <div *ngSwitchCase="'reminder_date'" class="ui fluid input" style="width:100%">
+        <p-calendar ngDefaultControl formControlName="{{ control.column_name }}"
+            class="one_p_field"
+            [style]="{'width':'100%'}"
+            [inputStyle]="{'min-width':'100%'}"
             dateFormat="yy-mm-dd"
             dataType="string"
-            placeholder="Select a Reminder Date"
-            [style]="{'width':'100%'}"
-            style="width: 100%">
+            placeholder="Select a Reminder Date">
         </p-calendar>
     </div>
 </div>
