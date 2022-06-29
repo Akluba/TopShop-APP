@@ -3,8 +3,8 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { TableModule } from 'primeng/table';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { TableModule } from 'primeng-lts/table';
+import { MultiSelectModule } from 'primeng-lts/multiselect';
 
 import { SearchComponent } from './search.component';
 import { AdvSearchStepComponent } from './search-step.component';

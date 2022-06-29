@@ -10,7 +10,7 @@ import { CPRDetailsComponent } from './cpr-details.component';
 import { CPRService } from './cpr.service';
 import { CPRListResolver, CPRDetailsResolver } from './cpr-resolve.service';
 
-import { TableModule } from 'primeng/table';
+import { TableModule } from 'primeng-lts/table';
 
 @NgModule({
     imports: [
