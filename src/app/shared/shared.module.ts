@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { CalendarModule } from 'primeng-lts/calendar';
-import { TableModule } from 'primeng-lts/table';
-import { MultiSelectModule } from 'primeng-lts/multiselect';
+import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { ListDataTableComponent } from './ListDataTable/data-table.component';
 
