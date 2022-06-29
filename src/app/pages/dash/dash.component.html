@@ -1,0 +1,105 @@
+<h2 class="content-block">Dash Board</h2>
+
+<!-- Class Filter Menu -->
+<div class="ui secondary pointing menu">
+    <a class="item" *ngFor="let filter of filters; let class_i = index"
+        [ngClass]="{'active': class_i == 0}"
+        attr.data-tab="{{ class_i }}"
+        (click)="filterNotes(filter.primary, null)">
+        {{ filter.title }}
+    </a>
+</div>
+<!-- Sub Filter Segment -->
+<div class="ui secondary tab segment" *ngFor="let filter of filters; let field_i = index"
+    [ngClass]="{'active': field_i == 0}"
+    attr.data-tab="{{ field_i }}">
+    <!-- Sub Filter Fields Menu -->
+    <div class="ui text menu">
+        <div class="header item">Sub Filter By:</div>
+        <a class="item" *ngIf="filter.primary"
+            [ngClass]="{'active': !selectedFilter.field}"
+            (click)="filterNotes(filter.primary, null)">
+            All
+        </a>
+        <a class="item" *ngFor="let sub of filter.sub"
+            [ngClass]="{'active': sub.field_id === selectedFilter.field}"
+            (click)="filterNotes(filter.primary, sub.field_id)">
+            {{ sub.title }}
+        </a>
+    </div>
+</div>
+<div class="ui clearing basic segment">
+    <div class="ui inverted dimmer" [ngClass]="{'active': loading}">
+        <div class="ui text loader">Loading</div>
+    </div>
+    <div class="ui feed">
+        <ng-container *ngIf="notes">
+            <div class="event" *ngFor="let note of notes.data | noteSort">
+                <div class="label"></div>
+                <div class="content">
+                    <div class="summary">
+                        <div class="user">{{ note.created_by }}</div>
+                        created a note for
+                        <div class="user" [ngSwitch]="note.created_for.class">
+                            <a *ngSwitchCase="'Manager'"
+                                [routerLink]="['/managers', note.created_for.id]">
+                                {{ note.created_for.text }}
+                            </a>
+                            <a *ngSwitchCase="'Shop'"
+                                [routerLink]="['/shops', note.created_for.id]">
+                                {{ note.created_for.text }}
+                            </a>
+                            <a *ngSwitchCase="'Vendor'"
+                                [routerLink]="['/vendors', note.created_for.id]">
+                                {{ note.created_for.text }}
+                            </a>
+                            <a *ngSwitchCase="'Cpr'"
+                            [routerLink]="['/cpr', note.created_for.id]">
+                            {{ note.created_for.text }}
+                        </a>
+                        </div>
+                        <div class="date">{{ note.created_date }}</div>
+                    </div>
+                    <div class="extra text">
+                        {{ note.note_text }}
+                    </div>
+                    <div class="meta" *ngIf="note.tags">
+                        <span *ngFor="let tag of note.tags" [ngSwitch]="tag.type">
+
+                            <a *ngSwitchCase="'manager_link'" class="ui label"
+                                [routerLink]="['/managers', tag.id]">
+                                <i class="blue linkify icon"></i>
+                                <div class="detail">{{ tag.value }}</div>
+                            </a>
+
+                            <a *ngSwitchCase="'shop_link'" class="ui label"
+                                [routerLink]="['/shops', tag.id]">
+                                <i class="blue linkify icon"></i>
+                                <div class="detail">{{ tag.value }}</div>
+                            </a>
+
+                            <div *ngSwitchCase="'reminder_date'" class="ui label">
+                                <i class="blue calendar icon"></i>
+                                <div class="detail">{{ tag.value }}</div>
+                            </div>
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui right floated buttons">
+                <button class="ui left attached button"
+                    (click)="prevPage()"
+                    [disabled]="!notes.prev_page_url">
+                    Prev
+                </button>
+                <button class="right attached ui button"
+                    (click)="nextPage()"
+                    [disabled]="!notes.next_page_url">
+                    Next
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>

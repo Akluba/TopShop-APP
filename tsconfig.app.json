@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "files": [
+    "./src/app/app.module.ts",
+    "./src/main.ts",
+    "./src/polyfills.ts"
+  ],
+  "include": [
+    "./**/*.d.ts",
+    "node_modules/angular-bootstrap-md/**/*.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "../out-tsc/app",
+    "types": [],
+    "paths": {
+      "jszip": [
+        "node_modules/jszip/dist/jszip.min.js"
+      ]
+    }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

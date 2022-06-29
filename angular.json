@@ -14,13 +14,17 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
               "src/favicon.ico"
             ],
             "styles": [
+              "node_modules/devextreme/dist/css/dx.common.css",
+              "src/themes/generated/theme.base.css",
+              "src/themes/generated/theme.additional.css",
+              "src/dx-styles.scss",
               "semantic/out/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/nova/theme.css",

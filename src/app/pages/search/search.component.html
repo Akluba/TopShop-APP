@@ -1,0 +1,51 @@
+<h2 class="content-block">Advanced Search</h2>
+<div class="ui basic clearing segment">
+    <button class="ui right floated primary button" (click)="resetSearch()">Reset Search</button>
+</div>
+
+<div class="ui three top attached steps">
+    <app-adv-search-step class="step"
+        *ngFor="let step of searchSteps"
+        [ngClass]="step.status"
+        (click)="this[step.method]()"
+        [loading]="step.loading"
+        [icon]="step.icon"
+        [title]="step.title"
+        [description]="step.description">
+    </app-adv-search-step>
+</div>
+
+<div class="ui attached segment">
+    <div class="ui secondary segment" *ngIf="searchStep === 0">
+        <div class="ui two column relaxed equal height divided grid">
+            <div class="column" *ngFor="let group of searchGroups">
+                <h4 class="ui header">{{ group }}</h4>
+                <div class="ui list">
+                    <div class="item" *ngFor="let field of searchableFields[group]">
+                        <div class="ui radio checkbox">
+                            <input type="radio" [(ngModel)]="selectedField" [value]="field.id" (change)="updateStepStatus()">
+                            <label>{{ field.title }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="searchStep === 1">
+        <form class="ui form" novalidate [formGroup]="fieldForm">
+            <logging-field
+                formArrayName="{{ selectedField }}"
+                [field]="fieldElements"
+                [logEntries]="fieldForm.get(selectedField.toString())">
+            </logging-field>
+        </form>
+    </div>
+
+    <div *ngIf="searchStep === 2">
+        <app-search-results *ngIf="searchResponse"
+            [sourceClass]="sourceClass"
+            [searchResponse]="searchResponse">
+        </app-search-results>
+    </div>
+</div>

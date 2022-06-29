@@ -1,0 +1,36 @@
+<h2 class="content-block">{{ pageTitle }}</h2>
+
+<div class="ui clearing segment">
+    <button class="ui icon right floated button"
+        (click)="toggleSortState()"
+        [ngClass]="{'active': sorting, 'positive': updatedSortOrder}">
+        <i class="ordered list icon"></i>
+    </button>
+</div>
+
+<div class="ui segments">
+    <div class="ui segment">
+        <setup-breadcrumb
+            [data]="data">
+        </setup-breadcrumb>
+    </div>
+    <div class="ui secondary segment">
+
+        <div class="ui segment" *ngIf="sorting">
+            <p-orderList [value]="setupService.children" [responsive]="true" (onReorder)="updatedSortOrder = true">
+                <ng-template pTemplate="item" let-rowData>
+                    <div class="ui-helper-clearfix">
+                        {{ rowData.title }}
+                    </div>
+                </ng-template>
+            </p-orderList>
+        </div>
+
+        <app-setup-table *ngIf="!sorting"
+            [apiRoute]="apiRoute"
+            [routeParams]="routeParams"
+            [primary]="primary">
+        </app-setup-table>
+
+    </div>
+</div>

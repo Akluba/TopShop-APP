@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './core/auth.service';
 
 @Component({
-  selector: 'app-root',
+  selector: '-root',
   template:
 `
 <div *ngIf="authService.isAuthenticated() && authService.currentUser; then authenticatedUI else login"></div>

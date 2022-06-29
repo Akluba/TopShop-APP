@@ -12,7 +12,6 @@ import { ListDataTableComponent } from './ListDataTable/data-table.component';
 import { DetailsFormComponent } from './DetailsForm/details-form.component';
 import { NoteFeedTemplate } from './DetailsForm/note-feed.component';
 import { ExistingNoteComponent } from './DetailsForm/existing-note.component';
-import { MSNFormComponent } from '../shared/MSN/msn-form.component';
 
 import { LoggingFieldTemplate } from './FormFields/logging-field.component';
 import { FieldControlTemplate } from './FormFields/field-control.component';
@@ -33,7 +32,6 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DetailsFormComponent,
         NoteFeedTemplate,
         ExistingNoteComponent,
-        MSNFormComponent,
         LoggingFieldTemplate,
         FieldControlTemplate,
         ListDataTableComponent,
@@ -43,7 +41,6 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
     exports: [
         CommonModule,
         DetailsFormComponent,
-        MSNFormComponent,
         LoggingFieldTemplate,
         FieldControlTemplate,
         ListDataTableComponent,
