@@ -1,6 +1,6 @@
 <h2 class="ui header">Account Settings</h2>
 
-<form class="ui form"
+<form *ngIf="user" class="ui form"
     novalidate
     (ngSubmit)="save()"
     [formGroup]="userForm">

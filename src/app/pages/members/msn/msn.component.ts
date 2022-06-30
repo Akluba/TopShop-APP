@@ -28,10 +28,8 @@ export class MSNComponent implements OnInit, OnDestroy {
     constructor(private _route: ActivatedRoute, private _shopService: ShopService) {}
 
     ngOnInit(): void {
-        console.log('foo');
         // Read the data from the resolver.
         this.sub = this._route.data.subscribe(data => {
-            console.log(data);
             this.formElements = data.response.data;
             this.shops = data.response.shops;
         });

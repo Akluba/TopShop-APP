@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuard } from './auth/auth-guard.service';
-import { ProfileGuard } from './auth/profile-guard.service';
-
 import { UnauthorizedComponent } from './unauthorized.component';
 import { PageNotFoundComponent } from './pagenotfound.component';
 import { LoginFormComponent } from './shared/components';
-import { AuthGuardService } from './shared/services';
+import { AuthGuardService, ProfileGuardService } from './shared/services';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
@@ -28,31 +25,32 @@ export const routes: Routes = [
     component: LoginFormComponent,
     canActivate: [ AuthGuardService ]
   },
-    { path: 'dash', canLoad: [ AuthGuard ], loadChildren: () => import('./pages/dash/dash.module').then(m => m.DashModule)},
+    { path: 'user', canLoad: [ AuthGuardService ], loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule)},
+    { path: 'dash', canLoad: [ AuthGuardService ], loadChildren: () => import('./pages/dash/dash.module').then(m => m.DashModule)},
     {
       path: 'setup',
-      canLoad: [ AuthGuard, ProfileGuard ],
+      canLoad: [ AuthGuardService, ProfileGuardService ],
       loadChildren: () => import('./pages/setup/setup.module').then(m => m.SetupModule),
       data: { authorizedProfiles: ['superadmin'] }
     },
     {
         path: 'search',
-        canLoad: [ AuthGuard ],
+        canLoad: [ AuthGuardService ],
         loadChildren: () => import('./pages/search/search.module').then(m => m.SearchModule)
     },
     {
         path: 'shops',
-        canLoad: [ AuthGuard ],
+        canLoad: [ AuthGuardService ],
         loadChildren: () => import('./pages/members/shops/shop.module').then(m => m.ShopModule)
     },
     {
         path: 'managers',
-        canLoad: [ AuthGuard ],
+        canLoad: [ AuthGuardService ],
         loadChildren: () => import('./pages/insurers/manager.module').then(m => m.ManagerModule)
     },
     {
         path: 'vendors',
-        canLoad: [ AuthGuard ],
+        canLoad: [ AuthGuardService ],
         loadChildren: () => import('./pages/vendors/vendor.module').then(m => m.VendorModule)
     },
     { path: 'unauthorized', component: UnauthorizedComponent },
@@ -64,7 +62,8 @@ export const routes: Routes = [
     imports: [ RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }), DxDataGridModule, DxFormModule ],
     exports: [ RouterModule ],
     providers: [
-      AuthGuardService
+      AuthGuardService,
+      ProfileGuardService
     ],
     declarations: [
       ProfileComponent,

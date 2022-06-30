@@ -1,33 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
-import { AuthService } from './core/auth.service';
+import { AuthService, ScreenService, AppInfoService } from './shared/services';
 
 @Component({
-  selector: '-root',
-  template:
-`
-<div *ngIf="authService.isAuthenticated() && authService.currentUser; then authenticatedUI else login"></div>
-
-<ng-template #login>
-  <router-outlet></router-outlet>
-</ng-template>
-
-<ng-template #authenticatedUI>
-<div class="main ui container">
-  <app-nav></app-nav>
-  <router-outlet></router-outlet>
-</div>
-</ng-template>
-`
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  constructor(public authService: AuthService) {}
-
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      this.authService.getCurrentUser().subscribe();
-    }
-
+export class AppComponent  {
+  @HostBinding('class') get getClass() {
+    return Object.keys(this.screen.sizes).filter(cl => this.screen.sizes[cl]).join(' ');
   }
 
+  constructor(private authService: AuthService, private screen: ScreenService, public appInfo: AppInfoService) { }
+
+  isAuthenticated() {
+    return this.authService.loggedIn;
+  }
 }

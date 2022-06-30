@@ -1,8 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { Observable } from 'rxjs';
 
-import { AuthService } from '../../core/auth.service';
+import { AuthService, IUser } from '../services';
 
 import { LogEntry } from './DetailsFormClasses';
 
@@ -19,6 +18,8 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() saveMessage: string;
     @Output() formSaved = new EventEmitter<any>();
 
+    user: IUser;
+
     form: FormGroup;
     nameField = false;
 
@@ -27,7 +28,8 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
         private _authService: AuthService
     ) {}
 
-    ngOnInit(): void {
+    async ngOnInit() {
+        await this._authService.getUser().then((e) => this.user = e.data);
         this.buildReactiveForm();
         this.patchFormValues();
     }
@@ -84,7 +86,7 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
 
         // Init new LogEntry.
         if (field.type === 'notes') {
-            const user = this._authService.currentUser.id;
+            const user = this.user?.id;
             const today = new Date();
             const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
             newLogEntry = new LogEntry(this.sourceClass, this.formValues['id'], fieldId, user, date);

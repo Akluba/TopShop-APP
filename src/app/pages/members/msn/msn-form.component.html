@@ -1,6 +1,6 @@
 <h2 class="content-block">Multi Shop Note</h2>
 
-<form class="ui form"
+<form *ngIf="user" class="ui form"
     novalidate
     (ngSubmit)="save()"
     [formGroup]="form">
@@ -53,7 +53,7 @@
         <div class="sixteen wide column right floated">
             <div class="ui grid middle aligned content">
                 <div class="right aligned four wide column">
-                    <label>{{ shopsField.title }}</label>
+                    <label>{{ shopsField?.title }}</label>
                 </div>
                 <div class="ten wide column">
                     <field-control

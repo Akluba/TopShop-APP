@@ -5,14 +5,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
-import { App1Component } from './app1.component';
 import { UnauthorizedComponent } from './unauthorized.component';
 import { PageNotFoundComponent } from './pagenotfound.component';
 
 /* Feature Modules */
 import { CoreModule } from './core/core.module';
-import { AuthModule } from './auth/auth.module';
-import { NavModule } from './nav/nav.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SideNavOuterToolbarModule, SideNavInnerToolbarModule, SingleCardModule } from './layouts';
 import { FooterModule, ResetPasswordFormModule, ChangePasswordFormModule, LoginFormModule } from './shared/components';
@@ -25,8 +22,6 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
     HttpClientModule,
     BrowserAnimationsModule,
     CoreModule,
-    AuthModule,
-    NavModule,
     AppRoutingModule,
     SideNavOuterToolbarModule,
     SideNavInnerToolbarModule,
@@ -39,11 +34,10 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
   ],
   declarations: [
     AppComponent,
-    App1Component,
     UnauthorizedComponent,
     PageNotFoundComponent
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, AuthService, ScreenService, AppInfoService],
-  bootstrap: [ App1Component ]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {}

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { UserService } from './user.service';
-import { ICurrentUser } from './currentUser';
+import { IUser } from '../../shared/services';
 
 declare let $: any;
 
@@ -26,8 +26,8 @@ class User {
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     private sub: Subscription;
     message: {};
-    userList: ICurrentUser[];
-    newUser: ICurrentUser;
+    userList: IUser[];
+    newUser: IUser;
     userProfiles = ['admin', 'employee', 'cpr'];
 
     constructor(public userService: UserService, private _route: ActivatedRoute) {}

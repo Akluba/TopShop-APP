@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { SetupComponent } from './setup.component';
 import { SetupResolver } from './setup-resolver.service';
+import { ProfileGuardService } from 'src/app/shared/services';
 
 @NgModule({
     imports: [
@@ -12,29 +13,34 @@ import { SetupResolver } from './setup-resolver.service';
                 children: [
                     {
                         path: ':source_class',
+                        canActivate: [ ProfileGuardService ],
                         component: SetupComponent,
                         resolve: { response: SetupResolver },
-                        data: { apiRoute: 'category' },
+                        data: { apiRoute: 'category', authorizedProfiles: ['superadmin'] },
                     },
                     {
                         path: ':source_class/:category_id',
                         children : [
                             {
                                 path: '',
+                                canActivate: [ ProfileGuardService ],
                                 component: SetupComponent,
                                 resolve: { response: SetupResolver },
-                                data: { apiRoute: 'field' },
+                                data: { apiRoute: 'field', authorizedProfiles: ['superadmin'] },
                             },
                             {
                                 path: ':field_id',
+                                canActivate: [ ProfileGuardService ],
                                 component: SetupComponent,
-                                resolve: { response: SetupResolver }
+                                resolve: { response: SetupResolver },
+                                data: { authorizedProfiles: ['superadmin'] },
                             },
                             {
                                 path: ':field_id/:column_id',
+                                canActivate: [ ProfileGuardService ],
                                 component: SetupComponent,
                                 resolve: { response: SetupResolver },
-                                data: { apiRoute: 'option' }
+                                data: { apiRoute: 'option', authorizedProfiles: ['superadmin'] }
                             },
                         ]
                     }

@@ -7,33 +7,29 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 
 
 
-import { environment } from '../../environments/environment';
-import { ICurrentUser } from './currentUser';
+import { environment } from '../../../environments/environment';
+import { IUser } from '../../shared/services';
 
 @Injectable()
 export class UserService {
     private baseUrl = `${environment.url}/users`;
-    currentUser: ICurrentUser;
-    userList: ICurrentUser[];
+    currentUser: IUser;
+    userList: IUser[];
     constructor(private _http: HttpClient) {}
 
     index(): Observable<any> {
         const url = `${this.baseUrl}`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.get(url, options).pipe(
             tap(data => this.userList = data['data']),
             catchError(this.handleError)
         );
-
-        // return this._http.get(url, options)
-        //     .do(data => this.userList = data['data'])
-        //     .catchError(this.handleError);
     }
 
     save(body: any, component: string = ''): Observable<any> {
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         if (body.id === 0) {
@@ -49,10 +45,6 @@ export class UserService {
             tap(data => this.userList.push(data['data'])),
             catchError(this.handleError)
         );
-
-        // return this._http.post(url, body, options)
-        //     .do(data => this.userList.push(data['data']))
-        //     .catch(this.handleError);
     }
 
     private update(body: any, options: any, component: string): Observable<any> {
@@ -63,9 +55,6 @@ export class UserService {
         return this._http.post(url, body, options).pipe(
             catchError(this.handleError)
         );
-
-        // return this._http.post(url, body, options)
-        //     .catch(this.handleError);
     }
 
     private handleError(err: HttpErrorResponse) {

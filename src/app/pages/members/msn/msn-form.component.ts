@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 
-import { AuthService } from '../../../core/auth.service';
+// import { AuthService } from '../../../core/auth.service';
+import { AuthService, IUser } from '../../../shared/services';
 
 import { LogEntry } from '../../../shared/DetailsForm/DetailsFormClasses';
 
@@ -34,6 +35,8 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() saveMessage: string;
     @Output() formSaved = new EventEmitter<any>();
 
+    user: IUser;
+
     form: FormGroup;
 
     selectedShops: any[];
@@ -44,8 +47,8 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
         private _authService: AuthService
     ) {}
 
-    ngOnInit(): void {
-        console.log('bar');
+    async ngOnInit() {
+        await this._authService.getUser().then((e) => this.user = e.data);
         this.buildReactiveForm();
         this.patchFormValues();
 
@@ -105,7 +108,7 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
         const formGroups = [];
 
         // Init new LogEntry.
-        const user = this._authService.currentUser.id;
+        const user = this.user.id;
         const today = new Date();
         const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
         newLogEntry = new LogEntry('Shop', null, fieldId, user, date);

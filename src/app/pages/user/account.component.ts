@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 
+import { IUser, AuthService } from '../../shared/services';
 
-
-import { ICurrentUser } from './currentUser';
-
-import { AuthService } from '../core/auth.service';
 import { UserService } from './user.service';
 
 declare let $: any;
@@ -21,22 +18,22 @@ function passwordMatcher(c: AbstractControl): {[key: string]: boolean} | null {
     if (newPWControl.value === confirmPWControl.value) {
         return null;
     }
-    return { 'match': true };
+    return { match: true };
 }
 
 @Component({
     templateUrl: 'account.component.html'
 })
 export class AccountComponent implements OnInit {
-    currentUser: ICurrentUser;
+    user: IUser;
     userForm: FormGroup;
     passwordMessage: string;
     message: {};
 
     constructor(private _authService: AuthService, private _userService: UserService, private _fb: FormBuilder ) {}
 
-    ngOnInit(): void {
-        this.currentUser = this._authService.currentUser;
+    async ngOnInit() {
+        await this._authService.getUser().then((e) => this.user = e.data);
 
         this.userForm = this._fb.group({
             name: ['', [Validators.required]],
@@ -48,15 +45,15 @@ export class AccountComponent implements OnInit {
             }, {validator: passwordMatcher })
         });
 
-        if (this.currentUser) {
+        if (this.user) {
             this.populateUserData();
         }
     }
 
     populateUserData(): void {
         this.userForm.patchValue({
-            name: this.currentUser.name,
-            email: this.currentUser.email
+            name: this.user.name,
+            email: this.user.email
         });
     }
 
@@ -109,13 +106,13 @@ export class AccountComponent implements OnInit {
 
     save(): void {
         if (this.userForm.dirty && this.userForm.valid) {
-            const body = Object.assign({}, this.currentUser, this.userForm.value);
+            const body = Object.assign({}, this.user, this.userForm.value);
 
             this._userService.save(body)
             .subscribe(
                 response => this.onSaveComplete(response),
                 (error: any) => this.flashMessage({text: <any>error, status: 'negative'}),
-                () => this._authService.getCurrentUser().subscribe()
+                () => this._authService.getUser().then((e) => this.user = e.data)
             );
         }
     }
