@@ -1,6 +1,6 @@
 export const navigation = [
   {
-    text: "Dash Board",
+    text: 'Dash Board',
     path: '/dash',
     icon: 'mediumiconslayout'
   },
@@ -8,6 +8,10 @@ export const navigation = [
     text: 'Members',
     icon: 'home',
     items: [
+      {
+        text: 'Accounts',
+        path: '/accounts'
+      },
       {
         text: 'Shop List',
         path: '/shops'

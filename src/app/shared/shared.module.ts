@@ -3,10 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { DxDataGridModule } from 'devextreme-angular';
+
+
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import { MultiSelectModule } from 'primeng/multiselect';
 
+import { DataListComponent } from './components/data-list/data-list.component';
 import { ListDataTableComponent } from './ListDataTable/data-table.component';
 
 import { DetailsFormComponent } from './DetailsForm/details-form.component';
@@ -26,7 +30,8 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         CalendarModule,
         TableModule,
         MultiSelectModule,
-        RouterModule
+        RouterModule,
+        DxDataGridModule
     ],
     declarations: [
         DetailsFormComponent,
@@ -34,6 +39,7 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         ExistingNoteComponent,
         LoggingFieldTemplate,
         FieldControlTemplate,
+        DataListComponent,
         ListDataTableComponent,
         SortOrderPipe,
         SortABCPipe
@@ -43,6 +49,7 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DetailsFormComponent,
         LoggingFieldTemplate,
         FieldControlTemplate,
+        DataListComponent,
         ListDataTableComponent,
         SortOrderPipe,
         SortABCPipe
