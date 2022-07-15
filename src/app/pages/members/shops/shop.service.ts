@@ -2,12 +2,7 @@
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-
-
-
-
-
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 import { environment } from '../../../../environments/environment';
 
@@ -18,7 +13,7 @@ export class ShopService {
 
     index(): Observable<any> {
         const url = `${this.baseUrl}`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.get(url, options).pipe(
@@ -28,7 +23,7 @@ export class ShopService {
 
     show(id: number): Observable<any> {
         const url = `${this.baseUrl}/${id}`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.get(url, options).pipe(
@@ -36,18 +31,18 @@ export class ShopService {
         );
     }
 
-    destroy(id: number): Observable<any> {
+    destroy(id: number): Promise<any> {
         const url = `${this.baseUrl}/${id}`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.delete(url, options).pipe(
             catchError(this.handleError)
-        );
+        ).toPromise();
     }
 
     save(body: any): Observable<any> {
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         if (body.id === 0) {
@@ -58,7 +53,7 @@ export class ShopService {
 
     msnIndex(): Observable<any> {
         const url = `${environment.url}/msn`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.get(url, options).pipe(
@@ -67,7 +62,7 @@ export class ShopService {
     }
 
     msnSave(body: any): Observable<any> {
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         const url = `${environment.url}/msn`;

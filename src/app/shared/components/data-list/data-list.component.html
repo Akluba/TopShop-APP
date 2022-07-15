@@ -5,6 +5,7 @@
   [showBorders]="true"
   [columnMinWidth]="100"
   [columnAutoWidth]="true"
+  (onRowRemoving)="remove($event)"
 >
     <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
     <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
@@ -19,7 +20,25 @@
         [allowedPageSizes]="[25,50,100,'all']"
         [showPageSizeSelector]=true
     ></dxo-pager>
+    <dxo-editing
+      mode="row"
+      [allowDeleting]="true"
+      [useIcons]="true"
+    ></dxo-editing>
+    <dxi-column type="buttons" [width]="110" [fixed]="true" fixedPosition="left">
+      <dxi-button name="delete"></dxi-button>
+      <dxi-button
+        hint="View Profile"
+        icon="find"
+        [onClick]="onViewClick"
+      ></dxi-button>
+    </dxi-column>
+    <dxi-column *ngFor="let column of tableColumns"
+      [dataField]="column.field"
+      [caption]="column.caption"
+      [visible]="defaultCols.includes(column.field)"
+    >
+    </dxi-column>
 
-    <!-- <dxi-column [fixed]=true ></dxi-column> -->
 
 </dx-data-grid>

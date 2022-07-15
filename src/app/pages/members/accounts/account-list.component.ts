@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StringLengthRule } from 'devextreme/ui/validation_rules';
 import { Subscription } from 'rxjs';
 
 @Component({
