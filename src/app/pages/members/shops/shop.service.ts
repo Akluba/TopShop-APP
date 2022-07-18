@@ -31,14 +31,14 @@ export class ShopService {
         );
     }
 
-    destroy(id: number): Promise<any> {
+    destroy(id: number): Observable<any> {
         const url = `${this.baseUrl}/${id}`;
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.delete(url, options).pipe(
             catchError(this.handleError)
-        ).toPromise();
+        );
     }
 
     save(body: any): Observable<any> {

@@ -1,17 +1,16 @@
 <dx-data-grid
   id="gridContainer"
   [dataSource]="data"
-  [keyExpr]="key"
   [showBorders]="true"
   [columnMinWidth]="100"
   [columnAutoWidth]="true"
-  (onRowRemoving)="remove($event)"
 >
     <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
     <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
     <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
     <dxo-selection mode="multiple"></dxo-selection>
     <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-header-filter [visible]=true></dxo-header-filter>
     <dxo-filter-row [visible]=true></dxo-filter-row>
     <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
     <dxo-paging [pageSize]="25"></dxo-paging>
@@ -21,10 +20,15 @@
         [showPageSizeSelector]=true
     ></dxo-pager>
     <dxo-editing
-      mode="row"
+      mode="form"
+      refreshMode="repaint"
+      [allowAdding]="!!newObjFields.length"
       [allowDeleting]="true"
-      [useIcons]="true"
-    ></dxo-editing>
+      [useIcons]="true">
+      <dxo-form>
+        <dxi-item *ngFor="let field of newObjFields" [dataField]="field" [isRequired]="true"></dxi-item>
+      </dxo-form>
+    </dxo-editing>
     <dxi-column type="buttons" [width]="110" [fixed]="true" fixedPosition="left">
       <dxi-button name="delete"></dxi-button>
       <dxi-button
@@ -36,7 +40,10 @@
     <dxi-column *ngFor="let column of tableColumns"
       [dataField]="column.field"
       [caption]="column.caption"
-      [visible]="defaultCols.includes(column.field)"
+      [visible]="isDefaultCol(column)"
+      [fixed]="column.field==='name'"
+      [sortIndex]="sortColumn('i',column)"
+      [sortOrder]="sortColumn('o',column)"
     >
     </dxi-column>
 

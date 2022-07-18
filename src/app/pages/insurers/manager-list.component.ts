@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import CustomStore from 'devextreme/data/custom_store';
+import { firstValueFrom, lastValueFrom, Subscription } from 'rxjs';
 
 import { ManagerService } from './manager.service';
 
@@ -8,25 +9,46 @@ import { ManagerService } from './manager.service';
     template:
 `
 <h2 class="content-block">Manager List</h2>
-<app-data-table
-    [fields]='fields'
-    [data]='managers'
-    type='Manager'
-    (elementCreated)="save($event)"
-    (elementRemoved)="delete($event)">
-</app-data-table>
+<app-data-list
+    [fields] = 'fields'
+    [defaultCols] = 'defaultColumns'
+    [newObjFields] = 'newObjFields'
+    [data]='dataSource'
+    (navigateTo)="navigate($event)">
+</app-data-list>
 `
 })
 export class ManagerListComponent implements OnInit, OnDestroy {
-    managers: any[];
-    fields: any[];
+    initLoad: boolean;
+    fields: any;
+    dataSource: any;
+    readonly defaultColumns = [];
+    readonly newObjFields = ['name'];
+    readonly objFields = {name: {title: 'Manager Name', column: 'name'}};
     private sub: Subscription;
-    constructor (private _route: ActivatedRoute, private _managerService: ManagerService) {}
+
+    constructor (private _route: ActivatedRoute, private _router: Router, private _managerService: ManagerService) {
+        this.dataSource = new CustomStore({
+            key: 'id',
+            load: () => this.load(),
+            insert: (values) => this.sendRequest('POST', {values}),
+            remove: (key) => this.sendRequest('DELETE',{key})
+        })
+    }
 
     ngOnInit(): void {
+        this.initLoad = true;
         this.sub = this._route.data.subscribe(data => {
-            this.managers = data.response.data.manager_list;
-            this.fields = data.response.data.fields;
+            this.fields = {};
+
+            for (const field of Object.keys(this.objFields)) {
+                this.fields[field] = {
+                    title: this.objFields[field]['title'],
+                    column_name: this.objFields[field]['column'],
+                }
+            }
+
+            this.fields = { ...this.fields, ...data.response.data.fields }
         });
     }
 
@@ -34,17 +56,41 @@ export class ManagerListComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
-    save(body): void {
-        this._managerService.save(body)
-            .subscribe(res => {
-                this.managers.push(res['data']);
+    load(): any {
+        if (!this.initLoad) return this.sendRequest();
+
+        this.initLoad = false;
+
+        return firstValueFrom(this._route.data)
+            .then((data: any) => data.response.data.manager_list)
+            .catch((e) => {
+                throw e && e.error && e.error.Message;
             });
     }
 
-    delete(body): void {
-        this._managerService.destroy(body)
-            .subscribe(res => {
-                this.managers = this.managers.filter(obj => obj.id !== res['data']['id']);
+    sendRequest(method = 'GET', data: any = {}): any {
+        let result;
+
+        switch(method) {
+            case 'GET':
+                result = this._managerService.index();
+                break;
+            case 'POST':
+                result = this._managerService.save({ id: 0 , ...data.values });
+                break;
+            case 'DELETE':
+                result = this._managerService.destroy(data.key);
+                break;
+        }
+
+        return lastValueFrom(result)
+            .then((resp: any) => (method==='GET' ? resp.data.shop_list : resp.data))
+            .catch((e) => {
+                throw e && e.error && e.error.Message;
             });
+    }
+
+    navigate(id): void {
+        this._router.navigate([ id ], { relativeTo: this._route });
     }
 }

@@ -9,11 +9,8 @@ export class DataListComponent implements OnInit {
   @Input() fields: any[];
   @Input() defaultCols: any[];
   @Input() data: any[];
-  @Input() key: string;
-  @Input() service: any;
+  @Input() newObjFields: any[];
   @Output() navigateTo = new EventEmitter<any>();
-  @Output() elementRemoved = new EventEmitter<any>();
-
 
   tableColumns = [];
 
@@ -32,18 +29,19 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  remove(e): void {
-    const isCanceled = new Promise((resolve, reject) => {
-      this.service.destroy(e.key)
-      .then(() => resolve(false))
-      .catch(e => reject(e))
-    });
+  isDefaultCol(col): boolean {
+    if (!this.defaultCols.length) return true;
 
-    e.cancel = isCanceled;
+    return this.defaultCols.includes(col.field)
+  }
+
+  sortColumn(setting, col): any {
+    if (col.field != 'name') return;
+
+    return (setting === 'i') ? 0 : 'asc';
   }
 
   onViewClick = (e) => {
-    console.log(e.row.key);
     this.navigateTo.emit(e.row.key);
   }
 
