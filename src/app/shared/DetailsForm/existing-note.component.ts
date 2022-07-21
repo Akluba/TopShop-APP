@@ -34,6 +34,8 @@ export class ExistingNoteComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.noteSelector = $(`app-existing-note[data-note='${this.field.id}-${this.index}']`);
         this.initPopup();
+        $('.secondary.menu .item').tab({context: 'parent'});
+        $('.notes.menu .item').tab();
     }
 
     initPopup(): void {

@@ -102,5 +102,6 @@ export class FieldControlTemplate implements AfterViewInit {
     ngAfterViewInit(): void {
         $('.dropdown').dropdown();
         $('.checkbox').checkbox();
+        $('.notes.menu .item').tab();
     }
 }

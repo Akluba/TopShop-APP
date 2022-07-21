@@ -14,7 +14,7 @@ declare let $: any;
     [sourceClass]="sourceClass"
     [formValues]="formValues"
     [formElements]="formElements"
-    [saveMessage]="saveMessage">
+    [saveResponse]="saveResponse">
 </app-details-form>
 `
 })
@@ -22,7 +22,7 @@ export class ShopDetailsComponent implements OnInit, OnDestroy {
     sourceClass: string;
     formValues: {};
     formElements: any[];
-    saveMessage: string;
+    saveResponse: {};
     private sub: Subscription;
 
     constructor(private _route: ActivatedRoute, private _shopService: ShopService) {}
@@ -44,7 +44,7 @@ export class ShopDetailsComponent implements OnInit, OnDestroy {
         this._shopService.save(body)
             .subscribe(
                 (res) => this.onSaveComplete(res),
-                (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
+                (error: any) => this.flashMessage({text: <any>error, status: 'error'})
             );
     }
 
@@ -54,16 +54,21 @@ export class ShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     flashMessage(message): void {
-        $('.message')
-            .removeClass('success negative')
-            .addClass(message.status);
+        // $('.message')
+        //     .removeClass('success negative')
+        //     .addClass(message.status);
 
-        this.saveMessage = message.text;
+        // this.saveMessage = message.text;
+        this.saveResponse = {
+            visible: true,
+            type: message.status,
+            message:message.text
+        }
 
-        $('.message')
-            .transition('fade', 1000)
-            .transition('fade', 1000)
-            ;
+        // $('.message')
+        //     .transition('fade', 1000)
+        //     .transition('fade', 1000)
+        //     ;
     }
 
 }

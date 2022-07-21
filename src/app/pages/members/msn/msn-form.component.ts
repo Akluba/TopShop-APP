@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-
-// import { AuthService } from '../../../core/auth.service';
 import { AuthService, IUser } from '../../../shared/services';
 
 import { LogEntry } from '../../../shared/DetailsForm/DetailsFormClasses';
@@ -64,7 +62,6 @@ export class MSNFormComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     ngAfterViewInit(): void {
-        $('.secondary.menu .item').tab({context: 'parent'});
         $('.notes.menu .item').tab();
     }
 

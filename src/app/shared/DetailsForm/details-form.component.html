@@ -1,40 +1,49 @@
 <form *ngIf="user" class="ui form"
+    #detailform="ngForm"
     novalidate
     (ngSubmit)="save()"
     [formGroup]="form">
 
-    <div class="ui fluid massive input" [ngClass]="{'transparent': !nameField}">
-        <input type="text" formControlName="name"
-            (blur)="nameField = false"
-            (focus)="nameField = true" />
-    </div>
-
-    <!-- Categories Secondary menu -->
-    <div class="ui pointing secondary menu">
-        <a class="item" *ngFor="let element of formElements | sortOrder; let tab_i=index"
-            [ngClass]="{'active': tab_i == 0}"
-            attr.data-tab="{{ tab_i }}">{{ element.title }}</a>
-    </div>
-
-    <!-- Form Actions -->
-    <div class="ui grid middle aligned content" style="min-height: 75px;">
-        <div class="left floated thirteen wide column">
-            <div class="ui hidden message transition">
-                <div class="header" *ngIf="saveMessage">{{ saveMessage }}</div>
+    <dx-toolbar>
+        <dxi-item location="before" widget="dxButton" [options]="backButtonOptions"></dxi-item>
+        <dxi-item location="center" cssClass="name-container" locateInMenu="never">
+            <div *dxTemplate class="ui fluid huge input" [ngClass]="{'transparent': !nameField}">
+                <div class="toolbar-label">
+                    <input id="name-input-field" type="text" formControlName="name"
+                        (blur)="nameField = false"
+                        (focus)="nameField = true" />
+                    <!-- Hack to size the field above to display the entire value -->
+                    <p id="name-value-size">{{ form.get('name').value }}</p>
+                </div>
             </div>
-        </div>
-        <div class="right floated three wide column">
-            <button class="ui fluid positive button"
-                [disabled]="!form.valid || !form.dirty">
-                Save
-            </button>
-        </div>
-    </div>
-
-    <!-- Category segments -->
-    <div class="ui tab segment" *ngFor="let element of formElements | sortOrder; let tab_i=index"
-        [ngClass]="{'active': tab_i == 0}"
-        attr.data-tab="{{ tab_i }}">
+        </dxi-item>
+        <dxi-item
+            cssClass="submitValid"
+            location="after"
+            widget="dxButton"
+            locateInMenu="auto"
+            [disabled]="!form.valid || !form.dirty"
+            [options]="saveButtonOptions"
+        >
+        </dxi-item>
+        <dxi-item
+            *ngIf="formElements"
+            location="after"
+            widget="dxSelectBox"
+            locateInMenu="auto"
+            [options]="selectBoxOptions"
+        >
+        </dxi-item>
+    </dx-toolbar>
+    <dx-toast
+        *ngIf="saveResponse"
+        [(visible)]="saveResponse.visible"
+        [type]="saveResponse.type"
+        [message]="saveResponse.message">
+    </dx-toast>
+    <div class="ui tab segment" *ngFor="let element of formElements | sortOrder;"
+        [ngClass]="{'active': element.id == selectedTab}"
+        attr.data-tab="{{ element.id }}">
 
         <div *ngIf="element.title === 'Notes'; then noteTemplate else inputLogTemplate"></div>
 
@@ -45,13 +54,13 @@
                     <div class="ui fluid vertical pointing menu notes">
                         <a class="item" *ngFor="let field of element.fields | sortOrder; let note_i=index"
                         [ngClass]="{'active': note_i == 0}"
-                        attr.data-tab="{{ tab_i }}/{{ note_i }}">{{ field.title }}</a>
+                        attr.data-tab="{{ element.id }}/{{ note_i }}">{{ field.title }}</a>
                     </div>
                 </div>
                 <div class="twelve wide column right floated">
                     <div class="ui tab secondary segment" *ngFor="let field of element.fields | sortOrder; let note_i=index" style="margin: 0;"
                         [ngClass]="{'active': note_i == 0}"
-                        attr.data-tab="{{ tab_i }}/{{ note_i }}">
+                        attr.data-tab="{{ element.id }}/{{ note_i }}">
                         <note-feed
                             formArrayName="{{ field.column_name }}"
                             [field]="field"

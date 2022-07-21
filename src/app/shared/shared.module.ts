@@ -4,7 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { DxDataGridModule } from 'devextreme-angular';
-
+import {
+    DxListModule, DxToolbarModule, DxSelectBoxModule, DxTemplateModule, DxMultiViewModule, DxToastModule
+} from 'devextreme-angular';
 
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
@@ -31,7 +33,13 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         TableModule,
         MultiSelectModule,
         RouterModule,
-        DxDataGridModule
+        DxDataGridModule,
+        DxListModule,
+        DxToolbarModule,
+        DxSelectBoxModule,
+        DxTemplateModule,
+        DxMultiViewModule,
+        DxToastModule
     ],
     declarations: [
         DetailsFormComponent,

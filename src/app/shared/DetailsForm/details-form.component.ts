@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, FormArray, NgForm } from '@angular/forms';
+import { Location } from '@angular/common'
 
 import { AuthService, IUser } from '../services';
 
@@ -9,29 +10,78 @@ declare let $: any;
 
 @Component({
     selector: 'app-details-form',
-    templateUrl: './details-form.component.html'
+    templateUrl: './details-form.component.html',
+    styles: [
+        '#name-value-size { padding: .67857143em 1em; }',
+        '#name-input-field { padding: .67857143em 1em !important; width:100%; }'
+    ]
 })
 export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() sourceClass: string;
     @Input() formValues: {};
     @Input() formElements: any[];
-    @Input() saveMessage: string;
+    @Input() saveResponse: {};
     @Output() formSaved = new EventEmitter<any>();
+
+    @ViewChild('detailform') detailform: NgForm;
 
     user: IUser;
 
     form: FormGroup;
     nameField = false;
+    selectedTab: number;
+
+    backButtonOptions: any;
+    refreshButtonOptions: any;
+    selectBoxOptions: any;
+    saveButtonOptions: any;
 
     constructor(
+        private _location: Location,
         private _fb: FormBuilder,
         private _authService: AuthService
-    ) {}
+    ) {
+        this.backButtonOptions = {
+            type: 'back',
+            onClick: () => {
+                this._location.back()
+            },
+        };
+
+        this.refreshButtonOptions = {
+            icon: 'refresh',
+            onClick: () => {
+                console.log('refresh')
+            },
+        };
+
+        this.saveButtonOptions = {
+            icon: 'save',
+            type: 'success',
+            onClick: () => {
+                this.detailform.onSubmit(undefined);
+            },
+        };
+
+    }
 
     async ngOnInit() {
         await this._authService.getUser().then((e) => this.user = e.data);
         this.buildReactiveForm();
         this.patchFormValues();
+
+        this.selectedTab = this.formElements[0].id;
+
+        this.selectBoxOptions = {
+            width: 'auto',
+            items: this.formElements,
+            valueExpr: 'id',
+            displayExpr: 'title',
+            value: this.formElements[0].id,
+            onValueChanged: (args) => {
+              this.selectedTab = args.value;
+            },
+          };
     }
 
     ngAfterViewInit(): void {

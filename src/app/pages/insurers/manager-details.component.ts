@@ -14,7 +14,7 @@ declare let $: any;
     [sourceClass]="sourceClass"
     [formValues]="formValues"
     [formElements]="formElements"
-    [saveMessage]="saveMessage">
+    [saveResponse]="saveResponse">
 </app-details-form>
 `
 })
@@ -22,7 +22,7 @@ export class ManagerDetailsComponent implements OnInit, OnDestroy {
     sourceClass: string;
     formValues: {};
     formElements: any[];
-    saveMessage: string;
+    saveResponse: {};
     private sub: Subscription;
 
     constructor(private _route: ActivatedRoute, private _managerService: ManagerService) {}
@@ -54,16 +54,21 @@ export class ManagerDetailsComponent implements OnInit, OnDestroy {
     }
 
     flashMessage(message): void {
-        $('.message')
-            .removeClass('success negative')
-            .addClass(message.status);
+        this.saveResponse = {
+            visible: true,
+            type: message.status,
+            message:message.text
+        }
+        // $('.message')
+        //     .removeClass('success negative')
+        //     .addClass(message.status);
 
-        this.saveMessage = message.text;
+        // this.saveMessage = message.text;
 
-        $('.message')
-            .transition('fade', 1000)
-            .transition('fade', 1000)
-            ;
+        // $('.message')
+        //     .transition('fade', 1000)
+        //     .transition('fade', 1000)
+        //     ;
     }
 
 }
