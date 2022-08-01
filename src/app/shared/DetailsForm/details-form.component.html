@@ -27,6 +27,14 @@
         >
         </dxi-item>
         <dxi-item
+            location="after"
+            widget="dxButton"
+            locateInMenu="auto"
+            [disabled]="!form.valid || !form.dirty"
+            [options]="refreshButtonOptions"
+        >
+        </dxi-item>
+        <dxi-item
             *ngIf="formElements"
             location="after"
             widget="dxSelectBox"

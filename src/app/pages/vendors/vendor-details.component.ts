@@ -59,16 +59,6 @@ export class VendorDetailsComponent implements OnInit, OnDestroy {
             type: message.status,
             message:message.text
         }
-        // $('.message')
-        //     .removeClass('success negative')
-        //     .addClass(message.status);
-
-        // this.saveMessage = message.text;
-
-        // $('.message')
-        //     .transition('fade', 1000)
-        //     .transition('fade', 1000)
-        //     ;
     }
 
 }

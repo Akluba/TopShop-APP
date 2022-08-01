@@ -54,21 +54,11 @@ export class ShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     flashMessage(message): void {
-        // $('.message')
-        //     .removeClass('success negative')
-        //     .addClass(message.status);
-
-        // this.saveMessage = message.text;
         this.saveResponse = {
             visible: true,
             type: message.status,
             message:message.text
         }
-
-        // $('.message')
-        //     .transition('fade', 1000)
-        //     .transition('fade', 1000)
-        //     ;
     }
 
 }

@@ -51,7 +51,8 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
         this.refreshButtonOptions = {
             icon: 'refresh',
             onClick: () => {
-                console.log('refresh')
+                this.patchFormValues();
+                this.form.markAsPristine();
             },
         };
 
@@ -149,7 +150,7 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
 
         // Set existing Log Entries.
         if (this.formValues[control]) {
-            this.formValues[control].map(logEntry => {
+            this.formValues[control].forEach(logEntry => {
                 const formGroup = this.formatFormGroup(field, logEntry);
                 formGroups.push(formGroup);
             });
@@ -217,14 +218,16 @@ export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {
 
     private formatFormGroup(field, logEntry): FormGroup {
         const patchValues = [];
+        const le = { ...logEntry };
+
         field.columns.forEach(column => {
             patchValues[column.column_name] = this.formatInputValues(column.type, logEntry[column.column_name]);
-            logEntry[column.column_name] = null;
+            le[column.column_name] = null;
         });
 
-        logEntry['deleted'] = null;
+        le['deleted'] = null;
 
-        const formGroup = this._fb.group(logEntry);
+        const formGroup = this._fb.group(le);
         formGroup.patchValue(patchValues);
 
         return formGroup;

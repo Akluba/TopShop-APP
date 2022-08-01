@@ -31,6 +31,51 @@ export class AccountService {
         );
     }
 
+    show(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    save(body: any): Observable<any> {
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        if (body.id === 0) {
+            return this.store(body, options);
+        }
+        return this.update(body, options);
+    }
+
+    destroy(id: number): Observable<any> {
+        const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.delete(url, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    private store(body: any, options: any): Observable<any> {
+        const url = `${this.baseUrl}`;
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    private update(body: any, options: any): Observable<any> {
+        const url = `${this.baseUrl}/${body.id}`;
+        body._method = 'PUT';
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     private handleError(err: HttpErrorResponse) {
         if (err.error instanceof Error) {
             console.log(`An error occurred: ${err.error.message}`);
