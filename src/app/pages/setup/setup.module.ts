@@ -3,6 +3,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { SetupRoutingModule } from './setup-routing.module';
 
+import { DxToolbarModule } from 'devextreme-angular';
+
 import { TableModule } from 'primeng/table';
 import { OrderListModule } from 'primeng/orderlist';
 
@@ -17,6 +19,7 @@ import { SetupResolver } from './setup-resolver.service';
     imports: [
         SharedModule,
         FormsModule,
+        DxToolbarModule,
         TableModule,
         OrderListModule,
         SetupRoutingModule

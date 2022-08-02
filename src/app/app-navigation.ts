@@ -5,7 +5,7 @@ export const navigation = [
     icon: 'mediumiconslayout'
   },
   {
-    text: 'Members',
+    text: 'Shops',
     icon: 'home',
     items: [
       {
@@ -23,10 +23,6 @@ export const navigation = [
       {
         text: 'Multi Shop Note',
         path: '/shops/multi/notes'
-      },
-      {
-        text: 'Custom Fields',
-        path: '/setup/shop'
       }
     ]
   },
@@ -41,10 +37,6 @@ export const navigation = [
       {
         text: 'Advanced Search',
         path: '/search/manager'
-      },
-      {
-        text: 'Custom Fields',
-        path: '/setup/manager'
       }
     ]
   },
@@ -59,30 +51,7 @@ export const navigation = [
       {
         text: 'Advanced Search',
         path: '/search/vendor'
-      },
-      {
-        text: 'Custom Fields',
-        path: '/setup/vendor'
       }
     ]
   }
-  // {
-  //   text: 'Home',
-  //   path: '/home',
-  //   icon: 'home'
-  // },
-  // {
-  //   text: 'Examples',
-  //   icon: 'folder',
-  //   items: [
-  //     {
-  //       text: 'Profile',
-  //       path: '/profile'
-  //     },
-  //     {
-  //       text: 'Tasks',
-  //       path: '/tasks'
-  //     }
-  //   ]
-  // }
 ];

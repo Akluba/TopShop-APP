@@ -40,6 +40,13 @@ export class HeaderComponent implements OnInit {
     }
   },
   {
+    text: 'Settings',
+    icon: 'preferences',
+    onClick: () => {
+      this.router.navigate(['/setup/shop']);
+    }
+  },
+  {
     text: 'Logout',
     icon: 'runner',
     onClick: () => {

@@ -1,21 +1,35 @@
-<h2 class="content-block">{{ pageTitle }}</h2>
+<div class="secondary-menu">
+    <dx-toolbar>
+        <dxi-item
+            text="Manage Fields"
+            location="before"
+            widget="dxTabs"
+            locateInMenu="auto"
+            [options]="sourceClassTabs"
+        >
+        </dxi-item>
+        <dxi-item location="center" locateInMenu="never">
+            <div *dxTemplate>
+                <setup-breadcrumb
+                    [data]="data">
+                </setup-breadcrumb>
+            </div>
+        </dxi-item>
+        <!-- <dxi-item location="after" widget="dxButton" [options]="backButtonOptions"></dxi-item> -->
+        <!-- <dxi-item location="after" widget="dxButton" [options]="backButtonOptions"></dxi-item> -->
+    </dx-toolbar>
+</div>
 
-<div class="ui clearing segment">
+<!-- <div class="ui clearing segment">
     <button class="ui icon right floated button"
         (click)="toggleSortState()"
         [ngClass]="{'active': sorting, 'positive': updatedSortOrder}">
         <i class="ordered list icon"></i>
     </button>
-</div>
+</div> -->
 
 <div class="ui segments">
-    <div class="ui segment">
-        <setup-breadcrumb
-            [data]="data">
-        </setup-breadcrumb>
-    </div>
     <div class="ui secondary segment">
-
         <div class="ui segment" *ngIf="sorting">
             <p-orderList [value]="setupService.children" [responsive]="true" (onReorder)="updatedSortOrder = true">
                 <ng-template pTemplate="item" let-rowData>

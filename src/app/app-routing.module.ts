@@ -41,12 +41,12 @@ export const routes: Routes = [
     {
       path: 'accounts',
       canLoad: [ AuthGuardService ],
-      loadChildren: () => import('./pages/members/accounts/account.module').then(m => m.AccountModule)
+      loadChildren: () => import('./pages/shops/accounts/account.module').then(m => m.AccountModule)
   },
     {
         path: 'shops',
         canLoad: [ AuthGuardService ],
-        loadChildren: () => import('./pages/members/shops/shop.module').then(m => m.ShopModule)
+        loadChildren: () => import('./pages/shops/shops/shop.module').then(m => m.ShopModule)
     },
     {
         path: 'managers',

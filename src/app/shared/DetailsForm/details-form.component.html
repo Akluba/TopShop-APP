@@ -4,45 +4,47 @@
     (ngSubmit)="save()"
     [formGroup]="form">
 
-    <dx-toolbar>
-        <dxi-item location="before" widget="dxButton" [options]="backButtonOptions"></dxi-item>
-        <dxi-item location="center" cssClass="name-container" locateInMenu="never">
-            <div *dxTemplate class="ui fluid huge input" [ngClass]="{'transparent': !nameField}">
-                <div class="toolbar-label">
-                    <input id="name-input-field" type="text" formControlName="name"
-                        (blur)="nameField = false"
-                        (focus)="nameField = true" />
-                    <!-- Hack to size the field above to display the entire value -->
-                    <p id="name-value-size">{{ form.get('name').value }}</p>
+    <div class="secondary-menu">
+        <dx-toolbar>
+            <dxi-item location="before" widget="dxButton" [options]="backButtonOptions"></dxi-item>
+            <dxi-item location="center" cssClass="name-container" locateInMenu="never">
+                <div *dxTemplate class="ui fluid huge input" [ngClass]="{'transparent': !nameField}">
+                    <div class="toolbar-label">
+                        <input id="name-input-field" type="text" formControlName="name"
+                            (blur)="nameField = false"
+                            (focus)="nameField = true" />
+                        <!-- Hack to size the field above to display the entire value -->
+                        <p id="name-value-size">{{ form.get('name').value }}</p>
+                    </div>
                 </div>
-            </div>
-        </dxi-item>
-        <dxi-item
-            cssClass="submitValid"
-            location="after"
-            widget="dxButton"
-            locateInMenu="auto"
-            [disabled]="!form.valid || !form.dirty"
-            [options]="saveButtonOptions"
-        >
-        </dxi-item>
-        <dxi-item
-            location="after"
-            widget="dxButton"
-            locateInMenu="auto"
-            [disabled]="!form.valid || !form.dirty"
-            [options]="refreshButtonOptions"
-        >
-        </dxi-item>
-        <dxi-item
-            *ngIf="formElements"
-            location="after"
-            widget="dxSelectBox"
-            locateInMenu="auto"
-            [options]="selectBoxOptions"
-        >
-        </dxi-item>
-    </dx-toolbar>
+            </dxi-item>
+            <dxi-item
+                cssClass="submitValid"
+                location="after"
+                widget="dxButton"
+                locateInMenu="auto"
+                [disabled]="!form.valid || !form.dirty"
+                [options]="saveButtonOptions"
+            >
+            </dxi-item>
+            <dxi-item
+                location="after"
+                widget="dxButton"
+                locateInMenu="auto"
+                [disabled]="!form.valid || !form.dirty"
+                [options]="refreshButtonOptions"
+            >
+            </dxi-item>
+            <dxi-item
+                *ngIf="formElements"
+                location="after"
+                widget="dxSelectBox"
+                locateInMenu="auto"
+                [options]="selectBoxOptions"
+            >
+            </dxi-item>
+        </dx-toolbar>
+    </div>
     <dx-toast
         *ngIf="saveResponse"
         [(visible)]="saveResponse.visible"

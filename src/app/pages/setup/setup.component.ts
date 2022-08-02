@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { SetupService } from './setup.service';
 
@@ -17,7 +17,9 @@ export class SetupComponent implements OnInit {
     sorting = false;
     updatedSortOrder = false;
 
-    constructor(private _route: ActivatedRoute, public setupService: SetupService) {}
+    sourceClassTabs: any;
+
+    constructor(private _route: ActivatedRoute, private _router: Router, public setupService: SetupService) {}
 
     ngOnInit(): void {
         this._route.data.subscribe(data => {
@@ -37,6 +39,14 @@ export class SetupComponent implements OnInit {
                 this.pageTitle = `Setup ${pageClass} Fields`;
             });
         });
+
+        this.sourceClassTabs = {
+            height: '30px',
+            label: 'Manage Fields:',
+            items: ['shop','manager','vendor'],
+            selectedItem: this.routeParams['source_class'],
+            onItemClick: (e) => { this._router.navigate(['/setup/', e.itemData]) }
+          };
     }
 
     toggleSortState(): void {

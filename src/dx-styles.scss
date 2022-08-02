@@ -9,6 +9,7 @@ html, body {
 }
 
 .content {
+  padding: 10px;
   line-height: 1.5;
   flex-grow: 1;
 
@@ -32,6 +33,27 @@ html, body {
 
 .side-nav-outer-toolbar .dx-drawer {
   height: calc(100% - 56px)
+}
+
+.dx-toolbar .dx-toolbar-items-container {
+  height: 56px;
+  overflow: hidden;
+}
+
+.secondary-menu .dx-toolbar {
+  background-color: transparent;
+
+  .dx-toolbar-label {
+    font-size: 14px;
+  }
+
+  .dx-tabs, .dx-tab {
+    background-color: transparent !important;
+  }
+
+  .dx-texteditor.dx-editor-filled{
+    background-color: #fff;
+  }
 }
 
 .content-block {
