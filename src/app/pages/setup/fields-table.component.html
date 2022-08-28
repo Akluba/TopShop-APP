@@ -1,0 +1,35 @@
+<dx-sortable
+    [group]=true
+    itemOrientation="vertical"
+    handle=".handle"
+    (onReorder)="onListReorder($event)"
+>
+    <ng-template ngFor let-category [ngForOf]="data" let-i="index" [ngForTrackBy]="trackByFn">
+        <div>
+            <i class="handle dx-icon dx-icon-dragvertical"></i>
+            <dx-accordion
+                #accordion
+                [dataSource]="[category]"
+                [collapsible]="true"
+                [multiple]="true"
+                [animationDuration]="300"
+            >
+                <div class="list-title" *dxTemplate="let category of 'title'">
+                    {{ category.title }}
+                </div>
+                <div *dxTemplate="let category of 'item'">
+                    <dx-data-grid
+                        [dataSource]="dataSource"
+                    >
+                        <dxo-sorting mode="none"></dxo-sorting>
+                        <dxo-row-dragging
+                            [allowReordering]="true"
+                            [onReorder]="onReorder"
+                            dropFeedbackMode="push"
+                        ></dxo-row-dragging>
+                    </dx-data-grid>
+                </div>
+            </dx-accordion>
+        </div>
+    </ng-template>
+</dx-sortable>

@@ -30,7 +30,7 @@
 
 <div class="ui segments">
     <div class="ui secondary segment">
-        <div class="ui segment" *ngIf="sorting">
+        <!-- <div class="ui segment" *ngIf="sorting">
             <p-orderList [value]="setupService.children" [responsive]="true" (onReorder)="updatedSortOrder = true">
                 <ng-template pTemplate="item" let-rowData>
                     <div class="ui-helper-clearfix">
@@ -38,13 +38,20 @@
                     </div>
                 </ng-template>
             </p-orderList>
-        </div>
+        </div> -->
 
-        <app-setup-table *ngIf="!sorting"
+        <!-- <app-setup-table *ngIf="!sorting"
             [apiRoute]="apiRoute"
             [routeParams]="routeParams"
             [primary]="primary">
-        </app-setup-table>
+        </app-setup-table> -->
+
+        <app-fields-table
+            [dataSource]="dataSource"
+            [data]="fields"
+            (reorder)="onReorder($event)"
+            >
+        </app-fields-table>
 
     </div>
 </div>

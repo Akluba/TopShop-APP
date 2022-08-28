@@ -10,6 +10,12 @@
     <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
     <dxo-selection mode="multiple"></dxo-selection>
     <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-grouping
+        [contextMenuEnabled]="true">
+    </dxo-grouping>
+    <dxo-group-panel
+        [visible]="true">
+    </dxo-group-panel>
     <dxo-header-filter [visible]=true></dxo-header-filter>
     <dxo-filter-row [visible]=true></dxo-filter-row>
     <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>

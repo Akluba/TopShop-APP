@@ -43,8 +43,16 @@ html, body {
 .secondary-menu .dx-toolbar {
   background-color: transparent;
 
+  .dx-toolbar-items-container {
+    height: 76px;
+  }
+
   .dx-toolbar-label {
     font-size: 14px;
+  }
+
+  .dx-tabs {
+    margin-top: 20px;
   }
 
   .dx-tabs, .dx-tab {
@@ -95,3 +103,15 @@ html, body {
 }
 
 $side-panel-min-width: 60px;
+
+.dx-icon-dragvertical.handle{
+  float: left;
+  height: 48px;
+  line-height: 48px;
+}
+.dx-accordion {
+  background-color: transparent;
+}
+.dx-accordion-item-title {
+  height: auto;
+}
