@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'http://www.api.topshop-inc.com/api'
+  url: 'https://api.topshop-inc.com/api'
 };
