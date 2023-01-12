@@ -12,7 +12,7 @@ declare let $: any;
     selector: 'app-details-form',
     templateUrl: './details-form.component.html',
     styles: [
-        '#name-value-size { padding: .67857143em 1em; }',
+        '#name-value-size { height: 0px; padding: 0px 1em !important; color: #f2f2f2; }',
         '#name-input-field { padding: .67857143em 1em !important; width:100%; }'
     ]
 })
