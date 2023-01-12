@@ -22,21 +22,29 @@ export class ShopListComponent implements OnInit, OnDestroy {
     initLoad: boolean;
     fields: any;
     dataSource: any;
-    readonly defaultColumns = [];
-    // readonly defaultColumns = [
-    //     'name',
-    //     'location.address',
-    //     'location.city',
-    //     'location.state',
-    //     'location.zip',
-    //     'primary_contact.first_name',
-    //     'primary_contact.last_name',
-    //     'primary_contact.phone',
-    //     'primary_contact.email'
-    // ];
+    // readonly defaultColumns = [];
+    readonly defaultColumns = [
+        'name',
+        'custom_7',
+        'custom_9',
+        'custom_10',
+        'custom_11',
+        'custom_12',
+        'custom_13',
+        'custom_61',
+
+        // 'location.address',
+        // 'location.city',
+        // 'location.state',
+        // 'location.zip',
+        // 'primary_contact.first_name',
+        // 'primary_contact.last_name',
+        // 'primary_contact.phone',
+        // 'primary_contact.email'
+    ];
     readonly newObjFields = ['name'];
     readonly objFields = {
-        name: {title: 'Shop Name',column: 'name'},
+        name: {title: 'Shop Name',column: 'name'}
         // address: {title: 'Address',column: 'location.address'},
         // city: {title: 'City',column: 'location.city'},
         // state: {title: 'State',column: 'location.state'},
