@@ -30,15 +30,14 @@ export class SetupComponent implements OnInit {
 
         this._route.data.subscribe(data => {
             this.data = data;
-            console.log(data);
-            this.fields = data.response.data.children;
+            this.fields = data.response.data;
             this.apiRoute = data.apiRoute;
 
-            this.primary = data.response.data.primary;
+            // this.primary = data.response.data.primary;
 
-            if (this.apiRoute === undefined) {
-                this.apiRoute = ($.inArray(this.primary.type, ['log', 'notes']) !== -1) ? 'column' : 'option';
-            }
+            // if (this.apiRoute === undefined) {
+            //     this.apiRoute = ($.inArray(this.primary.type, ['log', 'notes']) !== -1) ? 'column' : 'option';
+            // }
         });
 
         this._route.params.subscribe(params => {
@@ -69,7 +68,8 @@ export class SetupComponent implements OnInit {
         this.initLoad = false;
 
         return firstValueFrom(this._route.data)
-            .then((data: any) => data.response.data.children)
+        // .then((data: any) => data.response.data.children)
+        .then((data: any) => data.response.data)
             .catch((e) => {
                 throw e && e.error && e.error.Message;
             });
@@ -104,7 +104,7 @@ export class SetupComponent implements OnInit {
         }
 
         return lastValueFrom(result)
-            .then((resp: any) => (method == 'GET') ? resp.data.children : resp.data)
+            .then((resp: any) => (method == 'GET') ? resp.data : resp.data)
             .catch((e) => {
                 throw e && e.error && e.error.Message;
             });

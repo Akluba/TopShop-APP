@@ -14,13 +14,14 @@ export class SetupService {
     constructor(private _http: HttpClient) {}
 
     index(source_class: string, route: string): Observable<any> {
-        const url = `${this.baseUrl}/${route}`;
+        // const url = `${this.baseUrl}/${route}`;
+        const url = `${this.baseUrl}/setup`;
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const params = new HttpParams().set('source_class', source_class);
         const options = { headers: headers, params: params };
 
         return this._http.get(url, options).pipe(
-            tap(data => data['data']['children']),
+            tap(data => data['data']),
             catchError(this.handleError)
         );
     }

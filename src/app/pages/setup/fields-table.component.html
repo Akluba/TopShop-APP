@@ -18,15 +18,47 @@
                     {{ category.title }}
                 </div>
                 <div *dxTemplate="let category of 'item'">
+                    <!-- Nested Fields -->
                     <dx-data-grid
-                        [dataSource]="dataSource"
+                        [dataSource]="category.fields"
                     >
+                        <dxo-editing
+                            mode="popup"
+                            [allowUpdating]="true"
+                            [allowAdding]="true"
+                            [allowDeleting]="true"
+                        >
+                            <dxo-popup
+                                title="Field Info"
+                                [showTitle]="true"
+                                [width]="500"
+                                [height]="600"
+                            >
+                            </dxo-popup>
+                            <dxo-form>
+                                <dxi-item itemType="group" [colCount]="1" [colSpan]="2">
+                                  <dxi-item dataField="title"></dxi-item>
+                                  <dxi-item dataField="type" [editorOptions]="{ readOnly: true }"></dxi-item>
+                                </dxi-item>
+
+                                <dxi-item
+                                  itemType="group" caption="Options"
+                                  [colCount]="1"
+                                  [colSpan]="2"
+                                >
+                                  <!-- Display Options -->
+                                </dxi-item>
+                              </dxo-form>
+                        </dxo-editing>
                         <dxo-sorting mode="none"></dxo-sorting>
                         <dxo-row-dragging
                             [allowReordering]="true"
                             [onReorder]="onReorder"
                             dropFeedbackMode="push"
                         ></dxo-row-dragging>
+                        <dxi-column dataField="title" caption="Field Name"></dxi-column>
+                        <dxi-column dataField="type" caption="Type"></dxi-column>
+                        <dxi-column dataField="sort_order" sortOrder="asc" [visible]=false></dxi-column>
                     </dx-data-grid>
                 </div>
             </dx-accordion>
