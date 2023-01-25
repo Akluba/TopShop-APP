@@ -31,6 +31,7 @@
       [allowAdding]="!!newObjFields.length"
       [allowDeleting]="true"
       [useIcons]="true">
+      <dxo-texts [confirmDeleteMessage]="confirmDeleteMsg"></dxo-texts>
       <dxo-form>
         <dxi-item *ngFor="let field of newObjFields" [dataField]="field" [isRequired]="true"></dxi-item>
       </dxo-form>

@@ -4,21 +4,27 @@ import { SharedModule } from '../../../shared/shared.module';
 
 // Feature Components
 import { AccountListComponent } from './account-list.component'
+import { AccountDetailsComponent } from './account-details.component'
 
 // Services
-import { AccountListResolver, AccountService } from './account.service';
+import {
+  AccountListResolver,
+  AccountDetailsResolver,
+  AccountService
+} from './account.service';
+
+import { ShopService } from '../shops/shop.service';
 
 @NgModule({
   imports: [
       RouterModule.forChild([
           { path: '', component: AccountListComponent,resolve: { response: AccountListResolver }},
-          // { path: 'multi/notes', pathMatch: 'full', component: MSNComponent, resolve: { response: MSNResolver }},
-          // {
-          //     path: ':shop_id',
-          //     component: ShopDetailsComponent,
-          //     resolve: { response: ShopDetailsResolver },
-          //     data: { source_class: 'Shop' }
-          // }
+          {
+              path: ':account_id',
+              component: AccountDetailsComponent,
+              resolve: { response: AccountDetailsResolver },
+              data: { source_class: 'Account' }
+          }
       ])
   ],
   exports: [ RouterModule ]
@@ -31,11 +37,14 @@ export class AccountRoutingModule {}
     AccountRoutingModule
   ],
   declarations: [
-    AccountListComponent
+    AccountListComponent,
+    AccountDetailsComponent
   ],
   providers: [
     AccountService,
-    AccountListResolver
+    ShopService,
+    AccountListResolver,
+    AccountDetailsResolver
   ]
 })
 export class AccountModule { }

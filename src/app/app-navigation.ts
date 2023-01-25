@@ -8,10 +8,10 @@ export const navigation = [
     text: 'Shops',
     icon: 'home',
     items: [
-      // {
-      //   text: 'Accounts',
-      //   path: '/accounts'
-      // },
+      {
+        text: 'Accounts',
+        path: '/accounts'
+      },
       {
         text: 'Shop List',
         path: '/shops'

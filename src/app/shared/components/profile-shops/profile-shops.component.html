@@ -1,0 +1,43 @@
+<div class="list-container">
+    <dx-list
+        height="100%"
+        width="40%"
+        id="profile-shops-container"
+        class="profile-container"
+        [dataSource]="ds"
+        [grouped]="true"
+        [focusStateEnabled]="false"
+        [activeStateEnabled]="false"
+        selectionMode="none"
+        (onItemClick)="onItemClick($event)"
+        [collapsibleGroups]="true"
+    >
+      <div *dxTemplate="let shop of 'group'" [disabled]="true">
+        <div class="profile-shops-header">
+            <b>{{shop.key}}</b>
+            <dx-button
+                id="add-shop-btn"
+                stylingMode="outlined"
+                type="default"
+                text="Add a Shop"
+                [width]="120"
+                (onClick)="clickHandler($event)"
+            >
+          </dx-button>
+        </div>
+      </div>
+      <div *dxTemplate="let item of 'item'">
+        <div class="shop-list-item">
+            <div class="shop-item-info">
+                <div><b>{{ item.name }}</b></div>
+                <div>{{ item.location.address }}</div>
+                <div> {{ item.location.city }}, {{ item.location.state }} {{ item.location.zip }}</div>
+            </div>
+            <div class="shop-item-actions">
+                <dx-button icon="edit" (onClick)="clickHandler($event)"> </dx-button>
+                <dx-button icon="remove" (onClick)="remove($event, item.id)"> </dx-button>
+            </div>
+        </div>
+      </div>
+    </dx-list>
+</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Resolve } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -13,6 +13,16 @@ export class AccountListResolver implements Resolve<any> {
 
     resolve(): Observable<any> {
         return this._accountService.index();
+    }
+}
+
+@Injectable()
+export class AccountDetailsResolver implements Resolve<any> {
+    constructor(private _accountService: AccountService) {}
+
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+        const account_id = +route.params['account_id'];
+        return this._accountService.show(account_id);
     }
 }
 
@@ -33,6 +43,16 @@ export class AccountService {
 
     show(id: number): Observable<any> {
         const url = `${this.baseUrl}/${id}`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    showShops(id: number): Observable<any> {
+        const url = `${this.baseUrl}/showShops/${id}`;
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 

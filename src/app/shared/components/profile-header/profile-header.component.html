@@ -1,0 +1,18 @@
+<dx-toolbar>
+    <dxi-item location="before" widget="dxButton" locateInMenu="never">
+        <div *dxTemplate>
+            <div class="toolbar-label"><b>{{details.name}}</b></div>
+        </div>
+    </dxi-item>
+    <dxi-item location="center" widget="dxButton" locateInMenu="never">
+        <div *dxTemplate style="text-align: left;">
+            <div><b>Start Date:</b> {{details.start_date}}</div>
+            <div><b>Last Updated:</b> {{details.updated_at}}</div>
+        </div>
+    </dxi-item>
+    <!-- <dxi-item
+        location="after"
+        widget="dxButton"
+        locateInMenu="auto">
+    </dxi-item> -->
+</dx-toolbar>

@@ -10,6 +10,7 @@ export class DataListComponent implements OnInit {
   @Input() defaultCols: any[];
   @Input() data: any[];
   @Input() newObjFields: any[];
+  @Input() confirmDeleteMsg = 'Are you sure you want to delete this record?';
   @Output() navigateTo = new EventEmitter<any>();
 
   tableColumns = [];

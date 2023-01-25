@@ -104,6 +104,33 @@ html, body {
 
 $side-panel-min-width: 60px;
 
+.dx-list-group-header > .dx-inkripple > .dx-inkripple-wave {
+  transition-property: none;
+  transform: none;
+  animation: none;
+}
+
+.dx-list-group > .dx-list-group-header.dx-state-active {
+  transition-property: none;
+  transform: none;
+  animation: none;
+  display: none;
+}
+
+.profile-container .dx-list-group-header .dx-list-group-header-indicator {
+  font: 26px/1 DXIcons;
+  float: left;
+  margin-top: 0px;
+}
+
+.profile-container .dx-list-group.dx-list-group-collapsed .dx-list-group-header-indicator {
+  font: 26px/1 DXIcons;
+}
+
+.profile-container .dx-list-group-header b {
+ font-size: 16px;
+}
+
 .dx-icon-dragvertical.handle{
   float: left;
   height: 48px;
@@ -114,4 +141,12 @@ $side-panel-min-width: 60px;
 }
 .dx-accordion-item-title {
   height: auto;
+}
+
+.dx-dialog-content .dx-dialog-message {
+  white-space: pre-wrap;
+}
+
+#profile-shops-container .dx-state-hover .shop-item-actions {
+  display: block !important;
 }

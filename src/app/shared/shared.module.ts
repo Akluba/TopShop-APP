@@ -5,12 +5,21 @@ import { RouterModule } from '@angular/router';
 
 import { DxDataGridModule } from 'devextreme-angular';
 import {
-    DxListModule, DxToolbarModule, DxSelectBoxModule, DxTemplateModule, DxMultiViewModule, DxToastModule
+    DxListModule,
+    DxToolbarModule,
+    DxSelectBoxModule,
+    DxTemplateModule,
+    DxMultiViewModule,
+    DxToastModule,
+    DxButtonModule,
 } from 'devextreme-angular';
 
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import { MultiSelectModule } from 'primeng/multiselect';
+
+import { ProfileHeaderComponent } from './components/profile-header/profile-header.component';
+import { ProfileShopsComponent } from './components/profile-shops/profile-shops.component';
 
 import { DataListComponent } from './components/data-list/data-list.component';
 import { ListDataTableComponent } from './ListDataTable/data-table.component';
@@ -39,7 +48,8 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DxSelectBoxModule,
         DxTemplateModule,
         DxMultiViewModule,
-        DxToastModule
+        DxToastModule,
+        DxButtonModule
     ],
     declarations: [
         DetailsFormComponent,
@@ -50,7 +60,9 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DataListComponent,
         ListDataTableComponent,
         SortOrderPipe,
-        SortABCPipe
+        SortABCPipe,
+        ProfileHeaderComponent,
+        ProfileShopsComponent
     ],
     exports: [
         CommonModule,
@@ -60,7 +72,9 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DataListComponent,
         ListDataTableComponent,
         SortOrderPipe,
-        SortABCPipe
+        SortABCPipe,
+        ProfileHeaderComponent,
+        ProfileShopsComponent
     ]
 })
 export class SharedModule {}

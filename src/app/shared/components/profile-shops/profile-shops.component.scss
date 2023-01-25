@@ -1,0 +1,23 @@
+#profile-shops-container {
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.profile-shops-header {
+    line-height: 28px;
+    overflow: hidden;
+}
+
+#add-shop-btn {
+    float: right;
+}
+
+.shop-item-info {
+    float: left;
+}
+
+#profile-shops-container .shop-item-actions {
+    float: right;
+    display: none;
+}

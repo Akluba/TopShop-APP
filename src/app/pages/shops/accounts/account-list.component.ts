@@ -14,6 +14,8 @@ import { AccountService } from './account.service';
     [defaultCols] = 'defaultColumns'
     [newObjFields] = 'newObjFields'
     [data]='dataSource'
+    confirmDeleteMsg = 'Are you sure you want to delete this record?
+    \n Doing so will also delete all shop locations.'
     (navigateTo)="navigate($event)">
 </app-data-list>
 `
