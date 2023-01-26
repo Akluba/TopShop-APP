@@ -21,7 +21,7 @@
                 type="default"
                 text="Add a Shop"
                 [width]="120"
-                (onClick)="clickHandler($event)"
+                (onClick)="add($event)"
             >
           </dx-button>
         </div>
@@ -34,10 +34,72 @@
                 <div> {{ item.location.city }}, {{ item.location.state }} {{ item.location.zip }}</div>
             </div>
             <div class="shop-item-actions">
-                <dx-button icon="edit" (onClick)="clickHandler($event)"> </dx-button>
+                <dx-button icon="edit" (onClick)="update($event, item)"> </dx-button>
                 <dx-button icon="remove" (onClick)="remove($event, item.id)"> </dx-button>
             </div>
         </div>
       </div>
     </dx-list>
+
+    <dx-popup
+        width="90%"
+        [height]="280"
+        [showTitle]="true"
+        title="New Shop"
+        [dragEnabled]="false"
+        [hideOnOutsideClick]="true"
+        [showCloseButton]="false"
+        container="#profile-shops-container"
+        [(visible)]="popupVisible"
+    >
+        <dxi-toolbar-item
+            widget="dxButton"
+            toolbar="bottom"
+            location="before"
+            [options]="saveBtnOptions"
+        >
+        </dxi-toolbar-item>
+        <dxi-toolbar-item
+            widget="dxButton"
+            toolbar="bottom"
+            location="after"
+            [options]="closeBtnOptions"
+        >
+        </dxi-toolbar-item>
+        <dxo-position at="center" my="center" [of]="positionOf" collision="fit">
+        </dxo-position>
+        <div *dxTemplate="let data of 'content'">
+            <dx-form #shopForm [formData]="shop"
+                labelMode='floating'
+                labelLocation='left'
+                [colCount]="2">
+                <dxi-item dataField="name" [colSpan]="2">
+                    <dxi-validation-rule type="required" message="Name is required">
+                    </dxi-validation-rule>
+                    <dxo-label text="Shop Name"></dxo-label>
+                </dxi-item>
+                <dxi-item dataField="location.address">
+                    <dxi-validation-rule type="required" message="Street Address is required">
+                    </dxi-validation-rule>
+                    <dxo-label text="Street Address"></dxo-label>
+                </dxi-item>
+                <dxi-item dataField="location.city">
+                    <dxi-validation-rule type="required" message="City is required">
+                    </dxi-validation-rule>
+                    <dxo-label text="City"></dxo-label>
+                </dxi-item>
+                <dxi-item dataField="location.state" editorType="dxSelectBox"
+                [editorOptions]="stateEditorOptions">
+                    <dxi-validation-rule type="required" message="State is required">
+                    </dxi-validation-rule>
+                    <dxo-label text="State"></dxo-label>
+                </dxi-item>
+                <dxi-item dataField="location.zip">
+                    <dxi-validation-rule type="required" message="Zip Code is required">
+                    </dxi-validation-rule>
+                    <dxo-label text="Zip Code"></dxo-label>
+                </dxi-item>
+            </dx-form>
+        </div>
+    </dx-popup>
 </div>

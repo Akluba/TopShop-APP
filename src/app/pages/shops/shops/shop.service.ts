@@ -45,7 +45,9 @@ export class ShopService {
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
-        if (body.id === 0) {
+        console.log(body);
+
+        if (!body.hasOwnProperty('id')) {
             return this.store(body, options);
         }
         return this.update(body, options);

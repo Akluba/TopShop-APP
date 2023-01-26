@@ -12,6 +12,8 @@ import {
     DxMultiViewModule,
     DxToastModule,
     DxButtonModule,
+    DxPopupModule,
+    DxFormModule,
 } from 'devextreme-angular';
 
 import { CalendarModule } from 'primeng/calendar';
@@ -49,7 +51,9 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DxTemplateModule,
         DxMultiViewModule,
         DxToastModule,
-        DxButtonModule
+        DxButtonModule,
+        DxPopupModule,
+        DxFormModule
     ],
     declarations: [
         DetailsFormComponent,
