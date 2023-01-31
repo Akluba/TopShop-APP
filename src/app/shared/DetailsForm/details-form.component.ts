@@ -13,7 +13,9 @@ declare let $: any;
     templateUrl: './details-form.component.html',
     styles: [
         '#name-value-size { height: 0px; padding: 0px 1em !important; color: #f2f2f2; }',
-        '#name-input-field { padding: .67857143em 1em !important; width:100%; }'
+        '#name-input-field { padding: .67857143em 1em !important; width:100%; }',
+        '.toolbar-label { font-size: 18px; }',
+        '#address-block { font-size: 14px; }'
     ]
 })
 export class DetailsFormComponent implements OnInit, AfterViewInit, OnChanges {

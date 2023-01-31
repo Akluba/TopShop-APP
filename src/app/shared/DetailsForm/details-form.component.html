@@ -8,15 +8,30 @@
         <dx-toolbar>
             <dxi-item location="before" widget="dxButton" [options]="backButtonOptions"></dxi-item>
             <dxi-item location="center" cssClass="name-container" locateInMenu="never">
-                <div *dxTemplate class="ui fluid huge input" [ngClass]="{'transparent': !nameField}">
+                <div *ngIf="sourceClass === 'Shop'; then staticHeader else nameHeader"></div>
+
+                <ng-template #staticHeader>
                     <div class="toolbar-label">
-                        <input id="name-input-field" type="text" formControlName="name"
-                            (blur)="nameField = false"
-                            (focus)="nameField = true" />
-                        <!-- Hack to size the field above to display the entire value -->
-                        <p id="name-value-size">{{ form.get('name').value }}</p>
+                        <b>{{ formValues.name }}</b>
                     </div>
-                </div>
+                    <div *ngIf="formValues.account"><a [routerLink]="['/accounts', formValues.account.id]">{{ formValues.account.name }}</a></div>
+                    <span id="address-block">{{ formValues.location.address }}<br />
+                    {{ formValues.location.city }}, {{ formValues.location.state }} {{ formValues.location.zip }}</span>
+                </ng-template>
+
+                <ng-template #nameHeader>
+                    <div *dxTemplate class="ui fluid huge input" [ngClass]="{'transparent': !nameField}">
+                        <div class="toolbar-label">
+                            <input id="name-input-field" type="text" formControlName="name"
+                                (blur)="nameField = false"
+                                (focus)="nameField = true" />
+
+                                <!-- Hack to size the field above to display the entire value -->
+                                <p id="name-value-size">{{ form.get('name').value }}</p>
+
+                        </div>
+                    </div>
+                </ng-template>
             </dxi-item>
             <dxi-item
                 cssClass="submitValid"
