@@ -45,10 +45,10 @@ export class ShopService {
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
-        console.log(body);
-
         if (!body.hasOwnProperty('id')) {
             return this.store(body, options);
+        } else if(body.hasOwnProperty('account_id')) {
+            return this.updateShopLocation(body, options);
         }
         return this.update(body, options);
     }
@@ -75,6 +75,14 @@ export class ShopService {
 
     private store(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}`;
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    private updateShopLocation(body: any, options: any): Observable<any> {
+        const url = `${this.baseUrl}/location/${body.id}`;
+        body._method = 'PUT';
         return this._http.post(url, body, options).pipe(
             catchError(this.handleError)
         );

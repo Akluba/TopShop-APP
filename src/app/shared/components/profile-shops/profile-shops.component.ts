@@ -21,6 +21,7 @@ import { DxFormComponent } from 'devextreme-angular';
     ds: DataSource;
     store: any;
     popupVisible: boolean;
+    popupTitle: string;
     positionOf: string;
     stateEditorOptions: Object;
     saveBtnOptions: any;
@@ -52,11 +53,12 @@ import { DxFormComponent } from 'devextreme-angular';
         };
 
         this.store = new CustomStore({
-            // key: '',
             load: () => this.load(),
             update: (values) => this.sendRequest('PUT', values),
             insert: (values) => this.sendRequest('POST', values),
-            remove: (key) => this.sendRequest('DELETE',{key})
+            remove: (key) => this.sendRequest('DELETE',{key}),
+            onUpdated: () => this.reload(),
+            onInserted: () => this.reload(),
         });
 
         this.ds = new DataSource({
@@ -92,13 +94,10 @@ import { DxFormComponent } from 'devextreme-angular';
         }
 
         return lastValueFrom(result)
-            .then((resp: any) => {
-                console.log(resp);
-
-                return [{
+            .then((resp: any) => [{
                 key: `Shops (${resp.data.length})`,
                 items: resp.data
-            }]})
+            }])
             .catch((e) => {
                 throw e && e.error && e.error.Message;
             });
@@ -107,12 +106,14 @@ import { DxFormComponent } from 'devextreme-angular';
     add(e) {
         e.event.stopPropagation();
         this.shop = new Shop(this.account);
+        this.popupTitle = 'New Shop';
         this.popupVisible = true;
     }
 
     update(e, item) {
         e.event.stopPropagation();
-        this.shop = {...item, account_id: this.account};
+        this.shop = JSON.parse(JSON.stringify({...item, account_id: this.account}));
+        this.popupTitle = 'Update Shop';
         this.popupVisible = true;
     }
 
@@ -122,14 +123,15 @@ import { DxFormComponent } from 'devextreme-angular';
         const form = this.form.instance;
 
         if (form.validate().isValid) {
-            const action = this.shop.hasOwnProperty('id')
+            this.shop.hasOwnProperty('id')
                 ? this.store.update(this.shop)
                 : this.store.insert(this.shop);
-            action.done(() => {
-                this.popupVisible = false;
-                this.ds.reload;
-            })
         }
+    }
+
+    reload() {
+        this.popupVisible = false;
+        this.ds.reload();
     }
 
     /**
