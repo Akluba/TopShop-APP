@@ -25,42 +25,42 @@ export const routes: Routes = [
     component: LoginFormComponent,
     canActivate: [ AuthGuardService ]
   },
-    { path: 'user', canLoad: [ AuthGuardService ], loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule)},
-    { path: 'dash', canLoad: [ AuthGuardService ], loadChildren: () => import('./pages/dash/dash.module').then(m => m.DashModule)},
-    {
-      path: 'setup',
-      canLoad: [ AuthGuardService, ProfileGuardService ],
-      loadChildren: () => import('./pages/setup/setup.module').then(m => m.SetupModule),
-      data: { authorizedProfiles: ['superadmin'] }
-    },
-    {
-        path: 'search',
-        canLoad: [ AuthGuardService ],
-        loadChildren: () => import('./pages/search/search.module').then(m => m.SearchModule)
-    },
-    {
-      path: 'accounts',
-      canLoad: [ AuthGuardService ],
-      loadChildren: () => import('./pages/shops/accounts/account.module').then(m => m.AccountModule)
+  { path: 'user', canLoad: [ AuthGuardService ], loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule)},
+  { path: 'dash', canLoad: [ AuthGuardService ], loadChildren: () => import('./pages/dash/dash.module').then(m => m.DashModule)},
+  {
+    path: 'setup',
+    canLoad: [ AuthGuardService, ProfileGuardService ],
+    loadChildren: () => import('./pages/setup/setup.module').then(m => m.SetupModule),
+    data: { authorizedProfiles: ['superadmin'] }
   },
-    {
-        path: 'shops',
-        canLoad: [ AuthGuardService ],
-        loadChildren: () => import('./pages/shops/shops/shop.module').then(m => m.ShopModule)
-    },
-    {
-        path: 'managers',
-        canLoad: [ AuthGuardService ],
-        loadChildren: () => import('./pages/insurers/manager.module').then(m => m.ManagerModule)
-    },
-    {
-        path: 'vendors',
-        canLoad: [ AuthGuardService ],
-        loadChildren: () => import('./pages/vendors/vendor.module').then(m => m.VendorModule)
-    },
-    { path: 'unauthorized', component: UnauthorizedComponent },
-    { path: '', redirectTo: 'dash', pathMatch: 'full'},
-    { path: '**', component: PageNotFoundComponent }
+  {
+      path: 'search',
+      canLoad: [ AuthGuardService ],
+      loadChildren: () => import('./pages/search/search.module').then(m => m.SearchModule)
+  },
+  {
+    path: 'accounts',
+    canLoad: [ AuthGuardService ],
+    loadChildren: () => import('./pages/shops/accounts/account.module').then(m => m.AccountModule)
+  },
+  {
+      path: 'shops',
+      canLoad: [ AuthGuardService ],
+      loadChildren: () => import('./pages/shops/shops/shop.module').then(m => m.ShopModule)
+  },
+  {
+      path: 'managers',
+      canLoad: [ AuthGuardService ],
+      loadChildren: () => import('./pages/insurers/manager.module').then(m => m.ManagerModule)
+  },
+  {
+      path: 'vendors',
+      canLoad: [ AuthGuardService ],
+      loadChildren: () => import('./pages/vendors/vendor.module').then(m => m.VendorModule)
+  },
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: '', redirectTo: 'dash', pathMatch: 'full'},
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

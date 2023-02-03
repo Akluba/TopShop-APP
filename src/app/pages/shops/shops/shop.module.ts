@@ -6,23 +6,27 @@ import { ShopRoutingModule } from './shop-routing.module';
 // Feature Components
 import { ShopListComponent } from './shop-list.component';
 import { ShopDetailsComponent } from './shop-details.component';
+import { ShopLocationComponent } from './shop-location.component';
 import { MSNComponent } from '../msn/msn.component';
 import { MSNFormComponent } from '../msn/msn-form.component';
 
 // Services
 import { ShopService } from './shop.service';
-import { ShopListResolver, ShopDetailsResolver, MSNResolver } from './shop-resolve.service';
+import { ShopListResolver, ShopDetailsResolver, LocationResolver, MSNResolver } from './shop-resolve.service';
+import { DxMapModule } from 'devextreme-angular';
 
 @NgModule({
     imports: [
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
-        ShopRoutingModule
+        ShopRoutingModule,
+        DxMapModule
     ],
     declarations: [
         ShopListComponent,
         ShopDetailsComponent,
+        ShopLocationComponent,
         MSNComponent,
         MSNFormComponent
     ],
@@ -30,6 +34,7 @@ import { ShopListResolver, ShopDetailsResolver, MSNResolver } from './shop-resol
         ShopService,
         ShopListResolver,
         ShopDetailsResolver,
+        LocationResolver,
         MSNResolver
     ]
 })

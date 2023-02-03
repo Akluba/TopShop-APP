@@ -24,6 +24,15 @@ export class ShopDetailsResolver implements Resolve<any> {
 }
 
 @Injectable()
+export class LocationResolver implements Resolve<any> {
+    constructor(private _shopService: ShopService) {}
+
+    resolve(): Observable<any> {
+        return this._shopService.locationIndex();
+    }
+}
+
+@Injectable()
 export class MSNResolver implements Resolve<any> {
     constructor(private _shopService: ShopService) {}
 

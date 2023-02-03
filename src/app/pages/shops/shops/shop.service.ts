@@ -53,6 +53,16 @@ export class ShopService {
         return this.update(body, options);
     }
 
+    locationIndex(): Observable<any> {
+        const url = `${this.baseUrl}/locations/view`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     msnIndex(): Observable<any> {
         const url = `${environment.url}/msn`;
         const headers = new HttpHeaders({ Accept: 'application/json' });

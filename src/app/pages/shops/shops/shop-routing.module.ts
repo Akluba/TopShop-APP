@@ -3,14 +3,16 @@ import { RouterModule } from '@angular/router';
 
 import { ShopListComponent } from './shop-list.component';
 import { ShopDetailsComponent } from './shop-details.component';
+import { ShopLocationComponent } from './shop-location.component';
 import { MSNComponent } from '../msn/msn.component';
 
-import { ShopListResolver, ShopDetailsResolver, MSNResolver } from './shop-resolve.service';
+import { ShopListResolver, ShopDetailsResolver, MSNResolver, LocationResolver } from './shop-resolve.service';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             { path: '', component: ShopListComponent, resolve: { response: ShopListResolver } },
+            { path: 'locations', pathMatch: 'full', component: ShopLocationComponent, resolve: { response: LocationResolver }},
             { path: 'multi/notes', pathMatch: 'full', component: MSNComponent, resolve: { response: MSNResolver }},
             {
                 path: ':shop_id',
