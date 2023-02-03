@@ -16,7 +16,7 @@ import { DxMapComponent } from 'devextreme-angular';
                 [height]="600"
                 width="100%"
                 [controls]="true"
-                markerIconSrc="https://content.app-us1.com/n569w/2023/02/02/db0ba3a9-a94b-43c1-972a-c821c01aab52.png"
+                markerIconSrc="https://content.app-us1.com/n569w/2023/02/03/963f8ccd-f173-4859-941e-f60892a13087.png"
                 [markers]="markers">
             </dx-map>
         </div>
