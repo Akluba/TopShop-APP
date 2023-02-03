@@ -13,7 +13,7 @@ import { DxMapComponent } from 'devextreme-angular';
                 provider="bing"
                 [zoom]="4"
                 center="39.8283, -98.5795"
-                [height]="600"
+                [height]="700"
                 width="100%"
                 [controls]="true"
                 markerIconSrc="https://content.app-us1.com/n569w/2023/02/03/963f8ccd-f173-4859-941e-f60892a13087.png"
@@ -58,7 +58,7 @@ import { DxMapComponent } from 'devextreme-angular';
         delayedMarkerAdd(i) {
             setTimeout(() => {
                 this.addMarkers(i);
-            }, 1200);
+            }, 1300);
         }
 
         addMarkers(i) {
