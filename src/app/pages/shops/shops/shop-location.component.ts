@@ -9,7 +9,6 @@ import { DxMapComponent } from 'devextreme-angular';
     template: `
         <div>
             <dx-map #shopMap
-                (onReady)= "delayedMarkerAdd(0)"
                 provider="bing"
                 [zoom]="4"
                 center="39.8283, -98.5795"
@@ -34,9 +33,9 @@ import { DxMapComponent } from 'devextreme-angular';
         ngOnInit(): void {
             this.sub = this._route.data.subscribe(data => {
                 this.locations = data.response.data;
+                this.formatLocations();
             });
-
-            this.formatLocations();
+            this.markers = this.formattedLocations;
         }
 
         ngOnDestroy(): void {
@@ -45,8 +44,13 @@ import { DxMapComponent } from 'devextreme-angular';
 
         formatLocations() {
             this.locations.forEach(shop => {
+
+                let location = (!shop.location.latitude && !shop.location.longitude)
+                    ?`${shop.location.address} ${shop.location.city}, ${shop.location.state} ${shop.location.zip}`
+                    : [shop.location.latitude,shop.location.longitude];
+
                 this.formattedLocations.push({
-                    location: `${shop.location.address} ${shop.location.city}, ${shop.location.state} ${shop.location.zip}`,
+                    location: location,
                     tooltip: {
                         isShown: false,
                         text: shop.name,
@@ -55,12 +59,14 @@ import { DxMapComponent } from 'devextreme-angular';
             });
         }
 
+        // Get rid of once Maps is completely set up using coordinates
         delayedMarkerAdd(i) {
             setTimeout(() => {
                 this.addMarkers(i);
             }, 1300);
         }
 
+        // Get rid of once Maps is completely set up using coordinates
         addMarkers(i) {
             const map = this.map.instance;
             let locationCollection = [];
