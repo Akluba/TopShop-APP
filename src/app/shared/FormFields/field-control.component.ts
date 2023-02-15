@@ -78,6 +78,15 @@ declare let $: any;
         </option>
     </select>
 
+    <!-- Select Employee -->
+    <select *ngSwitchCase="'select_employee'" class="ui fluid dropdown"
+        formControlName="{{ control.column_name }}">
+        <option value="">Select an Employee</option>
+        <option *ngFor="let option of control.options | sortABC"
+            value="{{ option.id }}">{{ option.name }}
+        </option>
+    </select>
+
     <!-- Reminder Date -->
     <div *ngSwitchCase="'reminder_date'" class="ui fluid input" style="width:100%">
         <p-calendar ngDefaultControl formControlName="{{ control.column_name }}"
