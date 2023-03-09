@@ -24,6 +24,10 @@ export const navigation = [
         path: '/managers'
       },
       {
+        text: 'Open Marketing Efforts',
+        path: '/managers/efforts'
+      },
+      {
         text: 'Advanced Search',
         path: '/search/manager'
       }

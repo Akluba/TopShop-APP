@@ -12,7 +12,7 @@ export class ManagerService {
 
     index(): Observable<any> {
         const url = `${this.baseUrl}`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.get(url, options).pipe(
@@ -20,9 +20,30 @@ export class ManagerService {
         );
     }
 
+    effortsIndex(): Observable<any> {
+        const url = `${environment.url}/efforts`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    updateEfforts(body): Observable<any> {
+        const url = `${environment.url}/efforts/0`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+        body._method = 'PUT';
+
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     show(id: number): Observable<any> {
         const url = `${this.baseUrl}/${id}`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.get(url, options).pipe(
@@ -32,7 +53,7 @@ export class ManagerService {
 
     destroy(id: number): Observable<any> {
         const url = `${this.baseUrl}/${id}`;
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         return this._http.delete(url, options).pipe(
@@ -41,7 +62,7 @@ export class ManagerService {
     }
 
     save(body: any): Observable<any> {
-        const headers = new HttpHeaders({ 'Accept': 'application/json' });
+        const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
         if (body.id === 0) {
@@ -56,9 +77,6 @@ export class ManagerService {
         return this._http.post(url, body, options).pipe(
             catchError(this.handleError)
         );
-
-        // return this._http.post(url, body, options)
-        //     .catch(this.handleError);
     }
 
     private update(body: any, options: any): Observable<any> {
@@ -68,9 +86,6 @@ export class ManagerService {
         return this._http.post(url, body, options).pipe(
             catchError(this.handleError)
         );
-
-        // return this._http.post(url, body, options)
-        //     .catch(this.handleError);
     }
 
     private handleError(err: HttpErrorResponse) {
