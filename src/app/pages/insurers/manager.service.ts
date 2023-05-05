@@ -30,15 +30,16 @@ export class ManagerService {
         );
     }
 
-    updateEfforts(body): Observable<any> {
-        const url = `${environment.url}/efforts/0`;
+    saveEfforts(body): Observable<any> {
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
-        body._method = 'PUT';
 
-        return this._http.post(url, body, options).pipe(
-            catchError(this.handleError)
-        );
+        console.log(body);
+
+        if (body.id === 0) {
+            return this.updateEfforts(body, options);
+        }
+        return this.storeEfforts(body, options);
     }
 
     show(id: number): Observable<any> {
@@ -81,6 +82,23 @@ export class ManagerService {
 
     private update(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}/${body.id}`;
+        body._method = 'PUT';
+
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    private storeEfforts(body: any, options: any): Observable<any> {
+        const url = `${environment.url}/efforts`;
+
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    private updateEfforts(body, options: any): Observable<any> {
+        const url = `${environment.url}/efforts/0`;
         body._method = 'PUT';
 
         return this._http.post(url, body, options).pipe(

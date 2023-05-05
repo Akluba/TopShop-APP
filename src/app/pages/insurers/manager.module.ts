@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DxTreeListModule, DxValidatorModule } from 'devextreme-angular';
+import { DxTreeListModule, DxValidatorModule, DxButtonModule, DxPopupModule,DxFormModule, DxTagBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 import { ManagerRoutingModule } from './manager-routing.module';
 
 // Feature Components
@@ -21,6 +21,11 @@ import { ManagerListResolver, ManagerDetailsResolver, MarketingEffortsResolver }
         ReactiveFormsModule,
         DxTreeListModule,
         DxValidatorModule,
+        DxButtonModule,
+        DxPopupModule,
+        DxFormModule,
+        DxTagBoxModule,
+        DxSelectBoxModule,
         ManagerRoutingModule
     ],
     declarations: [
