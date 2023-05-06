@@ -49,9 +49,10 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.initLoad = true;
-        await this._as.getUser().then((e) => this.user = e.data);
+
         this.sub = this._route.data.subscribe(data => {
             this.count = data.response.data.meta.effort_count;
+
             // creating lookups for field options
             data.response.data.field.columns.forEach(col => {
                 this.optArray[col.column_name] = {
@@ -62,6 +63,8 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
 
             this.optArray['log_field4']['store'].push({id:0, name:'No Manager Assigned'});
         });
+
+        await this._as.getUser().then((e) => this.user = e.data);
     }
 
     ngOnDestroy(): void {
@@ -80,6 +83,8 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
     }
 
     calculateSortValue(data) {
+        if (!('company' in data)) return;
+
         const column = this as any;
         const value = column.calculateCellValue(data);
         return column.lookup.calculateCellValue(value);
