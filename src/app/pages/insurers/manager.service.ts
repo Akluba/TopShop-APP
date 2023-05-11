@@ -30,6 +30,16 @@ export class ManagerService {
         );
     }
 
+    completedEfforts(): Observable<any> {
+        const url = `${environment.url}/efforts/completed/view`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     saveEfforts(body): Observable<any> {
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };

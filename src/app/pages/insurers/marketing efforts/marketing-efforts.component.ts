@@ -21,6 +21,7 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
 
     formData: {};
     visible = false;
+    showCompleted = false;
 
     out_val = false;
     out_dis = true;

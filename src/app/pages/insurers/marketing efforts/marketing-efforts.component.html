@@ -1,4 +1,16 @@
-<h2 class="content-block">Open Marketing Efforts</h2>
+<div>
+    <h2 class="content-block" style="float: left">Open Marketing Efforts</h2>
+    <div style="height: 42px; float: right;">
+        <dx-button
+            style="margin-top: 7px;"
+            icon="checklist"
+            text="View Recently Closed Efforts"
+            (onClick)="showCompleted=true">
+        </dx-button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
 <dx-tree-list #treeList
     height='calc(100vh - 200px)'
     id="efforts"
@@ -178,3 +190,10 @@
         </dx-form>
     </div>
 </dx-popup>
+
+<app-completed-efforts
+    *ngIf="showCompleted"
+    (hide)="showCompleted=false"
+    [optArray] = 'optArray'
+    [show] = 'showCompleted'>
+</app-completed-efforts>
