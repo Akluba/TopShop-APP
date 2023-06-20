@@ -22,14 +22,14 @@
 
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
-                <col style="width:2.25em">
-                <col *ngFor="let col of columns" style="width:250px">
+                <col style="width:25px">
+                <col *ngFor="let col of columns" style="width:auto">
             </colgroup>
         </ng-template>
 
         <ng-template pTemplate="header" let-columns>
             <tr> <!-- Sortable Columns -->
-                <th style="width: 2.25em">
+                <th style="flex: 0">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -38,9 +38,11 @@
                 </th>
             </tr>
             <tr> <!-- Field Filters -->
-                <th></th>
+                <th style="flex: 0">
+                    <p-tableHeaderCheckbox [disabled]="true"></p-tableHeaderCheckbox>
+                </th>
                 <th *ngFor="let col of columns" [ngSwitch]='col.type'>
-                    <div class="ui mini fluid input" *ngSwitchCase="'text'">
+                    <div class="ui mini fluid input" [style]="{'width':'100%'}" *ngSwitchCase="'text'">
                         <input type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"/>
                     </div>
                     <p-multiSelect *ngSwitchCase="'select'" [options]="col.options" appendTo="body" defaultLabel="All Options" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
@@ -52,8 +54,8 @@
 
         <ng-template pTemplate="body" let-data let-columns="columns">
             <tr [pSelectableRow]="data"> <!-- Selectable Row -->
-                <td><p-tableCheckbox [value]="data"></p-tableCheckbox></td>
-                <td *ngFor="let col of columns">
+                <td style="flex: 0"><p-tableCheckbox [value]="data"></p-tableCheckbox></td>
+                <td *ngFor="let col of columns" style="width: auto;">
                     <ng-container *ngIf="col.field === 'name'; then nameLink; else rawData"></ng-container>
                     <ng-template #nameLink>
                         <a [routerLink]="['/', sourceClass, data.source_id]">{{ data.name }}</a>
