@@ -58,6 +58,11 @@ export const routes: Routes = [
       canLoad: [ AuthGuardService ],
       loadChildren: () => import('./pages/vendors/vendor.module').then(m => m.VendorModule)
   },
+  {
+    path: 'reports',
+    canLoad: [ AuthGuardService ],
+    loadChildren: () => import('./pages/reports/report.module').then(m => m.ReportModule)
+},
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: 'dash', pathMatch: 'full'},
   { path: '**', component: PageNotFoundComponent }

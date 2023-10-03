@@ -34,6 +34,16 @@ export const navigation = [
     ]
   },
   {
+    text: 'Reports',
+    icon: 'chart',
+    items: [
+      {
+        text: 'Shop Health Scores',
+        path: '/reports/shs'
+      }
+    ]
+  },
+  {
     text: 'Vendors',
     icon: 'link',
     items: [
