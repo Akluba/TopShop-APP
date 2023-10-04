@@ -1,0 +1,50 @@
+<dx-data-grid [dataSource]="effortData" [showBorders]="true">
+    <dxo-paging [pageSize]="5"></dxo-paging>
+
+    <dxi-column dataField="company"></dxi-column>
+    <dxi-column dataField="created" dataType="date"></dxi-column>
+    <dxi-column dataField="lastUpdated" dataType="date"></dxi-column>
+    <dxi-column dataField="status"></dxi-column>
+    <dxi-column dataField="outcome"></dxi-column>
+
+    <dxo-summary>
+
+        <dxi-group-item
+            column="company"
+            summaryType="count"
+            displayFormat="{0} Months On Program">
+        </dxi-group-item>
+
+        <dxi-total-item 
+            column="company" 
+            summaryType="count"
+            displayFormat="{0} Marketing Efforts">
+        </dxi-total-item>
+
+        <dxi-total-item
+            column="created"
+            summaryType="max"
+            [customizeText]="customizeDate"
+        ></dxi-total-item>
+
+        <dxi-total-item 
+            column="lastUpdated" 
+            summaryType="max"
+            displayFormat="Latest DRP: {0}"
+        ></dxi-total-item>
+
+        <dxi-total-item 
+            column="status" 
+            summaryType="count" 
+            displayFormat="{0} Open Marketing Efforts"
+        ></dxi-total-item>
+
+        <dxi-total-item 
+            column="outcome" 
+            summaryType="count" 
+            displayFormat="{0} DRPs Secured"
+        ></dxi-total-item>
+
+      
+    </dxo-summary>
+</dx-data-grid>
