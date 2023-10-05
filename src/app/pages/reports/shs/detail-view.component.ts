@@ -14,7 +14,7 @@ import DataSource from 'devextreme/data/data_source';
     
     ngAfterViewInit() {
         let testData = {
-            effortId: this.key,
+            id: this.key,
             company: 'Test',
             created: '10/05/23',
             lastUpdated: '10/05/23',
@@ -24,7 +24,7 @@ import DataSource from 'devextreme/data/data_source';
 
         this.effortData = new DataSource({
             store: new CustomStore({
-                key: 'effortId',
+                key: 'id',
                 load: () => [testData]
             })
         });

@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs';
 
 
 @Component({
-    templateUrl: './shs.component.html'
+    templateUrl: './shs.component.html',
+    styleUrls:['./shs.component.css']
 })
     export class SHSComponent implements OnInit, OnDestroy {
         shopData: any;
@@ -18,10 +19,16 @@ import { Subscription } from 'rxjs';
         ngOnInit(): void {
             this.sub = this._route.data.subscribe(data => {
 
+                // REPLACE WITH REAL DATA
+                let modData = data.response.data.shop_list.map(v => ({...v, score: 5}));
+                modData = modData.map(v => ({...v, effort: 7}));
+                modData = modData.map(v => ({...v, potential: 1}));
+                modData = modData.map(v => ({...v, success: 6}));
+
                 this.shopData = new DataSource({
                     store: new CustomStore({
                         key: 'id',
-                        load: () => data.response.data.shop_list
+                        load: () => modData
                     })
                 });
             });
@@ -29,5 +36,19 @@ import { Subscription } from 'rxjs';
 
         ngOnDestroy(): void {
             this.sub.unsubscribe();
+        }
+
+        onCellPrepared (e) {
+            if (e.rowType === "data") {
+                if (e.column.dataField === "score" ||
+                    e.column.dataField === "effort" ||
+                    e.column.dataField === "potential" ||
+                    e.column.dataField === "success"
+                )
+                {
+                    const c = e.value >= 7 ? 'green' : e.value >= 4 ? 'yellow' : 'red';
+                    e.cellElement.classList.add(c);
+                }
+            }
         }
     }
