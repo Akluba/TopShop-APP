@@ -20,6 +20,7 @@
     <div *dxTemplate="let masterDetailItem of 'masterDetail'">
         <detail-view
             [key]="masterDetailItem.key"
+            [optArray] = "optArray"
         ></detail-view>
     </div>
 </dx-data-grid>

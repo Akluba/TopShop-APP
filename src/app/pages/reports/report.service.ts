@@ -8,11 +8,22 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ReportService {
-    private baseUrl = `${environment.url}/shops`;
+    private baseUrl = `${environment.url}/reports`;
+    private meUrl = `${environment.url}/efforts`;
     constructor(private _http: HttpClient) {}
 
     index(): Observable<any> {
         const url = `${this.baseUrl}`;
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        return this._http.get(url, options).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    show(id: number): Observable<any> {
+        const url = `${this.meUrl}/${id}`;
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 

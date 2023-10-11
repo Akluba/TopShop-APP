@@ -1,50 +1,66 @@
 <dx-data-grid [dataSource]="effortData" [showBorders]="true">
     <dxo-paging [pageSize]="5"></dxo-paging>
 
-    <dxi-column dataField="company"></dxi-column>
-    <dxi-column dataField="created" dataType="date"></dxi-column>
-    <dxi-column dataField="lastUpdated" dataType="date"></dxi-column>
-    <dxi-column dataField="status"></dxi-column>
-    <dxi-column dataField="outcome"></dxi-column>
+    <dxi-column dataField="log_field1" caption="Company">
+        <dxo-lookup
+            [dataSource]="optArray['log_field1']"
+            valueExpr="id"
+            displayExpr="title"
+        ></dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="created_at" dataType="date" caption="Created"></dxi-column>
+    <dxi-column dataField="updated_at" dataType="date" aption="Last Updated"></dxi-column>
+    <dxi-column dataField="log_field2" caption="Status">
+        <dxo-lookup
+            [dataSource]="optArray['log_field2']"
+            valueExpr="id"
+            displayExpr="title"
+        ></dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="log_field3" caption="Outcome">
+        <dxo-lookup
+            [dataSource]="optArray['log_field3']"
+            valueExpr="id"
+            displayExpr="title"
+        ></dxo-lookup>
+    </dxi-column>
 
-    <dxo-summary>
-
-        <dxi-group-item
-            column="company"
-            summaryType="count"
-            displayFormat="{0} Months On Program">
-        </dxi-group-item>
-
+    <dxo-summary 
+        [calculateCustomSummary]="calculateCustomSummaries"
+        [skipEmptyValues]="false">
+        
         <dxi-total-item 
-            column="company" 
+            column="log_field1" 
             summaryType="count"
             displayFormat="{0} Marketing Efforts">
         </dxi-total-item>
 
         <dxi-total-item
-            column="created"
-            summaryType="max"
-            [customizeText]="customizeDate"
+            name="LastMarketingEffort"
+            summaryType="custom"
+            column="created_at"
+            displayFormat="Latest Marketing Effort: {0}"
         ></dxi-total-item>
 
         <dxi-total-item 
-            column="lastUpdated" 
-            summaryType="max"
-            displayFormat="Latest DRP: {0}"
+            name="LastDRPAdded"
+            summaryType="custom"
+            showInColumn="updated_at"
+            displayFormat="Latest DRP Secured: {0}"
         ></dxi-total-item>
 
         <dxi-total-item 
-            column="status" 
-            summaryType="count" 
+            name="OpenMarketingEfforts"
+            summaryType="custom"
+            column="log_field2"
             displayFormat="{0} Open Marketing Efforts"
         ></dxi-total-item>
 
         <dxi-total-item 
-            column="outcome" 
-            summaryType="count" 
+            name="DRPsSecured"
+            summaryType="custom"
+            column="log_field3" 
             displayFormat="{0} DRPs Secured"
         ></dxi-total-item>
-
-      
     </dxo-summary>
 </dx-data-grid>

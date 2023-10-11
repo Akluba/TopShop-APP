@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
     export class SHSComponent implements OnInit, OnDestroy {
         shopData: any;
+        optArray: any[] = [];
         
         private sub: Subscription;
 
@@ -20,10 +21,19 @@ import { Subscription } from 'rxjs';
             this.sub = this._route.data.subscribe(data => {
 
                 // REPLACE WITH REAL DATA
-                let modData = data.response.data.shop_list.map(v => ({...v, score: 5}));
+                let modData = data.response.data.shops.map(v => ({...v, score: 5}));
                 modData = modData.map(v => ({...v, effort: 7}));
                 modData = modData.map(v => ({...v, potential: 1}));
                 modData = modData.map(v => ({...v, success: 6}));
+
+                // creating lookups for field options
+                data.response.data.field.columns.forEach(col => {
+                    let selector = (col.column_name === 'source_id' || col.column_name === 'log_field4') ? 'name' : 'sort_order';
+                    this.optArray[col.column_name] = {
+                        store: col.options,
+                        sort: selector,
+                    };
+                });
 
                 this.shopData = new DataSource({
                     store: new CustomStore({
