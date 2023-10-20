@@ -8,10 +8,10 @@
     [repaintChangesOnly]="true"
 >
     <dxi-column dataField="name"></dxi-column>
-    <dxi-column caption="Score" dataField="score"></dxi-column>
-    <dxi-column caption="Effort (20%)" dataField="effort"></dxi-column>
-    <dxi-column caption="Potential (30%)" dataField="potential"></dxi-column>
-    <dxi-column caption="Success (50%)" dataField="success"></dxi-column>
+    <dxi-column caption="Score" dataField="health_score.score"></dxi-column>
+    <dxi-column caption="Effort (20%)" dataField="health_score.effort"></dxi-column>
+    <dxi-column caption="Opportunity (30%)" dataField="health_score.opportunity"></dxi-column>
+    <dxi-column caption="Success (50%)" dataField="health_score.success"></dxi-column>
     <dxo-master-detail
         [enabled]="true"
         template="masterDetail"
@@ -20,7 +20,7 @@
     <div *dxTemplate="let masterDetailItem of 'masterDetail'">
         <detail-view
             [key]="masterDetailItem.key"
-            [optArray] = "optArray"
+            [optArray]="optArray"
         ></detail-view>
     </div>
 </dx-data-grid>
