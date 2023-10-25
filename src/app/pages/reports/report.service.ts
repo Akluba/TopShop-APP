@@ -13,7 +13,7 @@ export class ReportService {
     constructor(private _http: HttpClient) {}
 
     index(): Observable<any> {
-        const url = `${this.baseUrl}`;
+        const url = `${this.baseUrl}/shs`;
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 
