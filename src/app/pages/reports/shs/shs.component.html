@@ -5,18 +5,40 @@
     [showBorders]="true"
     [dataSource]="shopData"
     (onCellPrepared)="onCellPrepared($event)"
+    [columnAutoWidth]="true"
     [repaintChangesOnly]="true"
 >
+    <!-- Table Settings -->
+    <dxo-grouping
+        [contextMenuEnabled]="true">
+    </dxo-grouping>
+    <dxo-group-panel
+        [visible]="true">
+    </dxo-group-panel>
+    <dxo-header-filter [visible]=true></dxo-header-filter>
+    <dxo-filter-row [visible]=true></dxo-filter-row>
+    <dxo-paging [pageSize]="25"></dxo-paging>
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[25,50,100,'all']"
+        [showPageSizeSelector]=true
+    ></dxo-pager>
+
+    <!-- Score Columns -->
     <dxi-column dataField="name"></dxi-column>
-    <dxi-column caption="Score" dataField="health_score.score"></dxi-column>
-    <dxi-column caption="Effort (20%)" dataField="health_score.effort"></dxi-column>
-    <dxi-column caption="Opportunity (30%)" dataField="health_score.opportunity"></dxi-column>
-    <dxi-column caption="Success (50%)" dataField="health_score.success"></dxi-column>
+    <dxi-column dataField="location.state" caption="State" sortOrder="asc"></dxi-column>
+    <dxi-column dataField="health_score.score"caption="Score"></dxi-column>
+    <dxi-column dataField="health_score.effort" caption="Effort (20%)"></dxi-column>
+    <dxi-column dataField="health_score.opportunity" caption="Opportunity (30%)"></dxi-column>
+    <dxi-column dataField="health_score.success" caption="Success (50%)"></dxi-column>
+    
+    <!-- Detail DropDown -->
     <dxo-master-detail
         [enabled]="true"
         template="masterDetail"
     ></dxo-master-detail>
 
+    <!-- Detail Template -->
     <div *dxTemplate="let masterDetailItem of 'masterDetail'">
         <detail-view
             [key]="masterDetailItem.key"
