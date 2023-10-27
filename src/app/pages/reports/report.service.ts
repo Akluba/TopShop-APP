@@ -12,8 +12,8 @@ export class ReportService {
     private meUrl = `${environment.url}/efforts`;
     constructor(private _http: HttpClient) {}
 
-    index(): Observable<any> {
-        const url = `${this.baseUrl}/shs`;
+    index(report): Observable<any> {
+        const url = `${this.baseUrl}/${report}`;
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
 

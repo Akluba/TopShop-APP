@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { SHSComponent } from './shs/shs.component';
 
-import { SHSResolver } from './report-resolve.service';
+import { ReportResolver } from './report-resolve.service';
 
 @NgModule({
     imports: [
@@ -11,7 +11,7 @@ import { SHSResolver } from './report-resolve.service';
             { path: 'shs', 
             pathMatch: 'full', 
             component: SHSComponent, 
-            resolve: { response: SHSResolver }
+            resolve: { response: ReportResolver }
         }
         ])
     ],

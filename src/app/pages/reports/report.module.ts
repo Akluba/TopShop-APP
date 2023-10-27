@@ -9,7 +9,7 @@ import { DetailViewComponent } from './shs/detail-view.component';
 
 // Services
 import { ReportService } from './report.service';
-import { SHSResolver } from './report-resolve.service';
+import { ReportResolver } from './report-resolve.service';
 
 @NgModule({
     imports: [
@@ -23,7 +23,7 @@ import { SHSResolver } from './report-resolve.service';
     ],
     providers: [
         ReportService,
-        SHSResolver
+        ReportResolver
     ]
 })
 export class ReportModule {}

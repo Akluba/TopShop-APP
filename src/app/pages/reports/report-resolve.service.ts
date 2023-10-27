@@ -5,10 +5,11 @@ import { Observable } from 'rxjs';
 import { ReportService } from './report.service';
 
 @Injectable()
-export class SHSResolver implements Resolve<any> {
+export class ReportResolver implements Resolve<any> {
     constructor(private _rs: ReportService) {}
 
-    resolve(): Observable<any> {
-        return this._rs.index();
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+        const report = route.routeConfig.path;
+        return this._rs.index(report);
     }
 }
