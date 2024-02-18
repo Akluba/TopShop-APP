@@ -7,7 +7,8 @@ import {
     DxToolbarModule,
     DxDataGridModule,
     DxSortableModule,
-    DxAccordionModule
+    DxAccordionModule,
+    DxLookupModule
 } from 'devextreme-angular';
 
 import { TableModule } from 'primeng/table';
@@ -30,6 +31,7 @@ import { SetupResolver } from './setup-resolver.service';
         DxDataGridModule,
         DxSortableModule,
         DxAccordionModule,
+        DxLookupModule,
         TableModule,
         OrderListModule,
         SetupRoutingModule

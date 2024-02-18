@@ -21,6 +21,8 @@
                     <!-- Nested Fields -->
                     <dx-data-grid
                         [dataSource]="category.fields"
+                        (onEditingStart)="onEditingStart($event)"
+                        (onEditCanceled)="onEditCanceled($event)"
                     >
                         <dxo-editing
                             mode="popup"
@@ -31,24 +33,91 @@
                             <dxo-popup
                                 title="Field Info"
                                 [showTitle]="true"
-                                [width]="500"
+                                [width]='700'
                                 [height]="600"
                             >
                             </dxo-popup>
                             <dxo-form>
-                                <dxi-item itemType="group" [colCount]="1" [colSpan]="2">
-                                  <dxi-item dataField="title"></dxi-item>
-                                  <dxi-item dataField="type" [editorOptions]="{ readOnly: true }"></dxi-item>
+                                
+                                <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+                                    <dxi-item dataField="title"></dxi-item>
+                                    <dxi-item dataField="type" [editorOptions]="{ readOnly: true }"></dxi-item>
+                                    <dxi-item dataField="category_id" editorType="dxLookup" [editorOptions]="categoryOptions"></dxi-item>
+                                </dxi-item>
+                                
+                                <dxi-item *ngIf="options?.length > 0"
+                                    dataField="options" 
+                                    template="optionEditor"
+                                    [colCount]="1" [colSpan]="2">
+                                </dxi-item>
+                                
+                                <div *dxTemplate="let data of 'optionEditor'">
+                                    <dx-data-grid
+                                        [dataSource]="options"
+                                        [showColumnHeaders]="false">
+                                        <dxo-row-dragging
+                                            [allowReordering]="true"
+                                            [onReorder]="onReorder"
+                                            dropFeedbackMode="push"
+                                        ></dxo-row-dragging>
+                                        <dxi-column dataField="title"></dxi-column>
+                                        <dxo-editing mode="row"
+                                            [allowDeleting]="true"
+                                            [allowAdding]="true"
+                                            [allowUpdating]="true">
+                                        </dxo-editing>
+                                    </dx-data-grid>
+                                </div>
+
+                                <dxi-item *ngIf="columns?.length > 0"
+                                    dataField="columns" 
+                                    template="columnEditor"
+                                    [colCount]="1" [colSpan]="2">
                                 </dxi-item>
 
-                                <dxi-item
-                                  itemType="group" caption="Options"
-                                  [colCount]="1"
-                                  [colSpan]="2"
-                                >
-                                  <!-- Display Options -->
-                                </dxi-item>
-                              </dxo-form>
+                                <div *dxTemplate="let col of 'columnEditor'">
+                                    <dx-data-grid
+                                        [dataSource]="columns"
+                                        (onRowPrepared)="onRowPrepared($event)">
+                                        <dxo-row-dragging
+                                            [allowReordering]="true"
+                                            [onReorder]="onReorder"
+                                            dropFeedbackMode="push"
+                                        ></dxo-row-dragging>
+                                        <dxi-column dataField="title"></dxi-column>
+                                        <dxi-column dataField="type" [editorOptions]="{ readOnly: true }"></dxi-column>
+                                        <dxi-column dataField="column_name" [editorOptions]="{ readOnly: true }"></dxi-column>
+                                        <dxo-master-detail [enabled]="true" template="columnOptionEditor"></dxo-master-detail>
+                                        <dxo-editing mode="row"
+                                            [allowDeleting]="true"
+                                            [allowAdding]="true"
+                                            [allowUpdating]="true">
+                                        </dxo-editing>
+
+                                        <div *dxTemplate="let colOpt of 'columnOptionEditor'">
+                                            <div class="dx-field-item-label-text">Options</div>
+                                            <dx-data-grid
+                                                [dataSource]="colOpt.data.options"
+                                                [showColumnHeaders]="false"
+                                                [showBorders]="true"
+                                                [columnAutoWidth]="true"
+                                                >
+                                                <dxo-row-dragging
+                                                    [allowReordering]="true"
+                                                    [onReorder]="onReorder"
+                                                    dropFeedbackMode="push"
+                                                ></dxo-row-dragging>
+                                                <dxi-column dataField="title"></dxi-column>
+                                                <dxo-editing mode="row"
+                                                    [allowDeleting]="true"
+                                                    [allowAdding]="true"
+                                                    [allowUpdating]="true">
+                                                </dxo-editing>
+                                            </dx-data-grid>
+                                        </div>
+                                    </dx-data-grid>
+                                </div>
+                            </dxo-form>
                         </dxo-editing>
                         <dxo-sorting mode="none"></dxo-sorting>
                         <dxo-row-dragging
@@ -58,6 +127,8 @@
                         ></dxo-row-dragging>
                         <dxi-column dataField="title" caption="Field Name"></dxi-column>
                         <dxi-column dataField="type" caption="Type"></dxi-column>
+                        <dxi-column dataField="column_name" [editorOptions]="{ readOnly: true }"></dxi-column>
+                        <dxi-column dataField="category_id" [visible]=false></dxi-column>
                         <dxi-column dataField="sort_order" sortOrder="asc" [visible]=false></dxi-column>
                     </dx-data-grid>
                 </div>
