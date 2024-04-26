@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import CustomStore from 'devextreme/data/custom_store';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
 
 import { SetupService } from './setup.service';
+import DataSource from 'devextreme/data/data_source';
+import ArrayStore from 'devextreme/data/array_store';
 
 declare var $: any;
 
@@ -17,13 +19,36 @@ export class SetupComponent implements OnInit {
     data: any;
     fields: any;
     apiRoute: string;
-    primary;
+    // primary;
     // sorting = false;
     // updatedSortOrder = false;
 
+    categoryOptions: {};
+    popupVisible: boolean = false;
+    createModel: {};
+    addCategoryButtonOptions = {
+        styleMode: "text",
+        text: 'Add Category',
+        onClick: () => {
+            this.createModel = new Category(this.sourceClass);
+            this.togglePopup();
+        }
+    }
+
+    addFieldButtonOptions = {
+        styleMode: "contained",
+        type: "default",
+        text: 'Add Field',
+        onClick: () => {
+            this.createModel = new Field(this.sourceClass);
+            this.togglePopup();
+        }
+    }
+
     sourceClassTabs: any;
 
-    constructor(private _route: ActivatedRoute, private _router: Router, private _setupService: SetupService) { }
+    constructor(private _route: ActivatedRoute, private _router: Router, private _setupService: SetupService) { 
+    }
 
     ngOnInit(): void {
         this.initLoad = true;
@@ -33,11 +58,16 @@ export class SetupComponent implements OnInit {
             this.fields = data.response.data;
             this.apiRoute = data.apiRoute;
 
-            // this.primary = data.response.data.primary;
-
-            // if (this.apiRoute === undefined) {
-            //     this.apiRoute = ($.inArray(this.primary.type, ['log', 'notes']) !== -1) ? 'column' : 'option';
-            // }
+            this.categoryOptions = {
+                dataSource: new DataSource({
+                    store: new ArrayStore({
+                        key: "id",
+                        data: this.fields
+                    })
+                }),
+                valueExpr: 'id',
+                displayExpr: 'title'
+            };
         });
 
         this._route.params.subscribe(params => {
@@ -68,11 +98,14 @@ export class SetupComponent implements OnInit {
         this.initLoad = false;
 
         return firstValueFrom(this._route.data)
-        // .then((data: any) => data.response.data.children)
         .then((data: any) => data.response.data)
             .catch((e) => {
                 throw e && e.error && e.error.Message;
             });
+    }
+
+    togglePopup() {
+        this.popupVisible = !this.popupVisible;
     }
 
     onReorder(e) {
@@ -110,3 +143,25 @@ export class SetupComponent implements OnInit {
             });
     }
 }
+
+class Category {
+    source_class: string;
+    title: string = '';
+    sort_order: number = 0;
+    
+    constructor(source_class) {
+        this.source_class   = source_class;
+    }
+} 
+
+class Field {
+    source_class: string;
+    title: string = '';
+    sort_order: number = 0;
+    category_id: number = null;
+    type: string = null;
+    
+    constructor(source_class) {
+        this.source_class   = source_class;
+    }
+} 

@@ -27,7 +27,6 @@
                         <dxo-editing
                             mode="popup"
                             [allowUpdating]="true"
-                            [allowAdding]="true"
                             [allowDeleting]="true"
                         >
                             <dxo-popup
@@ -41,8 +40,8 @@
                                 
                                 <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
                                     <dxi-item dataField="title"></dxi-item>
-                                    <dxi-item dataField="type" [editorOptions]="{ readOnly: true }"></dxi-item>
                                     <dxi-item dataField="category_id" editorType="dxLookup" [editorOptions]="categoryOptions"></dxi-item>
+                                    <dxi-item dataField="type" [editorOptions]="{ readOnly: true }"></dxi-item>
                                 </dxi-item>
                                 
                                 <dxi-item *ngIf="options?.length > 0"

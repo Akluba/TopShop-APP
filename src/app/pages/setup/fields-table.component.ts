@@ -12,23 +12,14 @@ export class FieldsTableComponent implements OnInit {
 
     @Input() data;
 
+    @Input() categoryOptions;
+
     @Output() reorder = new EventEmitter<any>();
 
-    categoryOptions: Object;
     options: any = [];
     columns: any = [];
 
     ngOnInit(): void {
-        this.categoryOptions = {
-            dataSource: new DataSource({
-                store: new ArrayStore({
-                    key: "id",
-                    data: this.data
-                })
-            }),
-            valueExpr: 'id',
-            displayExpr: 'title'
-        };
     }
 
     trackByFn(index, item) {

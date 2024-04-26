@@ -1,0 +1,39 @@
+<dx-popup
+    [width]="700"
+    height="auto"
+    [showTitle]="true"
+    [title]="title"
+    [dragEnabled]="false"
+    [hideOnOutsideClick]="true"
+    [showCloseButton]="false"
+    [(visible)]="visible"
+    (onHiding)="onCancel()">
+    <div *ngIf="model.hasOwnProperty('category_id'); else category">
+        <dx-form #form [formData]="model">
+            <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+                <dxi-item dataField="title"></dxi-item>
+                <dxi-item dataField="category_id" label="Group" editorType="dxLookup" (onValueChanged)="categoryChange($event)" [editorOptions]="categoryOptions"></dxi-item>
+                
+                <!-- Must select category to enable type field -->
+                <!-- If category is Notes then type must be notes  -->
+                <!-- If type is select or select_multiple then shop options section -->
+                <!-- If type is log then show columns section -->
+                <dxi-item dataField="type" editorType="dxSelectBox">
+                    <div *dxTemplate>
+                        <dx-select-box
+                            [items]="['notes','text']"
+                            [disabled]="typeFieldDisabled">
+                        </dx-select-box>
+                    </div>
+                </dxi-item>
+                
+            </dxi-item>
+        </dx-form>
+    </div>
+
+    <ng-template #category>
+        <dx-form [formData]="model">
+            <dxi-item dataField="title" caption="Category Name"></dxi-item>
+        </dx-form>
+    </ng-template>
+</dx-popup>

@@ -8,50 +8,37 @@
             [options]="sourceClassTabs"
         >
         </dxi-item>
-        <dxi-item location="center" locateInMenu="never">
-            <!-- <div *dxTemplate>
-                <setup-breadcrumb
-                    [data]="data">
-                </setup-breadcrumb>
-            </div> -->
+        <dxi-item 
+            location="after" 
+            widget="dxButton"
+            [options]="addCategoryButtonOptions"
+        >
         </dxi-item>
-        <!-- <dxi-item location="after" widget="dxButton" [options]="backButtonOptions"></dxi-item> -->
-        <!-- <dxi-item location="after" widget="dxButton" [options]="backButtonOptions"></dxi-item> -->
+        <dxi-item 
+            location="after" 
+            widget="dxButton"
+            [options]="addFieldButtonOptions"
+        >
+        </dxi-item>
     </dx-toolbar>
 </div>
 
-<!-- <div class="ui clearing segment">
-    <button class="ui icon right floated button"
-        (click)="toggleSortState()"
-        [ngClass]="{'active': sorting, 'positive': updatedSortOrder}">
-        <i class="ordered list icon"></i>
-    </button>
-</div> -->
-
 <div class="ui segments">
     <div class="ui secondary segment">
-        <!-- <div class="ui segment" *ngIf="sorting">
-            <p-orderList [value]="setupService.children" [responsive]="true" (onReorder)="updatedSortOrder = true">
-                <ng-template pTemplate="item" let-rowData>
-                    <div class="ui-helper-clearfix">
-                        {{ rowData.title }}
-                    </div>
-                </ng-template>
-            </p-orderList>
-        </div> -->
-
-        <!-- <app-setup-table *ngIf="!sorting"
-            [apiRoute]="apiRoute"
-            [routeParams]="routeParams"
-            [primary]="primary">
-        </app-setup-table> -->
 
         <app-fields-table
             [dataSource]="dataSource"
             [data]="fields"
-            (reorder)="onReorder($event)"
-            >
+            [categoryOptions]="categoryOptions"
+            (reorder)="onReorder($event)">
         </app-fields-table>
+
+        <app-category-field-popup *ngIf="popupVisible"
+            [visible]="popupVisible"
+            [model]="createModel"
+            [categoryOptions]="categoryOptions"
+            (hide)="togglePopup()">
+        </app-category-field-popup>
 
     </div>
 </div>
