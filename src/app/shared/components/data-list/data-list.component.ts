@@ -18,6 +18,7 @@ export class DataListComponent implements OnInit {
   filterOperations = ["contains", "endswith", "=", "startswith"];
 
   ngOnInit(): void {
+    this.headerFilters = {...this.headerFilters, default:true}
     this.setTableColumns();
   }
 
