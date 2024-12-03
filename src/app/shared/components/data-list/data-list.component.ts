@@ -14,6 +14,8 @@ export class DataListComponent implements OnInit {
   @Output() navigateTo = new EventEmitter<any>();
 
   tableColumns = [];
+  headerFilters: {};
+  filterOperations = ["contains", "endswith", "=", "startswith"];
 
   ngOnInit(): void {
     this.setTableColumns();
@@ -27,6 +29,19 @@ export class DataListComponent implements OnInit {
             this.fields[field]['type'],
             this.fields[field]['options'],
         ));
+
+        if (this.fields[field]['type'] === 'select_multiple') {
+          this.headerFilters = { ...this.headerFilters, [field]: {
+            dataSource: {
+              store: {
+                type: "array",
+                data: Object.values(this.fields[field]['options'])
+              },
+              map: this.optionToFilterItem,
+              sort: "title"
+            }}
+          };
+        }
     }
   }
 
@@ -44,6 +59,38 @@ export class DataListComponent implements OnInit {
 
   onViewClick = (e) => {
     this.navigateTo.emit(e.row.key);
+  }
+
+  optionToFilterItem(item) {
+    return {
+      text: item.title,
+      value: item.title
+    };
+  }
+
+  calculateFilterExpression(filterValue, selectedFilterOperation, target) {
+    let column = this as any;
+  
+    if (filterValue && column.headerFilter) {
+      let selector = (data) => {
+        let applyOperation = (arg1, arg2, op) => {
+          if (op === "=") return arg1 === arg2;
+          if (op === "contains") return arg1.includes(arg2);
+          if (op === "startswith") return arg1.startsWith(arg2);
+          if (op === "endswith") return arg1.endsWith(arg2);
+        };
+
+        let values = column.calculateCellValue(data);
+        return (
+          values &&
+          !!values.find((v) =>
+            applyOperation(v, filterValue, selectedFilterOperation)
+          )
+        );
+      };
+      return [selector, "=", true];
+    }
+    return column.defaultCalculateFilterExpression.apply(this, arguments);
   }
 
 }

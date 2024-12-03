@@ -44,7 +44,7 @@
         [onClick]="onViewClick"
       ></dxi-button>
     </dxi-column>
-    <dxi-column *ngFor="let column of tableColumns"
+    <!-- <dxi-column *ngFor="let column of tableColumns"
       [dataField]="column.field"
       [caption]="column.caption"
       [visible]="isDefaultCol(column)"
@@ -52,6 +52,18 @@
       [sortIndex]="sortColumn('i',column)"
       [sortOrder]="sortColumn('o',column)"
     >
+    </dxi-column> -->
+
+    <dxi-column *ngFor="let column of tableColumns"
+      [dataField]="column.field"
+      [calculateFilterExpression]="calculateFilterExpression"
+      [headerFilter]="headerFilters[column.field]"
+      [filterOperations]="filterOperations"
+      [caption]="column.caption"
+      [visible]="isDefaultCol(column)"
+      [fixed]="column.field==='name'"
+      [sortIndex]="sortColumn('i',column)"
+      [sortOrder]="sortColumn('o',column)">
     </dxi-column>
 
 
