@@ -62,7 +62,7 @@
             displayExpr="name"
         ></dxo-lookup>
     </dxi-column>
-    <dxi-column dataField="source_id" [allowEditing]="false" caption="Shop">
+    <dxi-column dataField="source_id" [allowEditing]="false" caption="Shop" [calculateSortValue]="calculateSortValue">
         <dxo-lookup
             [dataSource]="optArray['source_id']"
             valueExpr="id"
@@ -165,27 +165,54 @@
             </ng-container>
 
             <div *dxTemplate="let data of 'shopsTemplate'">
-                <dx-tag-box
+                <dx-drop-down-box
                     [(value)]="formData['shops']"
-                    [dataSource]="optArray['source_id']"
-                    valueExpr="id"
-                    displayExpr="name"
-                    [searchEnabled]="true"
-                    [showSelectionControls]="true"
-                    applyValueMode="useButtons"
-                    label="Select Shop(s)..."
-                    labelMode="floating"
-                    placeholder=""
-                    height="126px"
-                    maxDisplayedTags="15"
+                    [showClearButton]="true"
+                    fieldTemplate="shopInfoTemplate"
                 >
-                    <dx-validator
-                        validationGroup="gridForm">
-                        <dxi-validation-rule
-                            type="required">
-                        </dxi-validation-rule>
-                    </dx-validator>
-                </dx-tag-box>
+                    <div *dxTemplate="let data of 'shopInfoTemplate'">
+                        <dx-tag-box
+                            [(value)]="formData['shops']"
+                            [dataSource]="shopOptions"
+                            valueExpr="id"
+                            displayExpr="name"
+                            [readOnly]="false"
+                            label="Select Shop(s)..."
+                            labelMode="floating"
+                            placeholder=""
+                            height="126px"
+                            maxDisplayedTags="15"
+                            [openOnFieldClick]="false"
+                            (onOpen)="onOpen($event)"
+                        >
+                            <dx-validator
+                                validationGroup="gridForm">
+                                <dxi-validation-rule
+                                    type="required">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-tag-box>
+                    </div>
+                    <div *dxTemplate="let data of 'content'">
+                        <dx-data-grid
+                            (onToolbarPreparing)="onToolbarPreparing($event)"
+                            (onEditorPreparing)="onEditorPreparing($event)"
+                            [dataSource]="shopOptions"
+                            [selection]="{ mode: 'multiple' }"
+                            [hoverStateEnabled]="true"
+                            [searchPanel]="{ visible: true }"
+                            [scrolling]="{ mode: 'virtual' }"
+                            [height]="345"
+                            [(selectedRowKeys)]="formData['shops']"
+                        >
+                            <dxi-column dataField="name" caption="Shop Name"></dxi-column>
+                            <dxi-column dataField="location.address" caption="Street Address"></dxi-column>
+                            <dxi-column dataField="location.city" caption="City"></dxi-column>
+                            <dxi-column dataField="location.state" caption="State"></dxi-column>
+                            <dxi-column dataField="location.zip" caption="Zip Code"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </dx-drop-down-box>
             </div>
         </dx-form>
     </div>

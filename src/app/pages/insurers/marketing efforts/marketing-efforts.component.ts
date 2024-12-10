@@ -8,9 +8,12 @@ import validationEngine from 'devextreme/ui/validation_engine';
 import { ManagerService } from '../manager.service';
 import { AuthService, IUser } from 'src/app/shared/services';
 import { DxTreeListComponent } from 'devextreme-angular';
+import DataSource from 'devextreme/data/data_source';
+import ArrayStore from 'devextreme/data/array_store';
 
 @Component({
-    templateUrl: 'marketing-efforts.component.html'
+    templateUrl: 'marketing-efforts.component.html',
+    styles: ['::ng-deep .dx-dropdowneditor-input-wrapper.dx-selectbox-container {width: 100%;}']
 })
 export class MarketingEffortsComponent implements OnInit, OnDestroy {
     @ViewChild('treeList', { static: false }) treeList: DxTreeListComponent;
@@ -18,6 +21,7 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
     count: number;
     dataSource: any;
     optArray: any[] = [];
+    shopOptions: any;
 
     formData: {};
     visible = false;
@@ -45,7 +49,7 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
             update: (values) => this.sendRequest('PUT', {values}),
             insert: (values) => this.sendRequest('POST', {values}),
             // remove: (key) => this.sendRequest('DELETE',{key})
-        })
+        });
     }
 
     async ngOnInit() {
@@ -57,10 +61,22 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
             // creating lookups for field options
             data.response.data.field.columns.forEach(col => {
                 let selector = (col.column_name === 'source_id' || col.column_name === 'log_field4') ? 'name' : 'sort_order';
+                
                 this.optArray[col.column_name] = {
                     store: col.options,
                     sort: selector,
-                  };
+                };
+
+                if (col.column_name === 'source_id') {
+                    this.shopOptions = new DataSource({
+                        store: new ArrayStore({
+                            data: col.options,
+                            key: 'id'
+                        }),
+                        sort: selector
+                    });
+                }
+
             });
 
             this.optArray['log_field4']['store'].push({id:0, name:'No Manager Assigned'});
@@ -85,10 +101,12 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
     }
 
     calculateSortValue(data) {
-        if (!('company' in data)) return;
+        if (!('company' in data) && !('source_id' in data)) return;
 
         const column = this as any;
         const value = column.calculateCellValue(data);
+
+        console.log(value);
         return column.lookup.calculateCellValue(value);
     }
 
@@ -96,6 +114,25 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
         this.formData = new Effort(this.user.id);
         this.visible = true;
     };
+
+    onOpen(e) {
+        e.component.close();
+      }
+
+    onEditorPreparing(e) {
+        if (e.parentType === "searchPanel") {
+          e.editorOptions.width = 400;
+        }
+      }
+      onToolbarPreparing(e) {
+        let toolbarItems = e.toolbarOptions.items;
+        // Modifies an existing item
+        toolbarItems.forEach(function (item) {
+          if (item.name === "searchPanel") {
+            item.location = "center";
+          }
+        });
+      }
 
     hidePopup = () => {
         this.visible = false;
@@ -191,7 +228,7 @@ class Effort {
     log_field3: null;
     log_field4: null;
     log_field5: number;
-    shops: null;
+    shops: [];
 
     constructor(userId) {
         this.log_field2 = 807;

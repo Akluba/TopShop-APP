@@ -8,6 +8,7 @@ import {
     DxButtonModule,
     DxPopupModule,DxFormModule,
     DxTagBoxModule,
+    DxDropDownBoxModule,
     DxSelectBoxModule
 } from 'devextreme-angular';
 import { ManagerRoutingModule } from './manager-routing.module';
@@ -35,6 +36,7 @@ import { ManagerListResolver, ManagerDetailsResolver, MarketingEffortsResolver }
         DxPopupModule,
         DxFormModule,
         DxTagBoxModule,
+        DxDropDownBoxModule,
         DxSelectBoxModule,
         ManagerRoutingModule
     ],
