@@ -106,7 +106,6 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
         const column = this as any;
         const value = column.calculateCellValue(data);
 
-        console.log(value);
         return column.lookup.calculateCellValue(value);
     }
 

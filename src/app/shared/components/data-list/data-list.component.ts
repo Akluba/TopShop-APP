@@ -17,7 +17,12 @@ export class DataListComponent implements OnInit {
   headerFilters: {};
   filterOperations = ["contains", "endswith", "=", "startswith"];
 
+  filterFields: Fields;
+  filter: Condition;
+  gridFilterValue: Condition;
+
   ngOnInit(): void {
+    this.filter = [];
     this.headerFilters = {...this.headerFilters, default:true}
     this.setTableColumns();
   }
@@ -49,17 +54,32 @@ export class DataListComponent implements OnInit {
   isDefaultCol(col): boolean {
     if (!this.defaultCols.length) return true;
 
-    return this.defaultCols.includes(col.field)
+    return this.defaultCols.includes(col.dataField)
+  }
+
+  customizeColumns = (columns) => {
+    columns.forEach((column) => {
+      if (column.name === 'buttons') return;
+      columns[column.index].visibleIndex = this.findSortOrder(column.name);
+    })
+  }
+
+  findSortOrder(column) {
+    return this.fields[column]['sort_order'];
   }
 
   sortColumn(setting, col): any {
-    if (col.field != 'name') return;
+    if (col.dataField != 'name') return;
 
     return (setting === 'i') ? 0 : 'asc';
   }
 
   onViewClick = (e) => {
     this.navigateTo.emit(e.row.key);
+  }
+
+  filterClick() {
+    this.gridFilterValue = this.filter;
   }
 
   optionToFilterItem(item) {
@@ -97,15 +117,15 @@ export class DataListComponent implements OnInit {
 }
 
 export class Column {
-  field: string;
+  dataField: string;
   caption: string;
-  type: string;
+  dataType: string;
   options: any[];
 
   constructor(field, caption, type, options?) {
-      this.field = field;
+      this.dataField = field;
       this.caption = caption;
-      this.type = type;
+      this.dataType = type;
       this.options = this.formatOptions(options);
   }
 
@@ -126,3 +146,6 @@ export class Column {
       return formattedOptions;
   }
 }
+
+export type Condition = Condition[] | string | number;
+export type Fields = Record<string, string | number>[];

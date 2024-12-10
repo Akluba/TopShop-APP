@@ -39,11 +39,11 @@ export class ShopListComponent implements OnInit, OnDestroy {
     ];
     readonly newObjFields = [];
     readonly objFields = {
-        name: {title: 'Shop Name',column: 'name'},
-        address: {title: 'Address',column: 'location.address'},
-        city: {title: 'City',column: 'location.city'},
-        state: {title: 'State',column: 'location.state'},
-        zip: {title: 'Zip',column: 'location.zip'}
+        name: {title: 'Shop Name',column: 'name', sort_order: 0},
+        "location.address": {title: 'Address',column: 'location.address', sort_order: 1},
+        "location.city": {title: 'City',column: 'location.city', sort_order: 2},
+        "location.state": {title: 'State',column: 'location.state', sort_order: 3},
+        "location.zip": {title: 'Zip',column: 'location.zip', sort_order: 4}
         // first_name: {title: 'First',column: 'primary_contact.first_name'},
         // last_name: {title: 'Last',column: 'primary_contact.last_name'},
         // phone: {title: 'Phone',column: 'primary_contact.phone'},
@@ -69,6 +69,7 @@ export class ShopListComponent implements OnInit, OnDestroy {
                 this.fields[field] = {
                     title: this.objFields[field]['title'],
                     column_name: this.objFields[field]['column'],
+                    sort_order: this.objFields[field]['sort_order']
                 }
             }
 

@@ -22,9 +22,21 @@ export class ManagerListComponent implements OnInit, OnDestroy {
     initLoad: boolean;
     fields: any;
     dataSource: any;
-    readonly defaultColumns = [];
+    readonly defaultColumns = [
+        'name',
+        'custom_23', // Company Name
+        'custom_27', // Account Owner
+        'custom_5', // Cell Phone Number
+        'custom_24', // Work Phone Number
+        'custom_6', // Email
+        'custom_7', // Work Address
+        'custom_8', // City
+        'custom_9', // State
+        'custom_10', // Zip
+        'custom_32', // Relationshop Rating
+    ];
     readonly newObjFields = ['name'];
-    readonly objFields = {name: {title: 'Manager Name', column: 'name'}};
+    readonly objFields = {name: {title: 'Manager Name', column: 'name', sort_order: 0}};
     private sub: Subscription;
 
     constructor (private _route: ActivatedRoute, private _router: Router, private _managerService: ManagerService) {
@@ -45,6 +57,7 @@ export class ManagerListComponent implements OnInit, OnDestroy {
                 this.fields[field] = {
                     title: this.objFields[field]['title'],
                     column_name: this.objFields[field]['column'],
+                    sort_order: this.objFields[field]['sort_order']
                 }
             }
 

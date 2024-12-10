@@ -1,9 +1,19 @@
+<!-- <div class="filter-container">
+  <dx-filter-builder [fields]="tableColumns" [(value)]="filter"> </dx-filter-builder>
+  <dx-button text="Apply Filter" type="default" (onClick)="filterClick()">
+  </dx-button>
+  <div class="dx-clearfix"></div>
+</div> -->
+
 <dx-data-grid
   id="gridContainer"
   [dataSource]="data"
+  [filterValue]="gridFilterValue"
   [showBorders]="true"
   [columnMinWidth]="100"
   [columnAutoWidth]="true"
+  [allowColumnReordering]="true"
+  [customizeColumns]="customizeColumns">
 >
     <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
     <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
@@ -55,13 +65,13 @@
     </dxi-column> -->
 
     <dxi-column *ngFor="let column of tableColumns"
-      [dataField]="column.field"
+      [dataField]="column.dataField"
       [calculateFilterExpression]="calculateFilterExpression"
-      [headerFilter]="headerFilters[column.field]"
+      [headerFilter]="headerFilters[column.dataField]"
       [filterOperations]="filterOperations"
       [caption]="column.caption"
       [visible]="isDefaultCol(column)"
-      [fixed]="column.field==='name'"
+      [fixed]="column.dataField==='name'"
       [sortIndex]="sortColumn('i',column)"
       [sortOrder]="sortColumn('o',column)">
     </dxi-column>
