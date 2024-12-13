@@ -25,9 +25,9 @@ export class ShopListComponent implements OnInit, OnDestroy {
     // readonly defaultColumns = [];
     readonly defaultColumns = [
         'name',
+        'affiliation',
         'custom_7', // Phone
         'custom_9', // Email
-        'custom_61', // Icar Training
         'location.address',
         'location.city',
         'location.state',
@@ -40,10 +40,11 @@ export class ShopListComponent implements OnInit, OnDestroy {
     readonly newObjFields = [];
     readonly objFields = {
         name: {title: 'Shop Name',column: 'name', sort_order: 0},
-        "location.address": {title: 'Address',column: 'location.address', sort_order: 1},
-        "location.city": {title: 'City',column: 'location.city', sort_order: 2},
-        "location.state": {title: 'State',column: 'location.state', sort_order: 3},
-        "location.zip": {title: 'Zip',column: 'location.zip', sort_order: 4}
+        affiliation: {title: 'Affiliation',column: 'affiliation', sort_order: 1},
+        "location.address": {title: 'Address',column: 'location.address', sort_order: 2},
+        "location.city": {title: 'City',column: 'location.city', sort_order: 3},
+        "location.state": {title: 'State',column: 'location.state', sort_order: 4},
+        "location.zip": {title: 'Zip',column: 'location.zip', sort_order: 5}
         // first_name: {title: 'First',column: 'primary_contact.first_name'},
         // last_name: {title: 'Last',column: 'primary_contact.last_name'},
         // phone: {title: 'Phone',column: 'primary_contact.phone'},
