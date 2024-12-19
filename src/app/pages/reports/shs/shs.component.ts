@@ -22,7 +22,7 @@ import { Subscription } from 'rxjs';
 
                 // creating lookups for field options
                 data.response.data.field.columns.forEach(col => {
-                    let selector = (col.column_name === 'source_id' || col.column_name === 'log_field4') ? 'name' : 'sort_order';
+                    let selector = (col.column_name === 'log_field1' || col.column_name === 'source_id' || col.column_name === 'log_field4') ? 'name' : 'sort_order';
                     this.optArray[col.column_name] = {
                         store: col.options,
                         sort: selector,

@@ -29,25 +29,26 @@ export class DataListComponent implements OnInit {
 
   setTableColumns(): void {
     for (const field of Object.keys(this.fields)) {
-        this.tableColumns.push( new Column(
-            this.fields[field]['column_name'],
-            this.fields[field]['title'],
-            this.fields[field]['type'],
-            this.fields[field]['options'],
-        ));
+      this.tableColumns.push( new Column(
+          this.fields[field]['column_name'],
+          this.fields[field]['title'],
+          this.fields[field]['type'],
+          this.fields[field]['mapped'],
+          this.fields[field]['options']
+      ));
 
-        if (this.fields[field]['type'] === 'select_multiple') {
-          this.headerFilters = { ...this.headerFilters, [field]: {
-            dataSource: {
-              store: {
-                type: "array",
-                data: Object.values(this.fields[field]['options'])
-              },
-              map: this.optionToFilterItem,
-              sort: "title"
-            }}
-          };
-        }
+      if (this.fields[field]['type'] === 'select_multiple') {
+        this.headerFilters = { ...this.headerFilters, [field]: {
+          dataSource: {
+            store: {
+              type: "array",
+              data: Object.values(this.fields[field]['options'])
+            },
+            map: this.optionToFilterItem,
+            sort: "title"
+          }}
+        };
+      }
     }
   }
 
@@ -120,12 +121,14 @@ export class Column {
   dataField: string;
   caption: string;
   dataType: string;
+  mapped: string;
   options: any[];
 
-  constructor(field, caption, type, options?) {
+  constructor(field, caption, type, mapped, options?) {
       this.dataField = field;
       this.caption = caption;
       this.dataType = type;
+      this.mapped = mapped;
       this.options = this.formatOptions(options);
   }
 
@@ -136,10 +139,12 @@ export class Column {
 
       const formattedOptions = [];
 
+      let optParam = this.mapped ? 'name':'title';
+
       for (const option of Object.keys(options)) {
           formattedOptions.push({
-              label: options[option]['title'],
-              value: options[option]['title']
+              label: options[option][optParam],
+              value: options[option][optParam]
           });
       }
 

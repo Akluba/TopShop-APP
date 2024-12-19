@@ -33,7 +33,7 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
     user: IUser;
 
     dpTemplates = [
-        { ds: 'log_field1', label: 'Company', de:'title', ve:'id' },
+        { ds: 'log_field1', label: 'Company', de:'name', ve:'id' },
         { ds: 'log_field4', label: 'Manager', de:'name', ve:'id' },
         { ds: 'log_field5', label: 'Assigned To', de:'name', ve:'id' },
         { ds: 'log_field2', label: 'Status', de:'title', ve:'id' },

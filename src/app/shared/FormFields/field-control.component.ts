@@ -23,16 +23,27 @@ declare let $: any;
     <select *ngSwitchCase="'select'" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
         <option value="">Select an Option</option>
-        <option *ngFor="let option of control.options | sortOrder"
-            value="{{ option.id }}">{{ option.title }}
-        </option>
+         
+        <div *ngIf="control.mapped; then names else titles"></div>
+
+        <ng-template #names>
+            <option *ngFor="let option of control.options | sortABC"
+                value="{{ option.id }}">{{ option.name }}
+            </option>
+        </ng-template>
+
+        <ng-template #titles>
+            <option *ngFor="let option of control.options | sortOrder"
+                value="{{ option.id }}">{{ option.title }}
+            </option>
+        </ng-template>
     </select>
 
     <!-- Select Multiple -->
     <select *ngSwitchCase="'select_multiple'" multiple="" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
 
-        <div *ngIf="control.id === 0; then names else titles"></div>
+        <div *ngIf="control.id === 0 || control.mapped; then names else titles"></div>
 
         <ng-template #names>
             <option *ngFor="let option of control.options | sortABC"
@@ -73,15 +84,6 @@ declare let $: any;
     <select *ngSwitchCase="'shop_link'" class="ui fluid dropdown"
         formControlName="{{ control.column_name }}">
         <option value="">Select a Shop</option>
-        <option *ngFor="let option of control.options | sortABC"
-            value="{{ option.id }}">{{ option.name }}
-        </option>
-    </select>
-
-    <!-- Select Employee -->
-    <select *ngSwitchCase="'select_employee'" class="ui fluid dropdown"
-        formControlName="{{ control.column_name }}">
-        <option value="">Select an Employee</option>
         <option *ngFor="let option of control.options | sortABC"
             value="{{ option.id }}">{{ option.name }}
         </option>
