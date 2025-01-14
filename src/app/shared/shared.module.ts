@@ -3,11 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { DxDataGridModule } from 'devextreme-angular';
 import {
+    DxDataGridModule,
     DxListModule,
+    DxTextBoxModule,
+    DxCheckBoxModule,
+    DxTagBoxModule,
     DxToolbarModule,
     DxSelectBoxModule,
+    DxTextAreaModule,
     DxTemplateModule,
     DxMultiViewModule,
     DxToastModule,
@@ -25,7 +29,10 @@ import { ProfileHeaderComponent } from './components/profile-header/profile-head
 import { ProfileShopsComponent } from './components/profile-shops/profile-shops.component';
 
 import { DataListComponent } from './components/data-list/data-list.component';
-import { ListDataTableComponent } from './ListDataTable/data-table.component';
+
+import { ISDProfileComponent } from './components/isd-profile/isd-profile.component';
+import { ISDDataFieldComponent } from './components/isd-profile/isd-data-fields.component';
+import { DynamicTemplateComponent } from './components/isd-profile/dynamic-field-template.component';
 
 import { DetailsFormComponent } from './DetailsForm/details-form.component';
 import { NoteFeedTemplate } from './DetailsForm/note-feed.component';
@@ -55,7 +62,11 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DxButtonModule,
         DxPopupModule,
         DxFormModule,
-        DxFilterBuilderModule
+        DxFilterBuilderModule,
+        DxTextBoxModule,
+        DxCheckBoxModule,
+        DxTagBoxModule,
+        DxTextAreaModule
     ],
     declarations: [
         DetailsFormComponent,
@@ -64,7 +75,9 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         LoggingFieldTemplate,
         FieldControlTemplate,
         DataListComponent,
-        ListDataTableComponent,
+        ISDProfileComponent,
+        ISDDataFieldComponent,
+        DynamicTemplateComponent,
         SortOrderPipe,
         SortABCPipe,
         ProfileHeaderComponent,
@@ -76,7 +89,9 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         LoggingFieldTemplate,
         FieldControlTemplate,
         DataListComponent,
-        ListDataTableComponent,
+        ISDProfileComponent,
+        ISDDataFieldComponent,
+        DynamicTemplateComponent,
         SortOrderPipe,
         SortABCPipe,
         ProfileHeaderComponent,

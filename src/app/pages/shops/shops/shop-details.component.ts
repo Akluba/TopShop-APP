@@ -7,17 +7,27 @@ import { ShopService } from './shop.service';
 declare let $: any;
 
 @Component({
-    template:
-`
-<app-details-form
-    (formSaved)="saveForm($event)"
-    [sourceClass]="sourceClass"
-    [formValues]="formValues"
-    [formElements]="formElements"
-    [saveResponse]="saveResponse">
-</app-details-form>
-`
+        template:
+    `
+    <app-isd-profile
+        [sourceClass]="sourceClass"
+        [formValues]="formValues"
+        [formElements]="formElements">
+    </app-isd-profile>
+    `
 })
+// @Component({
+//     template:
+// `
+// <app-details-form
+//     (formSaved)="saveForm($event)"
+//     [sourceClass]="sourceClass"
+//     [formValues]="formValues"
+//     [formElements]="formElements"
+//     [saveResponse]="saveResponse">
+// </app-details-form>
+// `
+// })
 export class ShopDetailsComponent implements OnInit, OnDestroy {
     sourceClass: string;
     formValues: {};
