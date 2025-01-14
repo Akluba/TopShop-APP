@@ -1,0 +1,38 @@
+<dx-form id="form" [formData]="formValues" [colCount]="2">
+
+  <!-- Header -->
+
+  <!-- Primary Information Categories -->
+  <ng-container *ngFor="let category of formElements">
+    <dxi-item *ngIf="!category.secondary"
+      itemType="group"
+      [caption]="category.title"
+      [colSpan]="2"
+      [colCount]="2">
+      <dxi-item *ngFor="let field of category.fields">
+        <dxo-label [text]="field.title"></dxo-label>
+        
+        <ng-template dxTemplate="content">
+          <app-dynamic-field-template [field]="field" [value]="formValues[field.column_name]"></app-dynamic-field-template>
+        </ng-template>
+
+      </dxi-item>
+    </dxi-item>
+  </ng-container>
+
+  <!-- Grouped Secondary Categories -->
+  <dxi-item itemType="tabbed" [colSpan]="2">
+    <ng-container *ngFor="let category of formElements">
+      <dxi-tab *ngIf="category.secondary" [title]="category.title">
+        <dxi-item *ngFor="let field of category.fields">
+          <dxo-label [text]="field.title"></dxo-label>
+          
+          <ng-template dxTemplate="content">
+            <app-dynamic-field-template [field]="field" [value]="formValues[field.column_name]"></app-dynamic-field-template>
+          </ng-template>
+  
+        </dxi-item>
+      </dxi-tab>
+    </ng-container>
+  </dxi-item>
+</dx-form>
