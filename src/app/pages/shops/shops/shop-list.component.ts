@@ -12,7 +12,7 @@ import { ShopService } from './shop.service';
 <app-data-list
     [fields] = 'fields'
     [defaultCols] = 'defaultColumns'
-    [newObjFields] = 'newObjFields'
+    [newObjFields] = []
     [data]='dataSource'
     (navigateTo)="navigate($event)">
 </app-data-list>
@@ -22,34 +22,18 @@ export class ShopListComponent implements OnInit, OnDestroy {
     initLoad: boolean;
     fields: any;
     dataSource: any;
-    // readonly defaultColumns = [];
+
     readonly defaultColumns = [
         'name',
-        'affiliation',
+        'account.affiliation',
         'custom_7', // Phone
         'custom_9', // Email
         'location.address',
         'location.city',
         'location.state',
-        'location.zip',
-        // 'primary_contact.first_name',
-        // 'primary_contact.last_name',
-        // 'primary_contact.phone',
-        // 'primary_contact.email'
+        'location.zip'
     ];
-    readonly newObjFields = [];
-    readonly objFields = {
-        name: {title: 'Shop Name',column: 'name', sort_order: 0},
-        affiliation: {title: 'Affiliation',column: 'affiliation', sort_order: 1},
-        "location.address": {title: 'Address',column: 'location.address', sort_order: 2},
-        "location.city": {title: 'City',column: 'location.city', sort_order: 3},
-        "location.state": {title: 'State',column: 'location.state', sort_order: 4},
-        "location.zip": {title: 'Zip',column: 'location.zip', sort_order: 5}
-        // first_name: {title: 'First',column: 'primary_contact.first_name'},
-        // last_name: {title: 'Last',column: 'primary_contact.last_name'},
-        // phone: {title: 'Phone',column: 'primary_contact.phone'},
-        // email: {title: 'Email',column: 'primary_contact.email'}
-    };
+
     private sub: Subscription;
 
     constructor (private _route: ActivatedRoute, private _router: Router, public _shopService: ShopService) {
@@ -64,17 +48,7 @@ export class ShopListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.initLoad = true;
         this.sub = this._route.data.subscribe(data => {
-            this.fields = {};
-
-            for (const field of Object.keys(this.objFields)) {
-                this.fields[field] = {
-                    title: this.objFields[field]['title'],
-                    column_name: this.objFields[field]['column'],
-                    sort_order: this.objFields[field]['sort_order']
-                }
-            }
-
-            this.fields = { ...this.fields, ...data.response.data.fields }
+            this.fields = data.response.data.fields;
         });
     }
 

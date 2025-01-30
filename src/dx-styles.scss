@@ -44,11 +44,34 @@ html, body {
   background-color: transparent;
 
   .dx-toolbar-items-container {
-    height: 76px;
+    min-height: 100px;
   }
 
   .dx-toolbar-label {
     font-size: 14px;
+  }
+
+  .toolbar-label {
+    font-size: 20px;
+    color: #ff5722;
+  }
+
+  .toolbar-label.shop-name {
+    font-size: 24px;
+    color: rgba(0, 0, 0, .54);
+  }
+
+  .toolbar-btns .dx-button { 
+    margin-right: 10px;
+  }
+
+  .toolbar-btns .dx-button-content {
+    font-size: 10px;
+    padding: 5px;
+  }
+
+  .toolbar-links .dx-button-text {
+    font-size: 10px;
   }
 
   .dx-tabs {
@@ -62,6 +85,15 @@ html, body {
   .dx-texteditor.dx-editor-filled{
     background-color: #fff;
   }
+}
+
+.form-footer .dx-button { 
+  margin-right: 10px;
+}
+
+.form-footer .dx-button-content {
+  font-size: 10px;
+  padding: 5px;
 }
 
 .content-block {
@@ -150,3 +182,5 @@ $side-panel-min-width: 60px;
 #profile-shops-container .dx-state-hover .shop-item-actions {
   display: block !important;
 }
+
+#profile-form .section-container { background-color: #fff; padding: 25px 50px;}

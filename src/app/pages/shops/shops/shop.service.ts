@@ -47,10 +47,20 @@ export class ShopService {
 
         if (!body.hasOwnProperty('id')) {
             return this.store(body, options);
-        } else if(body.hasOwnProperty('account_id')) {
-            return this.updateShopLocation(body, options);
         }
+        
         return this.update(body, options);
+    }
+
+    saveLocation(body: any): Observable<any> {
+        const headers = new HttpHeaders({ Accept: 'application/json' });
+        const options = { headers: headers };
+
+        const url = `${this.baseUrl}/location/${body.id}`;
+        body._method = 'PUT';
+        return this._http.post(url, body, options).pipe(
+            catchError(this.handleError)
+        );
     }
 
     locationIndex(): Observable<any> {
@@ -90,13 +100,13 @@ export class ShopService {
         );
     }
 
-    private updateShopLocation(body: any, options: any): Observable<any> {
-        const url = `${this.baseUrl}/location/${body.id}`;
-        body._method = 'PUT';
-        return this._http.post(url, body, options).pipe(
-            catchError(this.handleError)
-        );
-    }
+    // private updateShopLocation(body: any, options: any): Observable<any> {
+    //     const url = `${this.baseUrl}/location/${body.id}`;
+    //     body._method = 'PUT';
+    //     return this._http.post(url, body, options).pipe(
+    //         catchError(this.handleError)
+    //     );
+    // }
 
     private update(body: any, options: any): Observable<any> {
         const url = `${this.baseUrl}/${body.id}`;

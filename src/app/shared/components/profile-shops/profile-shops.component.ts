@@ -86,7 +86,7 @@ import { DxFormComponent } from 'devextreme-angular';
                 break;
             case 'POST':
             case 'PUT':
-                result = this._shopService.save(data);
+                result = this._shopService.saveLocation(data);
                 break;
             case 'DELETE':
                 result = this._shopService.destroy(data.key);

@@ -1,19 +1,61 @@
-<dx-form id="form" [formData]="formValues" [colCount]="2">
-
+<dx-form #dxForm *ngIf="formValues && formVisible" id="profile-form" [formData]="formValues" [colCount]="2" >
   <!-- Header -->
+  <dxi-item [colSpan]="2" itemType="simple" cssClass="secondary-menu">
+    <div *dxTemplate>
+      <dx-toolbar>
+        <dxi-item location="first" cssClass="toolbar-label">
+          <div *dxTemplate>
+            <div class="toolbar-label"><b><i [class]="sourceIcon"></i>{{sourceTitle}}</b></div>
+            <div class="toolbar-label shop-name">{{formValues.name}}</div>
+            <div class="toolbar-btns">
+              <dx-button text="Save" type="success" [disabled]="cleanForm" (click)="onSubmit()"></dx-button>
+              <dx-button text="Cancel" [disabled]="cleanForm" (click)="resetForm()"></dx-button>
+            </div>
+          </div>
+        </dxi-item>
+        <dxi-item location="after" widget="dxButton" cssClass="toolbar-links">
+          <dx-button
+            stylingMode="text"
+            text="Back to List"
+            type="default"
+            [routerLink]="listLink">
+          </dx-button>
+          <dx-button *ngIf="formValues.account"
+            stylingMode="text"
+            text="View Parent"
+            type="default"
+            [routerLink]="['/accounts', formValues.account?.id]"
+            [disabled]="!formValues.account">
+          </dx-button>
+        </dxi-item>
+      </dx-toolbar>
+      <dx-toast
+        *ngIf="saveResponse"
+        [(visible)]="saveResponse.visible"
+        [type]="saveResponse.type"
+        [message]="saveResponse.message">
+      </dx-toast>
+    </div>
+  </dxi-item>
 
   <!-- Primary Information Categories -->
-  <ng-container *ngFor="let category of formElements">
+  <ng-container *ngFor="let category of formElements | sortOrder">
     <dxi-item *ngIf="!category.secondary"
       itemType="group"
+      cssClass="section-container"
       [caption]="category.title"
       [colSpan]="2"
       [colCount]="2">
-      <dxi-item *ngFor="let field of category.fields">
+      <!-- [disabled]="formValues.account.affiliation === 'CCG'" -->
+      <dxi-item *ngFor="let field of category.fields | sortOrder">
         <dxo-label [text]="field.title"></dxo-label>
         
         <ng-template dxTemplate="content">
-          <app-dynamic-field-template [field]="field" [value]="formValues[field.column_name]"></app-dynamic-field-template>
+          <app-dynamic-field-template 
+            [field]="field" 
+            [value]="getInlineOrNestedValue(field.column_name)" 
+            (fieldUpdated)="onFieldDataChanged($event)">
+          </app-dynamic-field-template>
         </ng-template>
 
       </dxi-item>
@@ -21,18 +63,28 @@
   </ng-container>
 
   <!-- Grouped Secondary Categories -->
-  <dxi-item itemType="tabbed" [colSpan]="2">
-    <ng-container *ngFor="let category of formElements">
+  <dxi-item itemType="tabbed" [colSpan]="2" cssClass="section-container">
+    <ng-container *ngFor="let category of formElements | sortOrder">
       <dxi-tab *ngIf="category.secondary" [title]="category.title">
         <dxi-item *ngFor="let field of category.fields">
-          <dxo-label [text]="field.title"></dxo-label>
           
           <ng-template dxTemplate="content">
-            <app-dynamic-field-template [field]="field" [value]="formValues[field.column_name]"></app-dynamic-field-template>
+            <app-dynamic-field-template 
+              [field]="field"  
+              [value]="formValues[field.column_name]"
+              (fieldUpdated)="onFieldDataChanged($event)">
+            </app-dynamic-field-template>
           </ng-template>
   
         </dxi-item>
       </dxi-tab>
     </ng-container>
   </dxi-item>
+
+  <dxi-item itemType="group" cssClass="footer-group">
+    <div class="form-footer">
+      <dx-button text="Save" type="success" [disabled]="cleanForm" (click)="onSubmit()"></dx-button>
+      <dx-button text="Cancel" [disabled]="cleanForm" (click)="resetForm()"></dx-button>
+    </div>
+</dxi-item>
 </dx-form>

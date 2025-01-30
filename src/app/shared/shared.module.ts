@@ -11,6 +11,7 @@ import {
     DxTagBoxModule,
     DxToolbarModule,
     DxSelectBoxModule,
+    DxDateBoxModule,
     DxTextAreaModule,
     DxTemplateModule,
     DxMultiViewModule,
@@ -31,8 +32,9 @@ import { ProfileShopsComponent } from './components/profile-shops/profile-shops.
 import { DataListComponent } from './components/data-list/data-list.component';
 
 import { ISDProfileComponent } from './components/isd-profile/isd-profile.component';
-import { ISDDataFieldComponent } from './components/isd-profile/isd-data-fields.component';
-import { DynamicTemplateComponent } from './components/isd-profile/dynamic-field-template.component';
+import { ISDDynamicTemplateComponent } from './components/isd-profile/dynamic-field-template.component';
+import { ISDDataFieldComponent } from './components/isd-profile/data-field-template.component';
+import { ISDLogFieldComponent } from './components/isd-profile/log-field-template.component';
 
 import { DetailsFormComponent } from './DetailsForm/details-form.component';
 import { NoteFeedTemplate } from './DetailsForm/note-feed.component';
@@ -56,6 +58,7 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         DxListModule,
         DxToolbarModule,
         DxSelectBoxModule,
+        DxDateBoxModule,
         DxTemplateModule,
         DxMultiViewModule,
         DxToastModule,
@@ -76,8 +79,9 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         FieldControlTemplate,
         DataListComponent,
         ISDProfileComponent,
+        ISDDynamicTemplateComponent,
         ISDDataFieldComponent,
-        DynamicTemplateComponent,
+        ISDLogFieldComponent,
         SortOrderPipe,
         SortABCPipe,
         ProfileHeaderComponent,
@@ -90,8 +94,9 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         FieldControlTemplate,
         DataListComponent,
         ISDProfileComponent,
+        ISDDynamicTemplateComponent,
         ISDDataFieldComponent,
-        DynamicTemplateComponent,
+        ISDLogFieldComponent,
         SortOrderPipe,
         SortABCPipe,
         ProfileHeaderComponent,

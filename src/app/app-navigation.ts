@@ -11,7 +11,7 @@ export const navigation = [
       { text: 'Accounts', path: '/accounts' },
       { text: 'Shop List', path: '/shops' },
       { text: 'Shop Locations', path: '/shops/locations' },
-      { text: 'Multi Shop Note', path: '/shops/multi/notes' },
+      // { text: 'Multi Shop Note', path: '/shops/multi/notes' },
       // { text: 'Advanced Search', path: '/search/shop' }
     ]
   },
