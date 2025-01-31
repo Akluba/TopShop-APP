@@ -4,34 +4,27 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-dynamic-field-template',
   template: 
 `
-  <div>
-    <!-- Render conditionally based on field.type -->
-    <ng-container *ngIf="field.type === 'log'; else inputTemplate">
-      <ng-container *ngTemplateOutlet="loggingFieldTemplate"></ng-container>
-    </ng-container>
+<ng-container [ngSwitch]="field.type">
 
-    <ng-template #inputTemplate>
-      <ng-container *ngTemplateOutlet="dataInputTemplate"></ng-container>
-    </ng-template>
+  <isd-log-field-control *ngSwitchCase="'log'"
+    [field]="field" 
+    [value]="value"
+    (datagridSaved)="fieldUpdated.emit($event)">
+  </isd-log-field-control>
 
-    <!-- Logging Template -->
-    <ng-template #loggingFieldTemplate>
-      <isd-log-field-control 
-        [field]="field" 
-        [value]="value"
-        (datagridSaved)="fieldUpdated.emit($event)">
-      </isd-log-field-control>
-    </ng-template>
+  <isd-notes-field-control *ngSwitchCase="'notes'"
+    [field]="field" 
+    [value]="value">
+  </isd-notes-field-control>
 
-    <!-- Input Template -->
-    <ng-template #dataInputTemplate>
-      <isd-data-field-control 
-        [field]="field" 
-        [value]="value" 
-        (valueChanged)="fieldUpdated.emit($event)">
-      </isd-data-field-control>
-    </ng-template>
-  </div>
+  <isd-data-field-control *ngSwitchDefault
+    [field]="field" 
+    [value]="value" 
+    (valueChanged)="fieldUpdated.emit($event)">
+  </isd-data-field-control>
+  
+</ng-container>
+
 `
 })
 export class ISDDynamicTemplateComponent {

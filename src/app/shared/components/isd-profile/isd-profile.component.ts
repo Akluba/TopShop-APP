@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { lastValueFrom, Observable } from 'rxjs';
 
 import { LogFieldService } from './log-field.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-isd-profile',
@@ -12,7 +13,7 @@ import { LogFieldService } from './log-field.service';
     ]
 })
 export class ISDProfileComponent implements OnInit {
-  constructor(private _lfService: LogFieldService) {}
+  constructor(private _router: Router, private _lfService: LogFieldService) {}
 
   @Input() sourceClass: string;
   @Input() formValues: {};
@@ -27,7 +28,6 @@ export class ISDProfileComponent implements OnInit {
   initialValues: any; // Store initial values
   changedFields: any = {};
   cleanForm: boolean = true;
-  formVisible: boolean = true;
   listLink: any;
 
   ngOnInit(): void {
@@ -45,10 +45,8 @@ export class ISDProfileComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.formVisible = false;
-    setTimeout(() => this.formVisible = true, 0); // Force re-render
-    this.changedFields = {};
-    this.cleanForm = true;
+    let reload = [...this.listLink, this.formValues['id']];
+    this._router.navigate(reload);
   }
 
   onFieldDataChanged(e: any) {
@@ -71,9 +69,6 @@ export class ISDProfileComponent implements OnInit {
     } else {
       this.removeFieldFromDirty(keys, finalKey);
     }
-
-    console.log(this.changedFields);
-    console.log(this._lfService.hasUnsavedChanges());
 
     this.cleanForm = Object.keys(this.changedFields).length === 0 && !this._lfService.hasUnsavedChanges();
   }

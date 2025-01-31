@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, of, BehaviorSubject, Subscription, tap, Subject, EMPTY } from 'rxjs';
+import { catchError, Subscription, tap, Subject, EMPTY } from 'rxjs';
 
 import { ShopService } from './shop.service';
+import { LogFieldService } from 'src/app/shared/components/isd-profile/log-field.service';
 
 declare let $: any;
 
@@ -40,20 +41,37 @@ export class ShopDetailsComponent implements OnInit, OnDestroy {
     saveCompleted$: Subject<void>;
 
     private sub: Subscription;
+    private saveSub!: Subscription;
 
-    constructor(private _route: ActivatedRoute, private _shopService: ShopService) {}
+    constructor(private _route: ActivatedRoute, private _shopService: ShopService, private _lfService: LogFieldService) {}
 
     ngOnInit(): void {
+
         // Read the data from the resolver.
         this.sub = this._route.data.subscribe(data => {
             this.sourceClass = data.source_class;
             this.formValues = data.response.data.shop;
             this.formElements = data.response.data.form_elements;
         });
+
+        this.saveSub = this._lfService.singleSave$.subscribe(body => {
+            if (body) { this.saveSingleLog(body); }
+        })
     }
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
+    }
+
+    saveSingleLog(body: any) {
+        this._shopService.save(body).subscribe({
+            next: (response) => {
+                this._lfService.sendResponse(response.shop);
+            },
+            error: (error) => {
+                this._lfService.sendResponse({error: true, message: 'Failed to save'})
+            }
+        })
     }
 
     saveForm(body): void {

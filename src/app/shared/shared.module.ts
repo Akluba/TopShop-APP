@@ -35,6 +35,7 @@ import { ISDProfileComponent } from './components/isd-profile/isd-profile.compon
 import { ISDDynamicTemplateComponent } from './components/isd-profile/dynamic-field-template.component';
 import { ISDDataFieldComponent } from './components/isd-profile/data-field-template.component';
 import { ISDLogFieldComponent } from './components/isd-profile/log-field-template.component';
+import { ISDNotesFieldComponent } from './components/isd-profile/notes-field-template.component';
 
 import { DetailsFormComponent } from './DetailsForm/details-form.component';
 import { NoteFeedTemplate } from './DetailsForm/note-feed.component';
@@ -82,6 +83,7 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         ISDDynamicTemplateComponent,
         ISDDataFieldComponent,
         ISDLogFieldComponent,
+        ISDNotesFieldComponent,
         SortOrderPipe,
         SortABCPipe,
         ProfileHeaderComponent,
@@ -97,6 +99,7 @@ import { SortOrderPipe, SortABCPipe } from './order-by.pipe';
         ISDDynamicTemplateComponent,
         ISDDataFieldComponent,
         ISDLogFieldComponent,
+        ISDNotesFieldComponent,
         SortOrderPipe,
         SortABCPipe,
         ProfileHeaderComponent,

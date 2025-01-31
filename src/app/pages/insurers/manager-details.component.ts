@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { catchError, EMPTY, Subject, Subscription, tap } from 'rxjs';
 
 import { ManagerService } from './manager.service';
+import { LogFieldService } from 'src/app/shared/components/isd-profile/log-field.service';
 
 declare let $: any;
 
@@ -19,16 +20,6 @@ declare let $: any;
     (formSaved)="saveForm($event)">
 </app-isd-profile>
 `
-// `
-
-// <app-details-form
-//     (formSaved)="saveForm($event)"
-//     [sourceClass]="sourceClass"
-//     [formValues]="formValues"
-//     [formElements]="formElements"
-//     [saveResponse]="saveResponse">
-// </app-details-form>
-// `
 })
 export class ManagerDetailsComponent implements OnInit, OnDestroy {
     sourceClass: string;
@@ -38,8 +29,9 @@ export class ManagerDetailsComponent implements OnInit, OnDestroy {
     saveCompleted$: Subject<void>;
     
     private sub: Subscription;
+    private saveSub!: Subscription;
 
-    constructor(private _route: ActivatedRoute, private _managerService: ManagerService) {}
+    constructor(private _route: ActivatedRoute, private _managerService: ManagerService, private _lfService: LogFieldService) {}
 
     ngOnInit(): void {
         // Read the data from the resolver.
@@ -48,19 +40,26 @@ export class ManagerDetailsComponent implements OnInit, OnDestroy {
             this.formValues = data.response.data.manager;
             this.formElements = data.response.data.form_elements;
         });
+
+        this.saveSub = this._lfService.singleSave$.subscribe(body => {
+            if (body) { this.saveSingleLog(body); }
+        })
     }
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
 
-    // saveForm(body): void {
-    //     this._managerService.save(body)
-    //         .subscribe(
-    //             (res) => this.onSaveComplete(res),
-    //             (error: any) => this.flashMessage({text: <any>error, status: 'negative'})
-    //         );
-    // }
+    saveSingleLog(body: any) {
+        this._managerService.save(body).subscribe({
+            next: (response) => {
+                this._lfService.sendResponse(response.manager);
+            },
+            error: (error) => {
+                this._lfService.sendResponse({error: true, message: 'Failed to save'})
+            }
+        })
+    }
 
     saveForm(body): void {
         this._managerService.save(body)
@@ -77,14 +76,9 @@ export class ManagerDetailsComponent implements OnInit, OnDestroy {
             ).subscribe();
     }
 
-    // onSaveComplete(res): void {
-    //     this.flashMessage({text: res.message, status: 'success'});
-    //     this.formValues = res.manager;
-    // }
-
     onSaveComplete(res): void {
         this.flashMessage({text: res.message, status: 'success'});
-        this.formValues = res.shop;
+        this.formValues = res.manager;
 
         this.saveCompleted$.next(res.manager);
         this.saveCompleted$.complete();

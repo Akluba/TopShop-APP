@@ -69,7 +69,10 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [ RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }), DxDataGridModule, DxFormModule ],
+    imports: [ RouterModule.forRoot(routes, { 
+      relativeLinkResolution: 'legacy',
+      onSameUrlNavigation: 'reload'
+    }), DxDataGridModule, DxFormModule ],
     exports: [ RouterModule ],
     providers: [
       AuthGuardService,

@@ -34,6 +34,14 @@ declare let $: any;
         (onValueChanged)="onFieldChanged($event, field.column_name)">
     </dx-date-box>
 
+    <!-- Date -->
+    <dx-date-box *ngSwitchCase="'date'"
+        [value]="value"
+        type="date"
+        [disabled]="field.column_name === 'created_at' ? true : false"
+        (onValueChanged)="onFieldChanged($event, field.column_name)">
+    </dx-date-box>
+
     <!-- Select -->
     <dx-select-box *ngSwitchCase="'select'"
         [value]="value"

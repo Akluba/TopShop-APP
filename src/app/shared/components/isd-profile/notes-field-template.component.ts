@@ -1,13 +1,14 @@
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LogFieldService } from './log-field.service';
 import DataSource from 'devextreme/data/data_source';
+import CustomStore from 'devextreme/data/custom_store';
 
 declare let $: any;
 
 @Component({
-    selector: 'isd-log-field-control',
+    selector: 'isd-notes-field-control',
     template:
 `
 <dx-data-grid
@@ -16,43 +17,28 @@ declare let $: any;
     [dataSource]="dataSource"
     [showBorders]="true"
     [columnAutoWidth]="true"
-    [repaintChangesOnly]="true"
     (onToolbarPreparing)="onToolbarPreparing($event)"
-    (onSaving)="onSaving($event)"
-    (onOptionChanged)="onOptionChanged($event)">
+    (onSaving)="onSaving($event)">
 
     <dxo-header-filter [visible]=true></dxo-header-filter>
     <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
     <dxo-paging [pageSize]="10"></dxo-paging>
     
     <dxo-editing
-      mode="batch"
+      mode="popup"
       [allowUpdating]="true"
-      [allowAdding]="true"
-      [allowDeleting]="true">
+      [allowAdding]="true">
+      <dxo-popup
+        title="Employee Info"
+        [showTitle]="true"
+        [width]="700"
+        [height]="525">
+      </dxo-popup>
     </dxo-editing>
 
     <!-- Command Column with Delete Button -->
     <dxi-column type="buttons">
-        <dxi-button
-        name="delete">
-        </dxi-button> 
-    </dxi-column>
-
-    <dxi-column
-        dataField="created_at"
-        caption="Created"
-        dataType="date"
-        [allowEditing]="false">
-    </dxi-column>
-
-    <dxi-column
-        dataField="updated_at"
-        caption="Last Updated"
-        dataType="date"
-        [allowEditing]="false"
-        [sortIndex]="0"
-        sortOrder="desc">
+        <dxi-button name="edit"></dxi-button> 
     </dxi-column>
 
     <!-- Dynamic Columns -->
@@ -62,7 +48,10 @@ declare let $: any;
         [lookup]="column.lookup || null"
         [allowEditing]="true"
         [cellTemplate]="column.type === 'checkbox' ? 'viewTemplate' : null"
-        editCellTemplate="fieldTemplate">
+        editCellTemplate="fieldTemplate"
+        [visible]="column.system"
+        [dataType]="column.type === 'date' ? 'date' : null">
+            
     </dxi-column>
 
     <!-- View mode template -->
@@ -81,26 +70,26 @@ declare let $: any;
 </dx-data-grid>
 `
 })
-export class ISDLogFieldComponent implements OnInit, OnDestroy {
+export class ISDNotesFieldComponent implements OnInit {
     constructor(private _route: ActivatedRoute, private _lfService: LogFieldService) {}
 
     @Input() field: any;
     @Input() value: any;
-    @Output() datagridSaved = new EventEmitter<any>();
     @ViewChild('dataGrid', { static: false }) dataGrid!: DxDataGridComponent;
 
     pendingChangesPromise: Promise<any> | null = null;
     saveResolver!: { resolve: () => void; reject: (reason?: any) => void };
     columnsWithLookup: any[] = [];
     source_id: number;
-    dataSource: DataSource;
+    dataSource: CustomStore;
 
     ngOnInit() {
-        this._lfService.register(this);
 
-        this.dataSource = new DataSource({
+        this.dataSource = new CustomStore({
             key: 'id',
-            load: () => { return Promise.resolve(this.value) }
+            load: () => Promise.resolve(this.value),
+            update: (key, value) => Promise.resolve(value),
+            insert: (values) => Promise.resolve(values)
         })
 
         this._route.params.subscribe(params => {
@@ -140,10 +129,6 @@ export class ISDLogFieldComponent implements OnInit, OnDestroy {
 
     }
 
-    ngOnDestroy(): void {
-        this._lfService.unregister(this);
-    }
-
     onToolbarPreparing(e: any): void {
         e.toolbarOptions.items = e.toolbarOptions.items.filter(
             (item: any) => item.name !== 'saveButton'
@@ -175,60 +160,44 @@ export class ISDLogFieldComponent implements OnInit, OnDestroy {
     }
 
     onSaving(e: any): void {
-        e.cancel = true;
+        if (e.changes.length === 0) {
+            // No changes, resolve the promise immediately
+            e.promise = new Promise<void>((resolve) => resolve());
+            return;
+        } 
 
-        this.pendingChangesPromise = this.processChangesAsync(e.changes);
+        const columnName = this.field.column_name;
+        let body = { id: this.source_id, [columnName]: [] };
 
-        e.promise = new Promise<void>((resolve, reject) => {
-            this.saveResolver = { resolve, reject };
-        })
-        .then(() => {
-            return e.component.refresh(true).then(() => {
-                e.component.cancelEditData(); // Clear the edit state
-            })
-        })
-        .catch((error) => {
-            console.error(`${new Date().toISOString()} - Error during post-save tasks`, error);
-        });
-    }
-
-    processChangesAsync(changes: any[]): Promise<any> {
-        return new Promise((resolve, reject) => {
-            try {
-                const columnName = this.field.column_name;
-                let dirtyRows = { [columnName]: [] };
-
-                changes.forEach(change => {
-                    if (change.type === 'insert') {
-                        const addedData = {...new LogEntry(0, this.field.id, this.field.source_class, this.source_id), ...change.data}
-                        dirtyRows[columnName].push(addedData);
-                    } else if (change.type === 'update') {
-                        const fullRow = this.value.find(row => row.id === change.key);
-                        const updatedData = { ...fullRow, ...change.data };
-                        dirtyRows[columnName].push(updatedData);
-                    } else if (change.type === 'remove') {
-                        const removedData = this.value.find(row => row.id === change.key);
-                        removedData.deleted = true;
-                        dirtyRows[columnName].push(removedData);
-                    }
-                });
-
-                this.datagridSaved.emit(dirtyRows);
-                resolve(dirtyRows);
-            } catch (error) {
-                reject(error); // Reject the promise on failure
+        e.changes.forEach(change => {
+            if (change.type === 'insert') {
+                const addedData = {...new LogEntry(0, this.field.id, this.field.source_class, this.source_id), ...change.data}
+                body[columnName].push(addedData);
+            } else if (change.type === 'update') {
+                const fullRow = this.value.find(row => row.id === change.key);
+                const updatedData = { ...fullRow, ...change.data };
+                body[columnName].push(updatedData);
             }
         });
-    } 
 
-    finalizeSave(success: boolean): void {
-        if (success) {
-            this.saveResolver.resolve(); // Resolve the e.promise
-        } else {
-            this.saveResolver.reject('Save failed'); // Reject the e.promise
-        }
+        e.promise = this._lfService.singleSave(body)
+            .then((response) => {
+                if (!response) { 
+                    throw new Error('No response received from server');
+                  }
+            
+                  if (response.error) {
+                    throw new Error(response.message);
+                  }
 
-        this.saveResolver = null; // Clear the resolver
+                  this.value = response[columnName];
+
+                  return;
+            })
+            .catch((error) => {
+                console.error("🚨 Error saving:", error);
+                throw error;
+            })
     }
 }
 
