@@ -38,6 +38,8 @@ export class ISDProfileComponent implements OnInit {
     // Create a deep copy for tracking changes
     this.initialValues = JSON.parse(JSON.stringify(this.formValues));
 
+    this._lfService.updateHasChangesState()
+
     // Subscribe to logfields to watch for changes
     this._lfService.hasUnsavedChanges$.subscribe((hasChanges) => {
       this.cleanForm = !hasChanges;
@@ -46,7 +48,8 @@ export class ISDProfileComponent implements OnInit {
 
   resetForm(): void {
     let reload = [...this.listLink, this.formValues['id']];
-    this._router.navigate(reload);
+    this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this._router.navigate(reload)});
   }
 
   onFieldDataChanged(e: any) {

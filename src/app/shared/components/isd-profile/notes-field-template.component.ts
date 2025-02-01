@@ -18,7 +18,9 @@ declare let $: any;
     [showBorders]="true"
     [columnAutoWidth]="true"
     (onToolbarPreparing)="onToolbarPreparing($event)"
-    (onSaving)="onSaving($event)">
+    (onSaving)="onSaving($event)"
+    (onEditingStart)="setPopupTitle($event, 'edit')"
+    (onInitNewRow)="setPopupTitle($event, 'init')">
 
     <dxo-header-filter [visible]=true></dxo-header-filter>
     <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
@@ -29,7 +31,7 @@ declare let $: any;
       [allowUpdating]="true"
       [allowAdding]="true">
       <dxo-popup
-        title="Employee Info"
+        [title]="popupTitle"
         [showTitle]="true"
         [width]="700"
         [height]="525">
@@ -82,6 +84,7 @@ export class ISDNotesFieldComponent implements OnInit {
     columnsWithLookup: any[] = [];
     source_id: number;
     dataSource: CustomStore;
+    popupTitle: string = "";
 
     ngOnInit() {
 
@@ -143,6 +146,10 @@ export class ISDNotesFieldComponent implements OnInit {
               return label;
             },
         });
+    }
+
+    setPopupTitle(e, action) {
+        this.popupTitle = action === 'init' ? 'Log New Activity' : `Update: ${e.data.log_field3}`
     }
 
     getColumnInfo(dataField: string): any {

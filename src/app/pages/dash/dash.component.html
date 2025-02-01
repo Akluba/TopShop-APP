@@ -61,7 +61,8 @@
                         <div class="date">{{ note.created_date }}</div>
                     </div>
                     <div class="extra text">
-                        {{ note.note_text }}
+                        <div><b>{{ note.note_text }}</b></div>
+                        {{ note.note_message }}
                     </div>
                     <div class="meta" *ngIf="note.tags">
                         <span *ngFor="let tag of note.tags" [ngSwitch]="tag.type">
