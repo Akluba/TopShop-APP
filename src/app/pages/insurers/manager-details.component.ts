@@ -48,6 +48,7 @@ export class ManagerDetailsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
+        this.saveSub.unsubscribe();
     }
 
     saveSingleLog(body: any) {

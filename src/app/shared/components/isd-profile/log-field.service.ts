@@ -48,6 +48,9 @@ export class LogFieldService {
         next: (response) => {
           if (response === null) return; // Ignore null values
           resolve(response);
+
+          // Reset subject after handling
+          this.singleSaveSubject.next(null);
         },
         error: (err) => {
           reject(err);
