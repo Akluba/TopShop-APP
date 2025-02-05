@@ -30,6 +30,7 @@ import { DxFormComponent } from 'devextreme-angular';
     @ViewChild('shopForm') form: DxFormComponent;
     @Input() account: number;
     @Input() shops: Shop[];
+    @Input() elements: any[];
 
     constructor (private _router: Router, private _accountService: AccountService, private _shopService: ShopService) {}
 
@@ -40,7 +41,13 @@ import { DxFormComponent } from 'devextreme-angular';
         this.popupVisible = false;
         this.positionOf = '#profile-shops-container';
 
-        this.stateEditorOptions = { items: states, searchEnabled: true };
+        this.stateEditorOptions = { 
+            items: this.elements['states'], 
+            searchEnabled: true, 
+            valueExpr:"id", 
+            displayExpr:"name"
+        };
+
         this.saveBtnOptions = {
             text: 'Save',
             onClick(e) { that.save(e) }
@@ -76,6 +83,21 @@ import { DxFormComponent } from 'devextreme-angular';
             items: this.shops
         }]
     }
+
+    parseInts(shop: Shop): Shop {
+        return { ...shop,
+            location: {
+                ...shop.location,
+                state: shop.location?.state ? parseInt(shop.location.state as string, 10) : null
+            }
+        }
+    }
+
+    displayStateName(stateId: string): string {
+        const state = this.elements['states'].find(s => s.id === parseInt(stateId, 10));
+        return state ? state.name : null; // Default if no match is found
+    }
+      
 
     sendRequest(method = 'GET', data: any = {}): any {
         let result;
@@ -113,6 +135,7 @@ import { DxFormComponent } from 'devextreme-angular';
     update(e, item) {
         e.event.stopPropagation();
         this.shop = JSON.parse(JSON.stringify({...item, account_id: this.account}));
+        this.shop = this.parseInts(this.shop)
         this.popupTitle = 'Update Shop';
         this.popupVisible = true;
     }
@@ -172,7 +195,7 @@ import { DxFormComponent } from 'devextreme-angular';
   }
 
   class Location {
-    constructor(address='', city='', state='', zip='') {
+    constructor(address='', city='', state=null, zip='') {
         this.address = address
         this.city = city
         this.state = state
@@ -180,59 +203,6 @@ import { DxFormComponent } from 'devextreme-angular';
     }
     address: string;
     city: string;
-    state: string;
+    state: number | string;
     zip: string;
   }
-
-  const states : string [] = [
-    'Alabama',
-    'Alaska',
-    'Arizona',
-    'Arkansas',
-    'California',
-    'Colorado',
-    'Connecticut',
-    'Delaware',
-    'Florida',
-    'Georgia',
-    'Hawaii',
-    'Idaho',
-    'Illinois',
-    'Indiana',
-    'Iowa',
-    'Kansas',
-    'Kentucky',
-    'Louisiana',
-    'Maine',
-    'Maryland',
-    'Massachusetts',
-    'Michigan',
-    'Minnesota',
-    'Mississippi',
-    'Missouri',
-    'Montana',
-    'Nebraska',
-    'Nevada',
-    'New Hampshire',
-    'New Jersey',
-    'New Mexico',
-    'New York',
-    'North Carolina',
-    'North Dakota',
-    'Ohio',
-    'Oklahoma',
-    'Oregon',
-    'Pennsylvania',
-    'Rhode Island',
-    'South Carolina',
-    'South Dakota',
-    'Tennessee',
-    'Texas',
-    'Utah',
-    'Vermont',
-    'Virginia',
-    'Washington',
-    'West Virginia',
-    'Wisconsin',
-    'Wyoming'
-  ]

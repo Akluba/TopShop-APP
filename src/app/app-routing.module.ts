@@ -70,8 +70,7 @@ export const routes: Routes = [
 
 @NgModule({
     imports: [ RouterModule.forRoot(routes, { 
-      relativeLinkResolution: 'legacy',
-      onSameUrlNavigation: 'reload'
+      relativeLinkResolution: 'legacy'
     }), DxDataGridModule, DxFormModule ],
     exports: [ RouterModule ],
     providers: [

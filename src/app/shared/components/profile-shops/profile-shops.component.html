@@ -31,7 +31,7 @@
             <div class="shop-item-info">
                 <div><b>{{ item.name }}</b></div>
                 <div>{{ item.location.address }}</div>
-                <div> {{ item.location.city }}, {{ item.location.state }} {{ item.location.zip }}</div>
+                <div> {{ item.location.city }}, {{ displayStateName(item.location.state) }} {{ item.location.zip }}</div>
             </div>
             <div class="shop-item-actions">
                 <dx-button icon="edit" (onClick)="update($event, item)"> </dx-button>

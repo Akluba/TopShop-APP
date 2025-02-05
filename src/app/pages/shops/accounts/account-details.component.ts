@@ -15,13 +15,15 @@ declare let $: any;
 
 <app-profile-shops
     [account]="account"
-    [shops]="shops">
+    [shops]="shops"
+    [elements]="form_elements">
 </app-profile-shops>
 `
 })
 export class AccountDetailsComponent implements OnInit, OnDestroy {
     account: number;
     shops: any[];
+    form_elements: any[];
     details: {};
     private sub: Subscription;
 
@@ -33,6 +35,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         this.sub = this._route.data.subscribe(data => {
             this.account = data.response.data.account;
             this.details = data.response.data.details;
+            this.form_elements = data.response.data.form_elements;
             this.shops = data.response.data.shops;
         });
     }

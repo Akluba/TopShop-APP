@@ -55,9 +55,14 @@ export class ShopService {
     saveLocation(body: any): Observable<any> {
         const headers = new HttpHeaders({ Accept: 'application/json' });
         const options = { headers: headers };
-
-        const url = `${this.baseUrl}/location/${body.id}`;
+        
+        if (!body.hasOwnProperty('id')) {
+            return this.store(body, options);
+        }
+        
+        const url = `${this.baseUrl}/location/${body.account_id}`;
         body._method = 'PUT';
+        
         return this._http.post(url, body, options).pipe(
             catchError(this.handleError)
         );
