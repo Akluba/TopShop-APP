@@ -61,6 +61,7 @@ export class ShopDetailsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
+        this.saveSub.unsubscribe();
     }
 
     saveSingleLog(body: any) {

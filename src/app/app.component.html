@@ -1,5 +1,15 @@
 <ng-container *ngIf="isAuthenticated(); else unauthenticated">
   <app-side-nav-outer-toolbar title="{{appInfo.title}}">
+    <dx-load-panel 
+        [visible]="isLoading$ | async" 
+        [message]="'Loading...'" 
+        [showIndicator]="true"
+        [showPane]="true"
+        [shading]="true" 
+        [shadingColor]="'rgba(0, 0, 0, 0.5)'" 
+        [closeOnOutsideClick]="false"
+        [container]="'body'">
+    </dx-load-panel>
     <router-outlet></router-outlet>
     <app-footer>
     </app-footer>

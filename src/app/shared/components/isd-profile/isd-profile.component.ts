@@ -29,11 +29,16 @@ export class ISDProfileComponent implements OnInit {
   changedFields: any = {};
   cleanForm: boolean = true;
   listLink: any;
+  sectionDisabled: boolean = false;
 
   ngOnInit(): void {
     this.sourceTitle = this.sourceClass === 'Shop' ? 'Affiliate' : 'Insurance Manager';
     this.sourceIcon = this.sourceClass === 'Shop' ? 'dx-icon-home' : 'dx-icon-user';
     this.listLink = this.sourceClass === 'Shop' ? ['/shops'] : ['/managers'];
+
+    if ((this.formValues as any)?.account?.affiliation === "CCG") {
+        this.sectionDisabled = true;
+    }
 
     // Create a deep copy for tracking changes
     this.initialValues = JSON.parse(JSON.stringify(this.formValues));

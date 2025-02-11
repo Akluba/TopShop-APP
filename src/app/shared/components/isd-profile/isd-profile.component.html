@@ -45,8 +45,8 @@
       cssClass="section-container"
       [caption]="category.title"
       [colSpan]="2"
-      [colCount]="2">
-      <!-- [disabled]="formValues.account.affiliation === 'CCG'" -->
+      [colCount]="2"
+      [disabled]="sectionDisabled">
       <dxi-item *ngFor="let field of category.fields | sortOrder">
         <dxo-label [text]="field.title"></dxo-label>
         

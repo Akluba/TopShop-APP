@@ -15,6 +15,7 @@ import { SideNavOuterToolbarModule, SideNavInnerToolbarModule, SingleCardModule 
 import { FooterModule, ResetPasswordFormModule, ChangePasswordFormModule, LoginFormModule } from './shared/components';
 import { AuthService, ScreenService, AppInfoService } from './shared/services';
 import { UnauthenticatedContentModule } from './unauthenticated-content';
+import { DxLoadPanelModule } from 'devextreme-angular';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
     ResetPasswordFormModule,
     ChangePasswordFormModule,
     LoginFormModule,
-    UnauthenticatedContentModule
+    UnauthenticatedContentModule,
+    DxLoadPanelModule
   ],
   declarations: [
     AppComponent,
