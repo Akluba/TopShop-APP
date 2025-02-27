@@ -4,6 +4,8 @@ import CustomStore from 'devextreme/data/custom_store';
 import { Subscription, lastValueFrom, firstValueFrom } from 'rxjs';
 
 import { ShopService } from './shop.service';
+import DataSource from 'devextreme/data/data_source';
+import { DataListService } from 'src/app/shared/components/data-list/data-list.service';
 
 @Component({
     template:
@@ -11,6 +13,7 @@ import { ShopService } from './shop.service';
 <h2 class="content-block">Shop List</h2>
 <app-data-list
     [fields] = 'fields'
+    [filters] = 'filters'
     [defaultCols] = 'defaultColumns'
     [newObjFields] = []
     [data]='dataSource'
@@ -20,7 +23,9 @@ import { ShopService } from './shop.service';
 })
 export class ShopListComponent implements OnInit, OnDestroy {
     initLoad: boolean;
+    shop_list: [];
     fields: any;
+    filters: any;
     dataSource: any;
 
     readonly defaultColumns = [
@@ -35,45 +40,54 @@ export class ShopListComponent implements OnInit, OnDestroy {
     ];
 
     private sub: Subscription;
+    private filterSub!: Subscription;
 
-    constructor (private _route: ActivatedRoute, private _router: Router, public _shopService: ShopService) {
-        this.dataSource = new CustomStore({
+    constructor (private _route: ActivatedRoute, private _router: Router, public _shopService: ShopService, private _dlService: DataListService) {
+        this.dataSource = new DataSource({
             key: 'id',
-            load: () => this.load(),
-            insert: (values) => this.sendRequest('POST', {values}),
-            remove: (key) => this.sendRequest('DELETE',{key})
+            load: () => { return Promise.resolve(this.shop_list) },
+            // load: (options) => this.load(options),
+            // insert: (values) => this.sendRequest('POST', {values}),
+            // remove: (key) => this.sendRequest('DELETE',{key})
         })
     }
 
     ngOnInit(): void {
         this.initLoad = true;
         this.sub = this._route.data.subscribe(data => {
+            this.shop_list = data.response.data.shop_list;
             this.fields = data.response.data.fields;
+            this.filters = data.response.data.filters;
         });
+
+        this.filterSub = this._dlService.remoteFilter$.subscribe(options => {
+            if (options) { this.applyRemoteFilter(options); }
+        })
     }
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
+        this.filterSub.unsubscribe();
     }
 
-    load(): any {
-        if (!this.initLoad) return this.sendRequest();
-
-        this.initLoad = false;
-
-        return firstValueFrom(this._route.data)
-            .then((data: any) => data.response.data.shop_list)
-            .catch((e) => {
-                throw e && e.error && e.error.Message;
-            });
+    applyRemoteFilter(options) {
+        this._shopService.index(options).subscribe({
+            next: (resp) => {
+                this.shop_list = resp.data.shop_list;
+                this._dlService.sendResponse({success: true});
+            },
+            error: (error) => {
+                this._dlService.sendResponse({error: true, message: 'Failed to Filter'})
+            }
+        })
     }
 
-    sendRequest(method = 'GET', data: any = {}): any {
+    sendRequest(method = 'GET', data: any = {}): Promise<any> {
         let result;
 
         switch(method) {
             case 'GET':
-                result = this._shopService.index();
+                result = this._shopService.index(data);
                 break;
             case 'POST':
                 result = this._shopService.save({ id: 0 , ...data.values });

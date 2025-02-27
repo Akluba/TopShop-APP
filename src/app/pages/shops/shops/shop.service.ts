@@ -1,8 +1,8 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError,  Observable} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { environment } from '../../../../environments/environment';
 
@@ -11,10 +11,17 @@ export class ShopService {
     private baseUrl = `${environment.url}/shops`;
     constructor(private _http: HttpClient) {}
 
-    index(): Observable<any> {
+    index(data): Observable<any> {
+        let params = new HttpParams();
+
+        if (data?.filter) {
+            const filterParam = JSON.stringify(data.filter);
+            params = params.append('filter', filterParam);
+        }
+
         const url = `${this.baseUrl}`;
         const headers = new HttpHeaders({ Accept: 'application/json' });
-        const options = { headers: headers };
+        const options = { headers: headers, params: params };
 
         return this._http.get(url, options).pipe(
             catchError(this.handleError)

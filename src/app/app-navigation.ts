@@ -8,7 +8,7 @@ export const navigation = [
     text: 'Shops',
     icon: 'home',
     items: [
-      { text: 'Accounts', path: '/accounts' },
+      // { text: 'Accounts', path: '/accounts' },
       { text: 'Shop List', path: '/shops' },
       { text: 'Shop Locations', path: '/shops/locations' },
       // { text: 'Multi Shop Note', path: '/shops/multi/notes' },

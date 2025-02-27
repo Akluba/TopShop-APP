@@ -39,14 +39,14 @@ declare let $: any;
         </dxi-button> 
     </dxi-column>
 
-    <dxi-column
+    <dxi-column *ngIf="field.id===81"
         dataField="created_at"
         caption="Created"
         dataType="date"
         [allowEditing]="false">
     </dxi-column>
 
-    <dxi-column
+    <dxi-column *ngIf="field.id===81"
         dataField="updated_at"
         caption="Last Updated"
         dataType="date"

@@ -60,7 +60,7 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
 
             // creating lookups for field options
             data.response.data.field.columns.forEach(col => {
-                let selector = (col.column_name === 'source_id' || col.column_name === 'log_field4') ? 'name' : 'sort_order';
+                let selector = ['log_field1','source_id','log_field4'].includes(col.column_name) ? 'name' : 'sort_order';
                 
                 this.optArray[col.column_name] = {
                     store: col.options,
@@ -90,9 +90,10 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
     }
 
     editorPreparing(e) {
-        // Disable editor for Company and Manger rows
-        if (e.row.data.hasOwnProperty('company') || e.row.data.hasOwnProperty('manager')) {
-            e.editorOptions.disabled = true;
+        // Disable editor parent rows
+        if (e.row.level !== 2) {
+            e.allowEditing = false;
+            e.component.cancelEditData();
         }
         // Disable Outcome column unless status is Complete
         if (e.dataField === 'log_field3' && e.row.data.log_field2 != 379) {
@@ -101,7 +102,7 @@ export class MarketingEffortsComponent implements OnInit, OnDestroy {
     }
 
     calculateSortValue(data) {
-        if (!('company' in data) && !('source_id' in data)) return;
+        if (!('log_field1' in data) && !('source_id' in data)) return;
 
         const column = this as any;
         const value = column.calculateCellValue(data);

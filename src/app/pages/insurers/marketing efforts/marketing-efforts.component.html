@@ -39,14 +39,14 @@
         [allowUpdating]="true"
         [allowAdding]="true">
     </dxo-editing>
-    <dxi-column dataField="company" [allowEditing]="false" caption="Company" [calculateSortValue]="calculateSortValue" sortOrder="asc">
+    <dxi-column dataField="log_field1" [allowEditing]="false" caption="Company" [calculateSortValue]="calculateSortValue" sortOrder="asc">
         <dxo-lookup
             [dataSource]="optArray['log_field1']"
             valueExpr="id"
             displayExpr="name"
         ></dxo-lookup>
     </dxi-column>
-    <dxi-column dataField="manager" [allowEditing]="false" caption="Manager">
+    <dxi-column dataField="log_field4" [allowEditing]="false" caption="Manager">
         <dxo-lookup
             [dataSource]="optArray['log_field4']"
             valueExpr="id"
@@ -90,8 +90,8 @@
     </dxi-column>
     <dxi-column type="buttons">
         <!-- Future, add links to Shop and Manager -->
-        <dxi-button [disabled]="true" icon="home"></dxi-button>
-        <dxi-button [disabled]="true" icon="car"></dxi-button>
+        <dxi-button [visible]="false" icon="home"></dxi-button>
+        <!-- <dxi-button [disabled]="true" icon="car"></dxi-button> -->
     </dxi-column>
 </dx-tree-list>
 
@@ -151,8 +151,7 @@
                         [label]="temp.label"
                         labelMode="floating"
                         placeholder=""
-                        (onValueChanged)="dropdownChange(temp.ds,$event)"
-                        >
+                        (onValueChanged)="dropdownChange(temp.ds,$event)">
                     <dx-validator
                         *ngIf="out_val || temp.ds != log_field3"
                         validationGroup="gridForm">

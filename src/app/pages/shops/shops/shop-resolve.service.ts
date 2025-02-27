@@ -9,7 +9,7 @@ export class ShopListResolver implements Resolve<any> {
     constructor(private _shopService: ShopService) {}
 
     resolve(): Observable<any> {
-        return this._shopService.index();
+        return this._shopService.index(null);
     }
 }
 

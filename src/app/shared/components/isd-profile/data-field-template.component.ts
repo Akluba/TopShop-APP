@@ -44,6 +44,7 @@ declare let $: any;
 
     <!-- Select -->
     <dx-select-box *ngSwitchCase="'select'"
+        [disabled]="field.column_name.includes('log') && [154, 166].includes(field.id)"
         [value]="value"
         [dataSource]="dataSource"
         [displayExpr]="field.mapped ? 'name' : 'title'"

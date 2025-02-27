@@ -1,20 +1,14 @@
-<!-- <div class="filter-container">
-  <dx-filter-builder [fields]="tableColumns" [(value)]="filter"> </dx-filter-builder>
-  <dx-button text="Apply Filter" type="default" (onClick)="filterClick()">
-  </dx-button>
-  <div class="dx-clearfix"></div>
-</div> -->
-
-<dx-data-grid
+<dx-data-grid #dataGrid
   id="gridContainer"
   [dataSource]="data"
-  [filterValue]="gridFilterValue"
+  [repaintChangesOnly]="true"
   [showBorders]="true"
   [columnMinWidth]="100"
   [columnAutoWidth]="true"
   [allowColumnReordering]="true"
-  [customizeColumns]="customizeColumns">
->
+  [customizeColumns]="customizeColumns"
+  syncLookupFilterValues="false"
+  (onOptionChanged)="onGridOptionChanged($event)">
     <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
     <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
     <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
@@ -28,6 +22,26 @@
     </dxo-group-panel>
     <dxo-header-filter [visible]=true></dxo-header-filter>
     <dxo-filter-row [visible]=true></dxo-filter-row>
+
+    <dxo-filter-panel *ngIf="filters" [visible]="true">
+      <dxo-texts createFilter="Advanced Filter"></dxo-texts>
+    </dxo-filter-panel>
+    <dxo-filter-builder *ngIf="filters"
+      [groupOperations]="['and']"
+      [maxGroupLevel]="0"
+      [customOperations]="customOperations"
+      [allowHierarchicalFields]="true">
+          <dx-select-box
+            *dxTemplate="let condition of 'drpDropdown'"
+            [dataSource]="insurers"
+            displayExpr="name"
+            valueExpr="name"
+            [value]="condition.value"
+            (onValueChanged)="condition.setValue($event.value)">
+          </dx-select-box>
+    </dxo-filter-builder>
+    <dxo-filter-builder-popup *ngIf="filters" [position]="popupPosition" title="Advanced Filter"></dxo-filter-builder-popup>
+
     <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
     <dxo-paging [pageSize]="25"></dxo-paging>
     <dxo-pager
@@ -39,14 +53,14 @@
       mode="form"
       refreshMode="repaint"
       [allowAdding]="!!newObjFields.length"
-      [allowDeleting]="true"
+      [allowDeleting]="!!newObjFields.length"
       [useIcons]="true">
       <dxo-texts [confirmDeleteMessage]="confirmDeleteMsg"></dxo-texts>
       <dxo-form>
         <dxi-item *ngFor="let field of newObjFields" [dataField]="field" [isRequired]="true"></dxi-item>
       </dxo-form>
     </dxo-editing>
-    <dxi-column type="buttons" [width]="110" [fixed]="true" fixedPosition="left">
+    <dxi-column type="buttons" [fixed]="true" fixedPosition="left">
       <dxi-button name="delete"></dxi-button>
       <dxi-button
         hint="View Profile"
@@ -54,16 +68,10 @@
         [onClick]="onViewClick"
       ></dxi-button>
     </dxi-column>
-    <!-- <dxi-column *ngFor="let column of tableColumns"
-      [dataField]="column.field"
-      [caption]="column.caption"
-      [visible]="isDefaultCol(column)"
-      [fixed]="column.field==='name'"
-      [sortIndex]="sortColumn('i',column)"
-      [sortOrder]="sortColumn('o',column)"
-    >
-    </dxi-column> -->
 
+    <dxi-column dataField="drp_filter" caption="Marketing Efforts / DRP Relationships" [visible]="false" [filterOperations]="['excludeDRP']"></dxi-column>
+
+    <!-- Dynamic Table Columns -->
     <dxi-column *ngFor="let column of tableColumns"
       [dataField]="column.dataField"
       [calculateFilterExpression]="calculateFilterExpression"
@@ -75,6 +83,5 @@
       [sortIndex]="sortColumn('i',column)"
       [sortOrder]="sortColumn('o',column)">
     </dxi-column>
-
 
 </dx-data-grid>
