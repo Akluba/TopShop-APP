@@ -58,7 +58,7 @@ declare let $: any;
 
     <!-- View mode template -->
     <div *dxTemplate="let cell of 'viewTemplate'">
-        <span>{{ cell.value ? 'True' : 'False' }}</span>
+        <span>{{ cell.value == 1 ? 'True' : 'False' }}</span>
     </div>
 
     <!-- Define checkbox template -->

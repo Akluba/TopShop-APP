@@ -66,7 +66,7 @@
   <dxi-item itemType="tabbed" [colSpan]="2" cssClass="section-container">
     <ng-container *ngFor="let category of formElements | sortOrder">
       <dxi-tab *ngIf="category.secondary" [title]="category.title">
-        <dxi-item *ngFor="let field of category.fields">
+        <dxi-item *ngFor="let field of category.fields" [disabled]="disableSection(field)">
           
           <ng-template dxTemplate="content">
             <app-dynamic-field-template 

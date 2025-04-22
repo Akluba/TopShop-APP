@@ -51,6 +51,11 @@ export class ISDProfileComponent implements OnInit {
     });
   }
 
+  disableSection(field) {
+    return this.sectionDisabled && field.id===80;
+    return true;
+  }
+
   resetForm(): void {
     let reload = [...this.listLink, this.formValues['id']];
     this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
