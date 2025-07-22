@@ -12,6 +12,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     (datagridSaved)="fieldUpdated.emit($event)">
   </isd-log-field-control>
 
+  <isd-log-field-control *ngSwitchCase="'contacts'"
+    [field]="field" 
+    [value]="value"
+    (datagridSaved)="fieldUpdated.emit($event)">
+  </isd-log-field-control>
+
   <isd-notes-field-control *ngSwitchCase="'notes'"
     [field]="field" 
     [value]="value">
