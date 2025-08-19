@@ -12,24 +12,28 @@ declare let $: any;
     <!-- Textbox -->
     <dx-text-box *ngSwitchCase="'text'"
        [value]="value"
+       [readOnly]="field.read_only == 1"
        (onValueChanged)="onFieldChanged($event, field.column_name)">
     </dx-text-box>
 
     <!-- Textarea -->
     <dx-text-area *ngSwitchCase="'textarea'"
         [value]="value"
+        [readOnly]="field.read_only == 1"
         (onValueChanged)="onFieldChanged($event, field.column_name)">>
     </dx-text-area>
 
     <!-- Checkbox -->
     <dx-check-box *ngSwitchCase="'checkbox'"
         [value]="!!value"
+        [readOnly]="field.read_only == 1"
         (onValueChanged)="onFieldChanged($event, field.column_name)">>
     </dx-check-box>
 
     <!-- Date -->
     <dx-date-box *ngSwitchCase="'reminder_date'"
         [value]="value"
+        [readOnly]="field.read_only == 1"
         type="date"
         (onValueChanged)="onFieldChanged($event, field.column_name)">
     </dx-date-box>
@@ -37,6 +41,7 @@ declare let $: any;
     <!-- Date -->
     <dx-date-box *ngSwitchCase="'date'"
         [value]="value"
+        [readOnly]="field.read_only == 1"
         type="date"
         [disabled]="field.column_name === 'created_at' ? true : false"
         (onValueChanged)="onFieldChanged($event, field.column_name)">
@@ -46,6 +51,7 @@ declare let $: any;
     <dx-select-box *ngSwitchCase="'select'"
         [disabled]="field.column_name.includes('log') && [154, 166].includes(field.id)"
         [value]="value"
+        [readOnly]="field.read_only == 1"
         [dataSource]="dataSource"
         [displayExpr]="field.mapped ? 'name' : 'title'"
         [valueExpr]="'id'"
@@ -56,6 +62,7 @@ declare let $: any;
     <!-- Select Multiple -->
     <dx-tag-box *ngSwitchCase="'select_multiple'"
         [value]="value"
+        [readOnly]="field.read_only == 1"
         [dataSource]="dataSource"
         [displayExpr]="field.mapped ? 'name' : 'title'"
         [valueExpr]="'id'"
