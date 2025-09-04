@@ -21,6 +21,7 @@ declare let $: any;
     (onSaving)="onSaving($event)"
     (onOptionChanged)="onOptionChanged($event)">
 
+    <dxo-export [enabled]="true"></dxo-export>
     <dxo-header-filter [visible]=true></dxo-header-filter>
     <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
     <dxo-paging [pageSize]="10"></dxo-paging>
